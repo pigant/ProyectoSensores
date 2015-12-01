@@ -72,8 +72,8 @@ public class LugarDAL {
 		try {
 			BD bd = new BD();
 			ArrayList<Object[]> select
-					= bd.select("lugar", "id_lugar=" + codigo, "id", "nombre");
-			if (select.size() > 0) {
+					= bd.select("lugar", "id_lugar=" + codigo, "id_lugar", "nombre");
+			if (select != null && select.size() > 0) {
 				final Object[] lugar = select.get(0);
 				l = new Lugar((Integer) lugar[0], (String) lugar[1]);
 			}
