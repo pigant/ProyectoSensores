@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 
-import com.ignacio.proyectosensores.BLL.Lugar;
-import com.ignacio.proyectosensores.BLL.Maquina;
+import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.BD;
 import java.sql.SQLException;
 import org.junit.After;
@@ -19,9 +18,9 @@ import static org.junit.Assert.*;
  *
  * @author ignacio
  */
-public class MaquinaTest {
+public class TipoUnidadTest {
 
-	public MaquinaTest() {
+	public TipoUnidadTest() {
 	}
 
 	@BeforeClass
@@ -47,25 +46,20 @@ public class MaquinaTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_maquina() {
-		Lugar l = new Lugar("lugar test");
-		l.save();
-		//Create
-		Maquina m = new Maquina("cosa test");
-		m.setLugar(l);
-		boolean s = m.save();
-		//Update
-		assertTrue("No se guardo la maquina", s);
-		m.setNombre("la cosa del test");
-		s = m.save();
-		assertTrue("No se actualizo la maquina", s);
-		//READ
-		Maquina m2 = Maquina.find(m.getId());
-		m2.setLugar(l);
-		assertTrue("No se obtuvo 'maquina'", m2.equals(m));
+	public void CRUD_tipo_unidad() {
+		//creacion
+		TipoUnidad t = new TipoUnidad("celsius test");
+		boolean s = t.save();
+		assertTrue("No se guardo 'tipo_unidad'", s);
+		//update
+		t.setNombre("farenheit test");
+		s = t.save();
+		assertTrue("No se actualizo 'tipo_unidad'", s);
+		//read
+		TipoUnidad t2 = TipoUnidad.find(t.getId());
+		assertTrue("No se obtubo correctamente la unidad", t2.equals(t));
 		//delete
-		s = m.delete();
-		assertTrue("No se borro la maquina", s);
-		l.delete();
+		s = t.delete();
+		assertTrue("No se elimino correctamente la 'unidad'", s);
 	}
 }
