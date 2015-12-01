@@ -54,6 +54,9 @@ public class LugarTest {
 		l.setNombre("proeta test");
 		t = l.save();
 		assertTrue("No se actualizo un lugar", t);
+		//obtiene
+		Lugar l2 = Lugar.find(l.getId());
+		assertTrue("No se obtubo el 'lugar' de la base de datos", l2.equals(l));
 		t = l.delete();
 		assertTrue("No se elimino un lugar", t);
 	}
