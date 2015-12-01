@@ -17,12 +17,20 @@ import java.util.logging.Logger;
 public class BD {
 
 	private Connection c;
+	private static boolean testing = false;
+
+	public static void setTesting() throws SQLException {
+		testing = true;
+	}
 
 	public BD() throws SinBaseDatosException {
 		try {
 			c = DriverManager.getConnection(
 					"jdbc:postgresql://192.168.50.33/sensores",
 					"postgres", "postgres");
+			if (testing) {
+				c.createStatement().execute("set search_path to test");
+			}
 		} catch (SQLException ex) {
 			throw new SinBaseDatosException(ex);
 		}
