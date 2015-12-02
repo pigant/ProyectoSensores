@@ -1,10 +1,12 @@
+package com.ignacio.proyectosensores.BLL;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import com.ignacio.proyectosensores.BLL.Protocolo;
+import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.DAL.BD;
 import java.sql.SQLException;
 import org.junit.After;
@@ -18,7 +20,10 @@ import static org.junit.Assert.*;
  *
  * @author ignacio
  */
-public class ProtocoloTest {
+public class LugarTest {
+
+	public LugarTest() {
+	}
 
 	@BeforeClass
 	public static void setUpClass() throws SQLException {
@@ -43,20 +48,18 @@ public class ProtocoloTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_protocolo() {
-		//creacion
-		Protocolo t = new Protocolo("modbus test");
-		boolean s = t.save();
-		assertTrue("No se guardo 'protocolo'", s);
-		//update
-		t.setNombre("CAN test");
-		s = t.save();
-		assertTrue("No se actualizo 'protocolo'", s);
-		//read
-		Protocolo t2 = Protocolo.find(t.getId());
-		assertTrue("No se obtubo correctamente el protocolo", t2.equals(t));
-		//delete
-		s = t.delete();
-		assertTrue("No se elimino correctamente el 'protocolo'", s);
+	public void crud_lugar() {
+		boolean t;
+		Lugar l = new Lugar("planeta test");
+		t = l.save();
+		assertTrue("No se guardo un lugar", t);
+		l.setNombre("proeta test");
+		t = l.save();
+		assertTrue("No se actualizo un lugar", t);
+		//obtiene
+		Lugar l2 = Lugar.find(l.getId());
+		assertTrue("No se obtubo el 'lugar' de la base de datos", l2.equals(l));
+		t = l.delete();
+		assertTrue("No se elimino un lugar", t);
 	}
 }

@@ -1,4 +1,12 @@
-import com.ignacio.proyectosensores.BLL.TipoSensor;
+package com.ignacio.proyectosensores.BLL;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.BD;
 import java.sql.SQLException;
 import org.junit.After;
@@ -12,9 +20,9 @@ import static org.junit.Assert.*;
  *
  * @author ignacio
  */
-public class TipoSensorTest {
+public class TipoUnidadTest {
 
-	public TipoSensorTest() {
+	public TipoUnidadTest() {
 	}
 
 	@BeforeClass
@@ -40,20 +48,20 @@ public class TipoSensorTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_tipo_sensor() {
+	public void CRUD_tipo_unidad() {
 		//creacion
-		TipoSensor t = new TipoSensor("Termomentro test");
+		TipoUnidad t = new TipoUnidad("celsius test");
 		boolean s = t.save();
-		assertTrue("No se guardo 'tipo_sensor'", s);
+		assertTrue("No se guardo 'tipo_unidad'", s);
 		//update
-		t.setNombre("Termostato test");
+		t.setNombre("farenheit test");
 		s = t.save();
-		assertTrue("No se actualizo 'tipo_sensor'", s);
+		assertTrue("No se actualizo 'tipo_unidad'", s);
 		//read
-		TipoSensor t2 = TipoSensor.find(t.getId());
-		assertTrue("No se obtubo correctamente el sensor", t2.equals(t));
+		TipoUnidad t2 = TipoUnidad.find(t.getId());
+		assertTrue("No se obtubo correctamente la unidad", t2.equals(t));
 		//delete
 		s = t.delete();
-		assertTrue("No se elimino correctamente el 'sensor'", s);
+		assertTrue("No se elimino correctamente la 'unidad'", s);
 	}
 }

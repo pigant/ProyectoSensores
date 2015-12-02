@@ -1,10 +1,12 @@
+package com.ignacio.proyectosensores.BLL;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import com.ignacio.proyectosensores.BLL.TipoUnidad;
+import com.ignacio.proyectosensores.BLL.Protocolo;
 import com.ignacio.proyectosensores.DAL.BD;
 import java.sql.SQLException;
 import org.junit.After;
@@ -18,10 +20,7 @@ import static org.junit.Assert.*;
  *
  * @author ignacio
  */
-public class TipoUnidadTest {
-
-	public TipoUnidadTest() {
-	}
+public class ProtocoloTest {
 
 	@BeforeClass
 	public static void setUpClass() throws SQLException {
@@ -46,20 +45,20 @@ public class TipoUnidadTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_tipo_unidad() {
+	public void CRUD_protocolo() {
 		//creacion
-		TipoUnidad t = new TipoUnidad("celsius test");
+		Protocolo t = new Protocolo("modbus test");
 		boolean s = t.save();
-		assertTrue("No se guardo 'tipo_unidad'", s);
+		assertTrue("No se guardo 'protocolo'", s);
 		//update
-		t.setNombre("farenheit test");
+		t.setNombre("CAN test");
 		s = t.save();
-		assertTrue("No se actualizo 'tipo_unidad'", s);
+		assertTrue("No se actualizo 'protocolo'", s);
 		//read
-		TipoUnidad t2 = TipoUnidad.find(t.getId());
-		assertTrue("No se obtubo correctamente la unidad", t2.equals(t));
+		Protocolo t2 = Protocolo.find(t.getId());
+		assertTrue("No se obtubo correctamente el protocolo", t2.equals(t));
 		//delete
 		s = t.delete();
-		assertTrue("No se elimino correctamente la 'unidad'", s);
+		assertTrue("No se elimino correctamente el 'protocolo'", s);
 	}
 }
