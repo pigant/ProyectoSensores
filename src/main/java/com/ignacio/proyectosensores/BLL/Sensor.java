@@ -16,6 +16,10 @@ import java.util.logging.Logger;
  */
 public class Sensor {
 
+	public static ArrayList<Sensor> findLike(String text) throws SinBaseDatosException {
+		return SensorDAL.findLike(text);
+	}
+
 	private Integer id;
 	private String nombre;
 	private String escala;
@@ -232,6 +236,11 @@ public class Sensor {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
 	}
 
 }

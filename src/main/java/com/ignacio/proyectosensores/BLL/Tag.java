@@ -64,12 +64,11 @@ public class Tag {
 		return s;
 	}
 
-	public boolean delete() throws SinBaseDatosException{
+	public boolean delete() throws SinBaseDatosException {
 		boolean s;
 		s = TagDAL.delete(id);
 		return s;
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -109,6 +108,19 @@ public class Tag {
 
 	public void setProtocolo(Protocolo protocolo) {
 		this.protocolo = protocolo;
+	}
+
+	public void setSegundos(int segundos) {
+		this.segundos = segundos;
+	}
+
+	public int getSegundos() {
+		return this.segundos;
+	}
+
+	@Override
+	public String toString() {
+		return "Tag{" + "id=" + id + ", nombre=" + nombre + ", url=" + url + ", segundos=" + segundos + ", sensor=" + sensor + ", protocolo=" + protocolo + '}';
 	}
 
 }
