@@ -31,4 +31,15 @@ public class ProtocoloDAL {
 				id);
 	}
 
+	public static ArrayList<Protocolo> findAll() throws SinBaseDatosException {
+		ArrayList<Protocolo> s = new ArrayList<>();
+		BD bd = new BD();
+		ArrayList<Object[]> select = bd.select("protocolo", "true", 
+				"id_protocolo", "nombre");
+		for (Object[] o : select) {
+			s.add(new Protocolo((int) o[0], (String) o[1]));
+		}
+		return s;
+	}
+
 }
