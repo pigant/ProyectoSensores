@@ -6,6 +6,7 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.MaquinaDAL;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -13,6 +14,10 @@ import java.util.Objects;
  * @author ignacio
  */
 public class Maquina {
+
+	public static ArrayList<Maquina> findAll() {
+		return MaquinaDAL.findAll();
+	}
 
 	private Integer id;
 	private String nombre;
@@ -112,6 +117,11 @@ public class Maquina {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
 	}
 
 }

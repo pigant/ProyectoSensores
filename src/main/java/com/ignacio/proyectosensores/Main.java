@@ -5,8 +5,13 @@
  */
 package com.ignacio.proyectosensores;
 
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.GUI.JPCrearLugar;
+import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
 import com.ignacio.proyectosensores.GUI.JPCrearTag;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JPanel;
 
 /**
  *
@@ -35,8 +40,8 @@ public class Main extends javax.swing.JFrame {
         p_principal = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         mi_crearLugar = new javax.swing.JMenuItem();
+        mi_crearMaquina = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,16 +52,21 @@ public class Main extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Lugar");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mi_crearLugar.setText("Lugar");
+        mi_crearLugar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mi_crearLugarActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
-
-        mi_crearLugar.setText("jMenuItem2");
         jMenu1.add(mi_crearLugar);
+
+        mi_crearMaquina.setText("Maquina");
+        mi_crearMaquina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mi_crearMaquinaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mi_crearMaquina);
 
         jMenuBar1.add(jMenu1);
 
@@ -79,13 +89,27 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void mi_crearLugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_crearLugarActionPerformed
 		final JPCrearLugar p_lugar = new JPCrearLugar();
+		actualizarPantalla(p_lugar);
+    }//GEN-LAST:event_mi_crearLugarActionPerformed
+
+	private void actualizarPantalla(final JPanel p_lugar) {
 		p_lugar.setSize(p_principal.getSize());
 		p_principal.removeAll();
 		p_principal.add(p_lugar);
 		p_principal.updateUI();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+	}
+
+    private void mi_crearMaquinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_crearMaquinaActionPerformed
+		final JPCrearMaquina m;
+		try {
+			m = new JPCrearMaquina();
+			actualizarPantalla(m);
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+		}
+    }//GEN-LAST:event_mi_crearMaquinaActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -128,8 +152,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem mi_crearLugar;
+    private javax.swing.JMenuItem mi_crearMaquina;
     private javax.swing.JPanel p_principal;
     // End of variables declaration//GEN-END:variables
 }

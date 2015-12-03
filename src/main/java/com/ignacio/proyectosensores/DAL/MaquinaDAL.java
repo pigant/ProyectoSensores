@@ -99,4 +99,24 @@ public class MaquinaDAL {
 		return m;
 	}
 
+	public static ArrayList<Maquina> findAll() {
+		ArrayList<Maquina> m = new ArrayList();
+		BD bd = null;
+		try {
+			bd = new BD();
+			ArrayList<Object[]> select = bd.select("maquina", "true",
+					"id_maquina", "nombre");
+			for (Object[] o : select) {
+				m.add(new Maquina((int) o[0], (String) o[1]));
+			}
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (bd != null) {
+				bd.close();
+			}
+		}
+		return m;
+	}
+
 }

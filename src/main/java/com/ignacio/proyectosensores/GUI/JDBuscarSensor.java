@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class JDBuscarSensor extends javax.swing.JDialog {
 
 
-	private SensorTableModel stm = new SensorTableModel(new ArrayList<Sensor>());
+	private SensorCompuestoTableModel stm = new SensorCompuestoTableModel(new ArrayList<Sensor>());
 	private Sensor sensorSeleccionado;
 
 	public Sensor getSensorSeleccionado() {
@@ -118,7 +118,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 		} else {
 			s = new ArrayList<>();
 		}
-		stm = new SensorTableModel(s);
+		stm = new SensorCompuestoTableModel(s);
 		stm.addColumn("Sensor");
 		stm.addColumn("Maquina");
 		stm.addColumn("Lugar");
@@ -182,11 +182,11 @@ public class JDBuscarSensor extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 }
 
-class SensorTableModel extends DefaultTableModel {
+class SensorCompuestoTableModel extends DefaultTableModel {
 
 	final ArrayList<Sensor> sensores;
 
-	public SensorTableModel(ArrayList<Sensor> sensores) {
+	public SensorCompuestoTableModel(ArrayList<Sensor> sensores) {
 		this.sensores = sensores;
 	}
 
