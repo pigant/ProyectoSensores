@@ -26,7 +26,7 @@ public class BD {
 	public BD() throws SinBaseDatosException {
 		try {
 			c = DriverManager.getConnection(
-					"jdbc:postgresql://192.168.50.33/sensores",
+					"jdbc:postgresql://192.168.50.250/sensores",
 					"postgres", "postgres");
 			if (testing) {
 				c.createStatement().execute("set search_path to test");
