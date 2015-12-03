@@ -100,7 +100,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 					System.out.println(s);
 				}
 			} catch (SinBaseDatosException ex) {
-				Logger.getLogger(JPBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
     }//GEN-LAST:event_tf_fuzzyActionPerformed
@@ -112,7 +112,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 			try {
 				s = Sensor.findLike(text);
 			} catch (SinBaseDatosException ex) {
-				Logger.getLogger(JPBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
 				s = new ArrayList<>();
 			}
 		} else {
