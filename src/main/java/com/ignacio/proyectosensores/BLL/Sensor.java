@@ -2,6 +2,7 @@ package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.SensorDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -9,6 +10,10 @@ import java.util.Objects;
  * @author ignacio
  */
 public class Sensor {
+
+	public static ArrayList<Sensor> findLike(String text) throws SinBaseDatosException {
+		return SensorDAL.findLike(text);
+	}
 
 	private Integer id;
 	private String nombre;
@@ -191,6 +196,11 @@ public class Sensor {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
 	}
 
 }

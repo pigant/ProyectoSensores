@@ -18,7 +18,7 @@ public class Main extends javax.swing.JFrame {
 	 */
 	public Main() {
 		initComponents();
-		p_principal.add(new JPCrearTag());
+		p_principal.add(new JPCrearTag(this));
 		p_principal.repaint();
 	}
 
