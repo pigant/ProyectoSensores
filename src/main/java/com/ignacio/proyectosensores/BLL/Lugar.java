@@ -6,6 +6,8 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.LugarDAL;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -13,6 +15,10 @@ import java.util.Objects;
  * @author ignacio
  */
 public class Lugar {
+
+	public static ArrayList<Lugar> findAll() throws SinBaseDatosException {
+		return LugarDAL.findAll();
+	}
 
 	private Integer id;
 	private String nombre;

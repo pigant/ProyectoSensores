@@ -17,6 +17,16 @@ import java.util.logging.Logger;
  */
 public class LugarDAL {
 
+	public static ArrayList<Lugar> findAll() throws SinBaseDatosException {
+		ArrayList<Lugar> s = new ArrayList<>();
+		BD bd = new BD();
+		ArrayList<Object[]> select = bd.select("lugar", "true", "id_lugar", "nombre");
+		for (Object[] o : select) {
+			s.add(new Lugar((int) o[0], (String) o[1]));
+		}
+		return s;
+	}
+
 	private BD bd;
 
 	public static Integer guardar(String nombre) {
