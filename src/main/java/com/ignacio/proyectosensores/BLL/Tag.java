@@ -13,21 +13,24 @@ public class Tag {
 	private Integer id;
 	private String nombre;
 	private String url;
+	private int segundos;
 	private Sensor sensor;
 	private Protocolo protocolo;
 
 	public Tag() {
 	}
 
-	public Tag(String nombre, String url) {
+	public Tag(String nombre, String url, int segundos) {
 		this.nombre = nombre;
 		this.url = url;
+		this.segundos = segundos;
 	}
 
-	public Tag(Integer id, String nombre, String url) {
+	public Tag(Integer id, String nombre, String url, int segundos) {
 		this.id = id;
 		this.nombre = nombre;
 		this.url = url;
+		this.segundos = segundos;
 	}
 
 	public static Tag find(int id) throws SinBaseDatosException {
@@ -40,12 +43,14 @@ public class Tag {
 			//actualizar
 			s = TagDAL.actualizar(id,
 					nombre, url,
+					segundos,
 					sensor.getId(),
 					protocolo.getId());
 		} else {
 			//guardar
 			id = TagDAL.guardar(
 					nombre, url,
+					segundos,
 					sensor.getId(),
 					protocolo.getId());
 			if (id != null) {
