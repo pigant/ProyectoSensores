@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * @author ignacio
  */
 public class ProtocoloDAL {
-	
+
 	public static Protocolo find(int id) {
 		Protocolo s = null;
 		BD bd = null;
@@ -91,6 +91,17 @@ public class ProtocoloDAL {
 			if (bd != null) {
 				bd.close();
 			}
+		}
+		return s;
+	}
+
+	public static ArrayList<Protocolo> findAll() throws SinBaseDatosException {
+		ArrayList<Protocolo> s = new ArrayList<>();
+		BD bd = new BD();
+		ArrayList<Object[]> select = bd.select("protocolo", "true", 
+				"id_protocolo", "nombre");
+		for (Object[] o : select) {
+			s.add(new Protocolo((int) o[0], (String) o[1]));
 		}
 		return s;
 	}

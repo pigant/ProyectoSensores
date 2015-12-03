@@ -6,6 +6,8 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.ProtocoloDAL;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -13,6 +15,10 @@ import java.util.Objects;
  * @author ignacio
  */
 public class Protocolo {
+
+	public static ArrayList<Protocolo> findAll() throws SinBaseDatosException {
+		return ProtocoloDAL.findAll();
+	}
 
 	private Integer id;
 	private String nombre;
@@ -96,4 +102,10 @@ public class Protocolo {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+
 }
