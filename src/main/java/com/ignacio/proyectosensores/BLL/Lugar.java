@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.LugarDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
@@ -39,7 +35,7 @@ public class Lugar {
 		return LugarDAL.find(codigo);
 	}
 
-	public boolean save() throws SinBaseDatosException {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		// [ ] implementar falla en caso de no tener nombre
 		// [x] implementar guardado
 		// [x] Implementar actualizacion

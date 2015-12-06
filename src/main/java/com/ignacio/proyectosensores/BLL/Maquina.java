@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.MaquinaDAL;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -15,7 +12,7 @@ import java.util.Objects;
  */
 public class Maquina {
 
-	public static ArrayList<Maquina> findAll() {
+	public static ArrayList<Maquina> findAll() throws SinBaseDatosException {
 		return MaquinaDAL.findAll();
 	}
 
@@ -41,11 +38,11 @@ public class Maquina {
 		this.lugar = lugar;
 	}
 
-	public static Maquina find(int id){
+	public static Maquina find(int id) throws SinBaseDatosException{
 		return MaquinaDAL.find(id);
 	}
 
-	public boolean save() {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean s = false;
 		int idLugar = lugar.getId();
 		if (id == null) {
@@ -59,7 +56,7 @@ public class Maquina {
 		return s;
 	}
 
-	public boolean delete(){
+	public boolean delete() throws SinBaseDatosException{
 		return MaquinaDAL.delete(id);
 	}
 	public int getId() {

@@ -1,5 +1,7 @@
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TipoSensorDAL;
 import java.util.Objects;
 
@@ -15,7 +17,7 @@ public class TipoSensor {
 	public TipoSensor() {
 	}
 
-	public static TipoSensor find(int id) {
+	public static TipoSensor find(int id) throws SinBaseDatosException {
 		return TipoSensorDAL.find(id);
 	}
 
@@ -28,7 +30,7 @@ public class TipoSensor {
 		this.nombre = nombre;
 	}
 
-	public boolean save() {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean s = false;
 		if (id == null) {
 			//guardar
@@ -43,7 +45,7 @@ public class TipoSensor {
 		return s;
 	}
 
-	public boolean delete(){
+	public boolean delete() throws SinBaseDatosException{
 		return TipoSensorDAL.delete(id);
 	}
 

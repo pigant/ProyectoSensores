@@ -19,7 +19,8 @@ import java.util.logging.Logger;
  */
 public class ObjectDAL {
 
-	public static Integer guardar(String consulta, Object... parametros) throws SinBaseDatosException, SinBaseDatosException, SinBaseDatosException {
+	public static Integer guardar(String consulta, Object... parametros)
+		throws SinBaseDatosException, CodigoRepetidoException {
 		Integer s = null;
 		try {
 			BD bd = new BD();
@@ -27,8 +28,6 @@ public class ObjectDAL {
 			if (b) {
 				s = bd.lastId();
 			}
-		} catch (CodigoRepetidoException ex) {
-			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (SQLException ex) {
 			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
 		}

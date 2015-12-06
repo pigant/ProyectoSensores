@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ignacio.proyectosensores.DAL;
 
 import com.ignacio.proyectosensores.BLL.Lugar;
@@ -28,7 +23,7 @@ public class LugarDAL {
 		return al;
 	}
 
-	public static Integer guardar(String nombre) throws SinBaseDatosException {
+	public static Integer guardar(String nombre) throws SinBaseDatosException, CodigoRepetidoException {
 		return ObjectDAL.guardar(
 			"insert into lugar (nombre) values (?)", nombre);
 	}
