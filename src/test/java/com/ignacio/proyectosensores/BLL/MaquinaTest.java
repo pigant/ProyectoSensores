@@ -9,6 +9,7 @@ package com.ignacio.proyectosensores.BLL;
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.DAL.BD;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -49,7 +50,7 @@ public class MaquinaTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_maquina() {
+	public void CRUD_maquina() throws SinBaseDatosException {
 		Lugar l = new Lugar("lugar test");
 		l.save();
 		//Create

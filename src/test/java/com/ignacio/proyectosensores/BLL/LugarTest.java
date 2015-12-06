@@ -6,8 +6,8 @@ package com.ignacio.proyectosensores.BLL;
  * and open the template in the editor.
  */
 
-import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.DAL.BD;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -48,7 +48,7 @@ public class LugarTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void crud_lugar() {
+	public void crud_lugar() throws SinBaseDatosException {
 		boolean t;
 		Lugar l = new Lugar("planeta test");
 		t = l.save();

@@ -16,7 +16,7 @@ public class TagDAL {
 		BD bd = new BD();
 		Tag s = null;
 		final ArrayList<Object[]> select = bd.select(
-				"tag", "id_tag=" + id, "id_tag", "nombre", "url", "segundos");
+			"tag", "id_tag=" + id, "id_tag", "nombre", "url", "segundos");
 		final Object[] o = select.get(0);
 		s = new Tag((int) o[0], (String) o[1], (String) o[2], (int) o[3]);
 		bd.close();
@@ -28,8 +28,8 @@ public class TagDAL {
 		boolean s = false;
 		try {
 			s = bd.update("update tag set "
-					+ "nombre=?, url=?, segundos=?, id_sensor=?, id_protocolo=?"
-					+ " where id_tag=?", nombre, url, segundos, id0, id1, id);
+				+ "nombre=?, url=?, segundos=?, id_sensor=?, id_protocolo=?"
+				+ " where id_tag=?", nombre, url, segundos, id0, id1, id);
 		} catch (CodigoRepetidoException ex) {
 			Logger.getLogger(TagDAL.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
@@ -38,12 +38,16 @@ public class TagDAL {
 		return s;
 	}
 
-	public static Integer guardar(String nombre, String url, int segundos, Integer id, Integer id0) throws CodigoRepetidoException, SinBaseDatosException {
+	public static Integer guardar(
+		String nombre, String url, int segundos,
+		Integer id, Integer id0)
+		throws CodigoRepetidoException, SinBaseDatosException {
 		Integer s = null;
 		BD bd = new BD();
 		boolean b = bd.update("insert into tag "
-				+ "(nombre,url, id_sensor, id_protocolo) values (?,?,?,?)",
-				nombre, url, id, id0);
+			+ "(nombre,url, id_sensor, id_protocolo) "
+			+ "values (?,?,?,?)",
+			nombre, url, id, id0);
 		if (b) {
 			try {
 				s = bd.lastId();

@@ -6,6 +6,8 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.MaquinaDAL;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -13,6 +15,10 @@ import java.util.Objects;
  * @author ignacio
  */
 public class Maquina {
+
+	public static ArrayList<Maquina> findAll() throws SinBaseDatosException {
+		return MaquinaDAL.findAll();
+	}
 
 	private Integer id;
 	private String nombre;
@@ -36,11 +42,11 @@ public class Maquina {
 		this.lugar = lugar;
 	}
 
-	public static Maquina find(int id){
+	public static Maquina find(int id) throws SinBaseDatosException{
 		return MaquinaDAL.find(id);
 	}
 
-	public boolean save() {
+	public boolean save() throws SinBaseDatosException {
 		boolean s = false;
 		int idLugar = lugar.getId();
 		if (id == null) {
@@ -54,7 +60,7 @@ public class Maquina {
 		return s;
 	}
 
-	public boolean delete(){
+	public boolean delete() throws SinBaseDatosException{
 		return MaquinaDAL.delete(id);
 	}
 	public int getId() {
@@ -112,6 +118,11 @@ public class Maquina {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
 	}
 
 }
