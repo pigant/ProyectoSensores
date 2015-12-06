@@ -6,10 +6,7 @@
 package com.ignacio.proyectosensores.DAL;
 
 import com.ignacio.proyectosensores.BLL.Lugar;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,77 +15,42 @@ import java.util.logging.Logger;
 public class LugarDAL {
 
 	public static ArrayList<Lugar> findAll() throws SinBaseDatosException {
-		ArrayList<Lugar> s = new ArrayList<>();
-		BD bd = new BD();
-		ArrayList<Object[]> select = bd.select("lugar", "true", "id_lugar", "nombre");
-		for (Object[] o : select) {
-			s.add(new Lugar((int) o[0], (String) o[1]));
+		ArrayList<Lugar> al = new ArrayList();
+		ArrayList<Object[]> todos = ObjectDAL.findAll(
+			"select id_lugar, nombre from lugar");
+		for (Object[] parte : todos) {
+			Lugar l = new Lugar(
+				(int) parte[0],
+				(String) parte[1]
+			);
+			al.add(l);
 		}
-		return s;
+		return al;
 	}
 
-	private BD bd;
-
-	public static Integer guardar(String nombre) {
-		Integer s = null;
-		try {
-			BD bd = new BD();
-			boolean b = bd.update("insert into lugar (nombre) values (?)", nombre);
-			if (b) {
-				s = bd.lastId();
-			}
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (CodigoRepetidoException ex) {
-			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (SQLException ex) {
-			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return s;
+	public static Integer guardar(String nombre) throws SinBaseDatosException {
+		return ObjectDAL.guardar(
+			"insert into lugar (nombre) values (?)", nombre);
 	}
 
-	public static boolean delete(int id) {
-		boolean s = false;
-		try {
-			BD bd = new BD();
-			s = bd.update("delete from lugar where id_lugar=?", id);
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (CodigoRepetidoException ex) {
-			//no aplica
-		}
-		return s;
+	public static boolean delete(int id) throws SinBaseDatosException {
+		return ObjectDAL.delete("delete from lugar where id_lugar=?", id);
 	}
 
-	public static boolean actualizar(Integer id, String nombre) {
-		boolean s = false;
-		try {
-			BD bd = new BD();
-			s = bd.update("update lugar set nombre=? where id_lugar=?", nombre, id);
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (CodigoRepetidoException ex) {
-			//no aplica
-		}
-		return s;
+	public static boolean actualizar(Integer id, String nombre) throws SinBaseDatosException {
+		return ObjectDAL.actualizar(
+			"update lugar set nombre=? where id_lugar=?", nombre, id);
 	}
 
-	public LugarDAL() throws SinBaseDatosException {
-		bd = new BD();
-	}
-
-	public static Lugar find(int codigo) {
+	public static Lugar find(int codigo) throws SinBaseDatosException {
+		Object[] parametros = ObjectDAL.find(
+			"select id_lugar, nombre from lugar where id_lugar=?",
+			codigo);
 		Lugar l = null;
-		try {
-			BD bd = new BD();
-			ArrayList<Object[]> select
-					= bd.select("lugar", "id_lugar=" + codigo, "id_lugar", "nombre");
-			if (select != null && select.size() > 0) {
-				final Object[] lugar = select.get(0);
-				l = new Lugar((Integer) lugar[0], (String) lugar[1]);
-			}
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
+		if (parametros != null) {
+			l = new Lugar(
+				(int) parametros[0],
+				(String) parametros[1]);
 		}
 		return l;
 	}

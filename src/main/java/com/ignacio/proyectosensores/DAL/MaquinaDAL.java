@@ -17,104 +17,44 @@ import java.util.logging.Logger;
  */
 public class MaquinaDAL {
 
-	public static Integer guardar(String nombre, int idLugar) {
-		BD bd = null;
-		Integer s = null;
-		try {
-			bd = new BD();
-			boolean b = bd.update("insert into maquina (nombre, id_lugar)"
-					+ " values (?,?)", nombre, idLugar);
-			if (b) {
-				s = bd.lastId();
-			}
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (SQLException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (CodigoRepetidoException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} finally {
-			if (bd != null) {
-				bd.close();
-			}
-		}
-		return s;
+	public static Integer guardar(String nombre, int idLugar) throws SinBaseDatosException {
+		return ObjectDAL.guardar(
+			"insert into maquina (nombre, id_lugar) values (?,?)",
+			nombre, idLugar);
 	}
 
-	public static boolean actualizar(Integer id, String nombre, int idLugar) {
-		BD bd = null;
-		boolean s = false;
-		try {
-			bd = new BD();
-			s = bd.update("update maquina "
-					+ "set nombre=?, id_lugar=? where id_maquina=?",
-					nombre, idLugar, id);
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (CodigoRepetidoException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} finally {
-			if (bd != null) {
-				bd.close();
-			}
-		}
-
-		return s;
+	public static boolean actualizar(Integer id, String nombre, int idLugar) throws SinBaseDatosException {
+		return ObjectDAL.actualizar(
+			"update maquina "
+			+ "set nombre=?, id_lugar=? where id_maquina=?",
+			nombre, idLugar, id);
 	}
 
-	public static boolean delete(Integer id) {
-		boolean s = false;
-		BD bd = null;
-		try {
-			bd = new BD();
-			s = bd.update("delete from maquina where id_maquina=?", id);
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (CodigoRepetidoException ex) {
-			//no aplica
-		} finally {
-			if (bd != null) {
-				bd.close();
-			}
-		}
-		return s;
+	public static boolean delete(Integer id) throws SinBaseDatosException {
+		return ObjectDAL.delete("delete from maquina where id_maquina=?", id);
 	}
 
-	public static Maquina find(int id) {
+	public static Maquina find(int id) throws SinBaseDatosException {
 		Maquina m = null;
-		BD bd = null;
-		try {
-			bd = new BD();
-			ArrayList<Object[]> select = bd.select("maquina", "id_maquina=" + id,
-					"id_maquina", "nombre");
-			final Object[] o = select.get(0);
-			m = new Maquina((int) o[0], (String) o[1]);
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} finally {
-			if (bd != null) {
-				bd.close();
-			}
+		Object[] parametros = ObjectDAL.find(
+			"select id_maquina, nombre, id_lugar "
+			+ "from maquina where id_maquina=?", id);
+		if (parametros != null) {
+			m = new Maquina(
+				(int) parametros[0],
+				(String) parametros[1]);
 		}
 		return m;
 	}
 
-	public static ArrayList<Maquina> findAll() {
+	public static ArrayList<Maquina> findAll() throws SinBaseDatosException {
 		ArrayList<Maquina> m = new ArrayList();
-		BD bd = null;
-		try {
-			bd = new BD();
-			ArrayList<Object[]> select = bd.select("maquina", "true",
-					"id_maquina", "nombre");
-			for (Object[] o : select) {
-				m.add(new Maquina((int) o[0], (String) o[1]));
-			}
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(MaquinaDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} finally {
-			if (bd != null) {
-				bd.close();
-			}
+		ArrayList<Object[]> all = ObjectDAL.findAll("select id_maquina, nombre from maquina");
+		for (Object[] o : all) {
+			m.add(new Maquina(
+				(int) o[0],
+				(String) o[1]
+			));
 		}
 		return m;
 	}

@@ -35,11 +35,11 @@ public class Lugar {
 		this.nombre = nombre;
 	}
 
-	public static Lugar find(int codigo) {
+	public static Lugar find(int codigo) throws SinBaseDatosException {
 		return LugarDAL.find(codigo);
 	}
 
-	public boolean save() {
+	public boolean save() throws SinBaseDatosException {
 		// [ ] implementar falla en caso de no tener nombre
 		// [x] implementar guardado
 		// [x] Implementar actualizacion
@@ -57,7 +57,7 @@ public class Lugar {
 		return s;
 	}
 
-	public boolean delete() {
+	public boolean delete() throws SinBaseDatosException {
 		boolean s = false;
 		if (id != null) {
 			s = LugarDAL.delete(id);

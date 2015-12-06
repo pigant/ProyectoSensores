@@ -47,7 +47,7 @@ public class TagTest {
 	@Test
 	public void crud_tag() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean t;
-		Tag l = new Tag("tag test", "4001");
+		Tag l = new Tag("tag test", "4001", 2);
 		t = l.save();
 		assertTrue("No se guardo un tag", t);
 		l.setNombre("tag t test");
