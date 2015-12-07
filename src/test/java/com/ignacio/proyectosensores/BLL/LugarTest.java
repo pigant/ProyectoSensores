@@ -7,6 +7,7 @@ package com.ignacio.proyectosensores.BLL;
  */
 
 import com.ignacio.proyectosensores.DAL.BD;
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
@@ -48,7 +49,7 @@ public class LugarTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void crud_lugar() throws SinBaseDatosException {
+	public void crud_lugar() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean t;
 		Lugar l = new Lugar("planeta test");
 		t = l.save();

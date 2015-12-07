@@ -6,6 +6,7 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.BD;
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
@@ -45,7 +46,7 @@ public class SensorTest {
 	 * Test of find method, of class Sensor.
 	 */
 	@Test
-	public void CRUD_sensor() throws SinBaseDatosException {
+	public void CRUD_sensor() throws SinBaseDatosException, CodigoRepetidoException {
 		//creaciones
 		Lugar l = new Lugar("lugar presion test sensor");
 		Maquina m = new Maquina("Maquina test sensor");
