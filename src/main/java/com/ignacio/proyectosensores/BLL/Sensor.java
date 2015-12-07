@@ -1,5 +1,6 @@
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SensorDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class Sensor {
 	}
 
 	//Create and update
-	public boolean save() throws SinBaseDatosException {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean s = false;
 		if (id == null) {
 			//guardar

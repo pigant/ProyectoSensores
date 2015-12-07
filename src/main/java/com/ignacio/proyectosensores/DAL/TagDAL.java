@@ -13,60 +13,30 @@ import java.util.logging.Logger;
 public class TagDAL {
 
 	public static Tag find(int id) throws SinBaseDatosException {
-		BD bd = new BD();
-		Tag s = null;
-		final ArrayList<Object[]> select = bd.select(
-			"tag", "id_tag=" + id, "id_tag", "nombre", "url", "segundos");
-		final Object[] o = select.get(0);
-		s = new Tag((int) o[0], (String) o[1], (String) o[2], (int) o[3]);
-		bd.close();
+		Object[] o = ObjectDAL.find("select id_tag, nombre, url, segundos, detalle "
+				+ "from tag where id_tag=?", id);
+		Tag s = new Tag((int) o[0], (String) o[1], (String) o[2], (int) o[3]);
 		return s;
 	}
 
 	public static boolean actualizar(Integer id, String nombre, String url, int segundos, Integer id0, Integer id1) throws SinBaseDatosException {
-		BD bd = new BD();
-		boolean s = false;
-		try {
-			s = bd.update("update tag set "
+		return ObjectDAL.actualizar("update tag set "
 				+ "nombre=?, url=?, segundos=?, id_sensor=?, id_protocolo=?"
 				+ " where id_tag=?", nombre, url, segundos, id0, id1, id);
-		} catch (CodigoRepetidoException ex) {
-			Logger.getLogger(TagDAL.class.getName()).log(Level.SEVERE, null, ex);
-		} finally {
-			bd.close();
-		}
-		return s;
 	}
 
 	public static Integer guardar(
-		String nombre, String url, int segundos,
-		Integer id, Integer id0)
-		throws CodigoRepetidoException, SinBaseDatosException {
-		Integer s = null;
-		BD bd = new BD();
-		boolean b = bd.update("insert into tag "
-			+ "(nombre,url, id_sensor, id_protocolo) "
-			+ "values (?,?,?,?)",
-			nombre, url, id, id0);
-		if (b) {
-			try {
-				s = bd.lastId();
-			} catch (SQLException ex) {
-				Logger.getLogger(TagDAL.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
-		return s;
+			String nombre, String url, int segundos,
+			Integer id, Integer id0)
+			throws CodigoRepetidoException, SinBaseDatosException {
+		return ObjectDAL.guardar("insert into tag "
+				+ "(nombre,url, id_sensor, id_protocolo) "
+				+ "values (?,?,?,?)",
+				nombre, url, id, id0);
 	}
 
 	public static boolean delete(Integer id) throws SinBaseDatosException {
-		boolean s = false;
-		BD bd = new BD();
-		try {
-			s = bd.update("delete from tag where id_tag=?", id);
-		} catch (CodigoRepetidoException ex) {
-			//no aplica
-		}
-		return s;
+			return ObjectDAL.delete("delete from tag where id_tag=?", id);
 	}
 
 }
