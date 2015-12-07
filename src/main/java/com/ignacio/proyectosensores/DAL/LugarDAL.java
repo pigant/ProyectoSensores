@@ -68,9 +68,11 @@ public class LugarDAL {
 						r.getString("nombre")
 				);
 			}
-
+			r.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
+		}finally {
+			bd.close();
 		}
 		return l;
 	}

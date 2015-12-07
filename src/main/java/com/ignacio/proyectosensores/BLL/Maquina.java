@@ -4,7 +4,7 @@ import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.LugarDAL;
 import com.ignacio.proyectosensores.DAL.MaquinaDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class Maquina {
 
-	public static ArrayList<Maquina> findAll() throws SinBaseDatosException {
+	public static List<Maquina> findAll() throws SinBaseDatosException {
 		return MaquinaDAL.findAll();
 	}
 

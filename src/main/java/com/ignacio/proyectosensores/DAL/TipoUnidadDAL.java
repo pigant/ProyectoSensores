@@ -1,6 +1,10 @@
 package com.ignacio.proyectosensores.DAL;
 
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,6 +37,27 @@ public class TipoUnidadDAL {
 		return ObjectDAL.delete(
 				"delete from t_unidad where id_t_unidad=?",
 				id);
+	}
+
+	public static TipoUnidad findBySensor(Integer id) throws SinBaseDatosException {
+		TipoUnidad ts = null;
+		String q = "select ts.id_t_unidad, ts.nombre from t_unidad as ts "
+				+ "join sensor as s on ts.id_t_unidad=s.id_t_unidad "
+				+ "where s.id_sensor=" + id;
+		BD bd = new BD();
+		ResultSet r;
+		try {
+			r = bd.createStatement().executeQuery(q);
+			if (r.next()) {
+				ts = new TipoUnidad(r.getInt("id_t_unidad"), r.getString("nombre"));
+			}
+			r.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(TipoSensorDAL.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			bd.close();
+		}
+		return ts;
 	}
 
 }
