@@ -1,6 +1,7 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.LugarDAL;
 import com.ignacio.proyectosensores.DAL.MaquinaDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
@@ -40,6 +41,11 @@ public class Maquina {
 
 	public static Maquina find(int id) throws SinBaseDatosException{
 		return MaquinaDAL.find(id);
+	}
+
+	public void findLugar() throws SinBaseDatosException{
+		Lugar lugar = LugarDAL.findByMaquina(id);
+		setLugar(lugar);
 	}
 
 	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {

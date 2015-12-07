@@ -5,7 +5,6 @@ package com.ignacio.proyectosensores.BLL;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.DAL.BD;
@@ -70,6 +69,26 @@ public class MaquinaTest {
 		//delete
 		s = m.delete();
 		assertTrue("No se borro la maquina", s);
+		l.delete();
+	}
+
+	@Test
+	public void buscar_lugar_de_la_maquina() throws SinBaseDatosException, CodigoRepetidoException {
+		Lugar l = new Lugar("lugar test");
+		l.save();
+		//Create
+		Maquina m = new Maquina("cosa test");
+		m.setLugar(l);
+		boolean s = m.save();
+		if (s) {
+			Maquina m2 = Maquina.find(m.getId());
+			m2.findLugar();
+			s = m2.equals(m);
+			assertTrue("No se encontro bien el lugar de la maquina", s);
+		}else {
+			fail();
+		}
+		m.delete();
 		l.delete();
 	}
 }
