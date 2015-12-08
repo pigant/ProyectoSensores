@@ -162,12 +162,19 @@ public class JPVerTodo extends javax.swing.JPanel {
 				try {
 					Tag t = (Tag) u;
 					List<Historial> hs = Historial.findLast1000(t.getId());
+					p_meta.removeAll();
+					p_grafico.removeAll();
 					if (hs.size() > 0) {
 						rellenoGrafico(t, hs);
 						JPMetaTag mt = new JPMetaTag(t, hs.get(hs.size() - 1));
 						mt.setPreferredSize(p_meta.getPreferredSize());
-						p_meta.removeAll();
 						p_meta.add(mt);
+					} else {
+						JPMetaTag mt = new JPMetaTag(t);
+						p_meta.add(mt);
+						p_meta.revalidate();
+						p_meta.repaint();
+						p_grafico.repaint();
 					}
 				} catch (SinBaseDatosException ex) {
 					Logger.getLogger(JPVerTodo.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,7 +184,6 @@ public class JPVerTodo extends javax.swing.JPanel {
     }//GEN-LAST:event_arbolMouseClicked
 
 	private void rellenoGrafico(Tag t, List<Historial> hs) {
-		System.out.println("El tag es: " + t);
 		TimeSeries s1 = new TimeSeries("Fecha", Second.class);
 		for (Historial h : hs) {
 			s1.add(new Second(h.getFecha()), h.getValor());
@@ -190,7 +196,6 @@ public class JPVerTodo extends javax.swing.JPanel {
 		final ChartPanel panelTiempo
 				= new ChartPanel(graficoTiempo);
 		panelTiempo.setPreferredSize(p_grafico.getPreferredSize());
-		p_grafico.removeAll();
 		p_grafico.add(panelTiempo);
 		p_grafico.revalidate();
 	}

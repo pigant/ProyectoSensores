@@ -47,6 +47,21 @@ public class JPMetaTag extends javax.swing.JPanel {
 		}
 	}
 
+	public JPMetaTag(Tag t) {
+		this.tag = t;
+		initComponents();
+		try {
+			tag.findDependencias();
+			tf_actualizacion.setText(String.valueOf(tag.getSegundos()));
+			actualizarProblemas();
+			tf_fecha.setText("Sin registros");
+			tf_hora.setText("Sin registros");
+			tf_valor.setText("Sin registros");
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPMetaTag.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
 	private void actualizarProblemas() throws SinBaseDatosException {
 		List<Log> ls = Log.findAllOf(this.tag.getSensor().getId());
 		int w = 0;
