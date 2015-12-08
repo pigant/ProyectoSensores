@@ -110,12 +110,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="tf_nombre">
       <Events>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf_nombreKeyTyped"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf_nombreKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tf_url">
       <Events>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf_urlKeyTyped"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf_urlKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="jSpinner1">
@@ -124,9 +124,6 @@
           <SpinnerModel initial="1" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinner1StateChanged"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tf_sensorSeleccionado">
       <Properties>

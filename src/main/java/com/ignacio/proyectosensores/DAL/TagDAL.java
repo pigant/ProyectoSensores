@@ -30,9 +30,9 @@ public class TagDAL {
 			Integer id, Integer id0)
 			throws CodigoRepetidoException, SinBaseDatosException {
 		return ObjectDAL.guardar("insert into tag "
-				+ "(nombre,url, id_sensor, id_protocolo) "
+				+ "(nombre,url, segundos, id_sensor, id_protocolo) "
 				+ "values (?,?,?,?)",
-				nombre, url, id, id0);
+				nombre, url, segundos, id, id0);
 	}
 
 	public static boolean delete(Integer id) throws SinBaseDatosException {
