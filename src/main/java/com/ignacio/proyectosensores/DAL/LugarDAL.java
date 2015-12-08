@@ -57,7 +57,7 @@ public class LugarDAL {
 	public static Lugar findByMaquina(Integer id) throws SinBaseDatosException {
 		Lugar l = null;
 		String q = "select l.id_lugar, l.nombre from lugar as l "
-				+ "join maquina as m on l.id_lugar=l.id_lugar "
+				+ "join maquina as m on l.id_lugar=m.id_lugar "
 				+ "where m.id_maquina=" + id;
 		BD bd = new BD();
 		try {
