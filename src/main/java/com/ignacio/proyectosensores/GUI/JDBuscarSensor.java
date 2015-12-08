@@ -3,6 +3,7 @@ package com.ignacio.proyectosensores.GUI;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -12,7 +13,6 @@ import javax.swing.table.DefaultTableModel;
  * @author ignacio
  */
 public class JDBuscarSensor extends javax.swing.JDialog {
-
 
 	private SensorCompuestoTableModel stm = new SensorCompuestoTableModel(new ArrayList<Sensor>());
 	private Sensor sensorSeleccionado;
@@ -90,7 +90,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 		final String text = tf_fuzzy.getText();
 		if (text.length() > 3) {
 			try {
-				ArrayList<Sensor> s = Sensor.findLike(text);
+				List<Sensor> s = Sensor.findLike(text);
 				for (Sensor sensor : s) {
 					System.out.println(s);
 				}
@@ -101,23 +101,26 @@ public class JDBuscarSensor extends javax.swing.JDialog {
     }//GEN-LAST:event_tf_fuzzyActionPerformed
 
     private void tf_fuzzyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_fuzzyKeyTyped
-		final String text = tf_fuzzy.getText();
-		ArrayList<Sensor> s;
-		if (text.length() > 1) {
-			try {
-				s = Sensor.findLike(text);
-			} catch (SinBaseDatosException ex) {
-				Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
+		String c = String.valueOf(evt.getKeyChar());
+		if (c.matches(".")) {
+			String text = tf_fuzzy.getText() + c;
+			List<Sensor> s;
+			if (text.length() > 2) {
+				try {
+					s = Sensor.findLike(text);
+				} catch (SinBaseDatosException ex) {
+					Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
+					s = new ArrayList<>();
+				}
+			} else {
 				s = new ArrayList<>();
 			}
-		} else {
-			s = new ArrayList<>();
+			stm = new SensorCompuestoTableModel(s);
+			stm.addColumn("Sensor");
+			stm.addColumn("Maquina");
+			stm.addColumn("Lugar");
+			jTable1.setModel(stm);
 		}
-		stm = new SensorCompuestoTableModel(s);
-		stm.addColumn("Sensor");
-		stm.addColumn("Maquina");
-		stm.addColumn("Lugar");
-		jTable1.setModel(stm);
     }//GEN-LAST:event_tf_fuzzyKeyTyped
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -179,9 +182,9 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 
 class SensorCompuestoTableModel extends DefaultTableModel {
 
-	final ArrayList<Sensor> sensores;
+	final List<Sensor> sensores;
 
-	public SensorCompuestoTableModel(ArrayList<Sensor> sensores) {
+	public SensorCompuestoTableModel(List<Sensor> sensores) {
 		this.sensores = sensores;
 	}
 
