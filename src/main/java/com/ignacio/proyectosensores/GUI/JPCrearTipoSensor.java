@@ -15,23 +15,25 @@ import javax.swing.table.AbstractTableModel;
  */
 public class JPCrearTipoSensor extends javax.swing.JPanel {
 
+	List<TipoSensor> tipoSensores;
+
 	/**
 	 * Creates new form JPCrearTipoSensor
 	 */
 	public JPCrearTipoSensor() {
 		initComponents();
-		actualizarTabla();
-	}
-
-	public final void actualizarTabla() {
 		try {
-			List<TipoSensor> tipoSensores = TipoSensor.findAll();
-			final TipoSensorTableModel ttm
-					= new TipoSensorTableModel(tipoSensores);
-			t_vista.setModel(ttm);
+			tipoSensores = TipoSensor.findAll();
+			actualizarTabla();
 		} catch (SinBaseDatosException ex) {
 			Logger.getLogger(JPCrearTipoSensor.class.getName()).log(Level.SEVERE, null, ex);
 		}
+	}
+
+	public final void actualizarTabla() {
+		final TipoSensorTableModel ttm
+				= new TipoSensorTableModel(tipoSensores);
+		t_vista.setModel(ttm);
 	}
 
 	/**
@@ -50,6 +52,12 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
         b_crear = new javax.swing.JButton();
 
         jLabel1.setText("Nombre:");
+
+        tf_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_nombreKeyReleased(evt);
+            }
+        });
 
         t_vista.setModel(new TipoSensorTableModel());
         jScrollPane1.setViewportView(t_vista);
@@ -107,6 +115,18 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 			actualizarTabla();
 		}
     }//GEN-LAST:event_b_crearActionPerformed
+
+    private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
+		try {
+			List<TipoSensor> t = TipoSensor.findLike(tf_nombre.getText());
+			if (t.size() > 0) {
+				tipoSensores = t;
+				actualizarTabla();
+			}
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
+		}
+    }//GEN-LAST:event_tf_nombreKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -4,6 +4,7 @@ import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.LugarDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,6 +15,10 @@ public class Lugar {
 
 	public static ArrayList<Lugar> findAll() throws SinBaseDatosException {
 		return LugarDAL.findAll();
+	}
+
+	public static List<Lugar> findLike(String text) throws SinBaseDatosException {
+		return LugarDAL.findLike(text);
 	}
 
 	private Integer id;
