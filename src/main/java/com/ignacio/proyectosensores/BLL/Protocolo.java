@@ -8,7 +8,6 @@ package com.ignacio.proyectosensores.BLL;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.ProtocoloDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
