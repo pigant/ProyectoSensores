@@ -89,10 +89,10 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
 				p.save();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(this, "Sin base de datos",
-					"Error", JOptionPane.ERROR_MESSAGE);
+						"Error", JOptionPane.ERROR_MESSAGE);
 			} catch (CodigoRepetidoException ex) {
 				JOptionPane.showMessageDialog(this, "El codigo ya existe",
-					"Error", JOptionPane.ERROR_MESSAGE);
+						"Error", JOptionPane.ERROR_MESSAGE);
 			}
 			actualizarTabla();
 		}
@@ -128,7 +128,7 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
 		public ProtocoloTableModel(List<Protocolo> protocolos) {
 			this.protocolos = protocolos;
 		}
-		
+
 		@Override
 		public int getRowCount() {
 			return protocolos.size();
@@ -145,11 +145,36 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
 		}
 
 		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			super.setValueAt(aValue, rowIndex, columnIndex); //To change body of generated methods, choose Tools | Templates.
+			Protocolo protocolo = protocolos.get(rowIndex);
+			protocolo.setNombre((String) aValue);
+			try {
+				protocolo.save();
+			} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(null,
+						"Sin base de datos");
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(null,
+						"No se pudo realizar el cambio");
+				Logger.getLogger(
+						JPCrearLugar.class.getName()).
+						log(Level.SEVERE, null, ex);
+			}
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return true;
+		}
+
+		@Override
 		public String getColumnName(int column) {
-			if (column == 0){
+			if (column == 0) {
 				return "Protocolos";
-			}else
+			} else {
 				return "";
+			}
 		}
 
 	}

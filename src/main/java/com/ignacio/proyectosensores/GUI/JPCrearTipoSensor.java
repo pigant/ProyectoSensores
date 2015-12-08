@@ -27,7 +27,7 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 		try {
 			List<TipoSensor> tipoSensores = TipoSensor.findAll();
 			final TipoSensorTableModel ttm
-				= new TipoSensorTableModel(tipoSensores);
+					= new TipoSensorTableModel(tipoSensores);
 			t_vista.setModel(ttm);
 		} catch (SinBaseDatosException ex) {
 			Logger.getLogger(JPCrearTipoSensor.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,10 +99,10 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 				l.save();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(this, "Sin base de datos",
-					"Error", JOptionPane.ERROR_MESSAGE);
+						"Error", JOptionPane.ERROR_MESSAGE);
 			} catch (CodigoRepetidoException ex) {
 				JOptionPane.showMessageDialog(this, "El codigo ya existe",
-					"Error", JOptionPane.ERROR_MESSAGE);
+						"Error", JOptionPane.ERROR_MESSAGE);
 			}
 			actualizarTabla();
 		}
@@ -146,6 +146,30 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 		public Object getValueAt(int arg0, int arg1) {
 			TipoSensor t = l.get(arg0);
 			return t.getNombre();
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			super.setValueAt(aValue, rowIndex, columnIndex); //To change body of generated methods, choose Tools | Templates.
+			TipoSensor sensor = l.get(rowIndex);
+			sensor.setNombre((String) aValue);
+			try {
+				sensor.save();
+			} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(null,
+						"Sin base de datos");
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(null,
+						"No se pudo realizar el cambio");
+				Logger.getLogger(
+						JPCrearLugar.class.getName()).
+						log(Level.SEVERE, null, ex);
+			}
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return true;
 		}
 
 		@Override

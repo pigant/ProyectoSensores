@@ -4,9 +4,13 @@ import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -96,10 +100,10 @@ public class JPCrearLugar extends javax.swing.JPanel {
 			try {
 				l.save();
 			} catch (SinBaseDatosException ex) {
-				JOptionPane.showMessageDialog(this, "Sin base de datos", 
+				JOptionPane.showMessageDialog(this, "Sin base de datos",
 						"Error", JOptionPane.ERROR_MESSAGE);
 			} catch (CodigoRepetidoException ex) {
-				JOptionPane.showMessageDialog(this, "El codigo ya existe", 
+				JOptionPane.showMessageDialog(this, "El codigo ya existe",
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
 			actualizarTabla();
@@ -109,12 +113,8 @@ public class JPCrearLugar extends javax.swing.JPanel {
 	public void actualizarTabla() {
 		try {
 			ArrayList<Lugar> lugares = Lugar.findAll();
-			final DefaultTableModel dtm = new DefaultTableModel();
-			dtm.addColumn("Lugares existentes");
-			for (Lugar l : lugares) {
-				dtm.addRow(new Object[]{l.getNombre()});
-			}
-			t_lugares.setModel(dtm);
+			final LugarTableModel ltm = new LugarTableModel(lugares);
+			t_lugares.setModel(ltm);
 		} catch (SinBaseDatosException ex) {
 			Logger.getLogger(JPCrearLugar.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -127,4 +127,67 @@ public class JPCrearLugar extends javax.swing.JPanel {
     private javax.swing.JTable t_lugares;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
+
+	private class LugarTableModel extends AbstractTableModel {
+
+		List<Lugar> l;
+
+		private LugarTableModel(ArrayList<Lugar> lugares) {
+			this.l = lugares;
+		}
+
+		public Lugar getAt(int index) {
+			return l.get(index);
+		}
+
+		@Override
+		public int getRowCount() {
+			return l.size();
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			switch (column) {
+				case 0:
+					return "Lugares existentes";
+				default:
+					throw new AssertionError();
+			}
+		}
+
+		@Override
+		public int getColumnCount() {
+			return 1;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return l.get(rowIndex);
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			super.setValueAt(aValue, rowIndex, columnIndex); //To change body of generated methods, choose Tools | Templates.
+			Lugar lugar = l.get(rowIndex);
+			lugar.setNombre((String) aValue);
+			try {
+				lugar.save();
+			} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(null,
+						"Sin base de datos");
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(null,
+						"No se pudo realizar el cambio");
+				Logger.getLogger(
+						JPCrearLugar.class.getName()).
+						log(Level.SEVERE, null, ex);
+			}
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return true;
+		}
+
+	}
 }
