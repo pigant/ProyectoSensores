@@ -37,6 +37,10 @@ public class Tag {
 		return TagDAL.find(id);
 	}
 
+	Tag(String tag_test, String string) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
 	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean s = false;
 		if (id != null) {

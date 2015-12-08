@@ -5,9 +5,9 @@
  */
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.ProtocoloDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -26,7 +26,7 @@ public class Protocolo {
 	public Protocolo() {
 	}
 
-	public static Protocolo find(int id) {
+	public static Protocolo find(int id) throws SinBaseDatosException {
 		return ProtocoloDAL.find(id);
 	}
 
@@ -39,7 +39,7 @@ public class Protocolo {
 		this.nombre = nombre;
 	}
 
-	public boolean save() {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean s = false;
 		if (id == null) {
 			//guardar
@@ -54,7 +54,7 @@ public class Protocolo {
 		return s;
 	}
 
-	public boolean delete() {
+	public boolean delete() throws SinBaseDatosException {
 		return ProtocoloDAL.delete(id);
 	}
 

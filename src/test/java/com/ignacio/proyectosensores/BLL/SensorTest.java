@@ -53,7 +53,7 @@ public class SensorTest {
 		TipoUnidad tu = new TipoUnidad("tipo unidad test sensor");
 		TipoSensor ts = new TipoSensor("tipo sensor test sensor");
 		Sensor s = new Sensor("Presion", "1*x",
-			"Algo de texto para el relleno", true);
+				"Algo de texto para el relleno", true);
 		//uniones
 		m.setLugar(l);
 		s.setMaquina(m);
@@ -84,6 +84,40 @@ public class SensorTest {
 		tu.delete();
 		ts.delete();
 		assertTrue("No se borro el sensor", resultado);
+	}
+
+	@Test
+	public void obtener_dependencias() throws SinBaseDatosException, CodigoRepetidoException {
+		boolean resultado;
+		//creaciones
+		Lugar l = new Lugar("lugar presion test sensor");
+		Maquina m = new Maquina("Maquina test sensor");
+		TipoUnidad tu = new TipoUnidad("tipo unidad test sensor");
+		TipoSensor ts = new TipoSensor("tipo sensor test sensor");
+		Sensor s = new Sensor("Presion", "1*x",
+				"Algo de texto para el relleno", true);
+		//uniones
+		m.setLugar(l);
+		s.setMaquina(m);
+		s.setTipoSensor(ts);
+		s.setTipoUnidad(tu);
+		//guardado
+		l.save();
+		m.save();
+		tu.save();
+		ts.save();
+		resultado = s.save();
+		//obtencion
+		Sensor s2 = Sensor.find(s.getId());
+		s2.findDependencias();
+		resultado = s2.equals(s);
+		assertTrue("No se pudo encontrar el sensor", resultado);
+		//Eliminado
+		resultado = s.delete();
+		m.delete();
+		l.delete();
+		tu.delete();
+		ts.delete();
 	}
 
 }

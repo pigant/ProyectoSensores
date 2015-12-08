@@ -1,9 +1,14 @@
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.MaquinaDAL;
 import com.ignacio.proyectosensores.DAL.SensorDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
-import java.util.ArrayList;
+import com.ignacio.proyectosensores.DAL.TipoSensorDAL;
+import com.ignacio.proyectosensores.DAL.TipoUnidadDAL;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,41 +50,76 @@ public class Sensor {
 	//
 	//Read
 	public static Sensor find(int id) throws SinBaseDatosException {
+		Sensor s = SensorDAL.find(id);
 		return SensorDAL.find(id);
 	}
 
+	public void findMaquina() throws SinBaseDatosException {
+		Maquina m = MaquinaDAL.findBySensor(id);
+		setMaquina(m);
+		m.findLugar();
+	}
+
+	public void findTipoSensor() throws SinBaseDatosException {
+		TipoSensor ts = TipoSensorDAL.findBySensor(id);
+		setTipoSensor(ts);
+	}
+	public void findTipoUnidad() throws SinBaseDatosException {
+		TipoUnidad tu = TipoUnidadDAL.findBySensor(id);
+		setTipoUnidad(tu);
+	}
+
+	public void findDependencias(){
+		try {
+			findMaquina();
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(Sensor.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			findTipoSensor();
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(Sensor.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			findTipoUnidad();
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(Sensor.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
 	//Create and update
-	public boolean save() throws SinBaseDatosException {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean s = false;
 		if (id == null) {
 			//guardar
 			id = SensorDAL.guardar(
-				nombre,
-				escala,
-				detalle,
-				escalaPositiva,
-				maquina.getId(),
-				tipoSensor.getId(),
-				tipoUnidad.getId()
+					nombre,
+					escala,
+					detalle,
+					escalaPositiva,
+					maquina.getId(),
+					tipoSensor.getId(),
+					tipoUnidad.getId()
 			);
 			if (id != null) {
 				s = true;
 			}
 		} else {
 			s = SensorDAL.actualizar(
-				id,
-				nombre,
-				escala,
-				detalle,
-				escalaPositiva,
-				maquina.getId(),
-				tipoSensor.getId(),
-				tipoUnidad.getId());
+					id,
+					nombre,
+					escala,
+					detalle,
+					escalaPositiva,
+					maquina.getId(),
+					tipoSensor.getId(),
+					tipoUnidad.getId());
 		}
 		return s;
 	}
+
 	//delete
-	public boolean delete() throws SinBaseDatosException{
+	public boolean delete() throws SinBaseDatosException {
 		return SensorDAL.delete(id);
 	}
 

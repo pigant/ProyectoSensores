@@ -1,5 +1,7 @@
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TipoUnidadDAL;
 import java.util.Objects;
 
@@ -15,11 +17,11 @@ public class TipoUnidad {
 	public TipoUnidad() {
 	}
 
-	public static TipoUnidad find(int id) {
+	public static TipoUnidad find(int id) throws SinBaseDatosException {
 		return TipoUnidadDAL.find(id);
 	}
 
-	public boolean save() {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
 		boolean s = false;
 		if (id == null) {
 			//guardar
@@ -34,7 +36,7 @@ public class TipoUnidad {
 		return s;
 	}
 
-	public boolean delete(){
+	public boolean delete() throws SinBaseDatosException{
 		return TipoUnidadDAL.delete(id);
 	}
 
