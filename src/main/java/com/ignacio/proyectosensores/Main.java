@@ -6,6 +6,7 @@ import com.ignacio.proyectosensores.GUI.JPCrearLugar;
 import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
 import com.ignacio.proyectosensores.GUI.JPCrearProtocolo;
 import com.ignacio.proyectosensores.GUI.JPCrearTag;
+import com.ignacio.proyectosensores.GUI.JPCrearTipoSensor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -34,15 +35,19 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem2 = new javax.swing.JMenuItem();
         p_principal = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mi_crearLugar = new javax.swing.JMenuItem();
         mi_crearMaquina = new javax.swing.JMenuItem();
         mi_crearProtocolo = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+
+        jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,6 +79,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mi_crearProtocolo);
+
+        jMenuItem3.setText("Tipo sensor");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
 
@@ -140,6 +153,11 @@ public class Main extends javax.swing.JFrame {
 		actualizarPantalla(j);
     }//GEN-LAST:event_mi_crearProtocoloActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+		JPCrearTipoSensor j = new JPCrearTipoSensor();
+		actualizarPantalla(j);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -182,6 +200,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem mi_crearLugar;
     private javax.swing.JMenuItem mi_crearMaquina;
     private javax.swing.JMenuItem mi_crearProtocolo;
