@@ -16,6 +16,10 @@ public class TipoSensor {
 		return TipoSensorDAL.findAll();
 	}
 
+	public static List<TipoSensor> findLike(String text) throws SinBaseDatosException {
+		return TipoSensorDAL.findLike(text);
+	}
+
 	private Integer id;
 	private String nombre;
 

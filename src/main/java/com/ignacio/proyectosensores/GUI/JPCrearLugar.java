@@ -3,15 +3,11 @@ package com.ignacio.proyectosensores.GUI;
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,12 +15,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JPCrearLugar extends javax.swing.JPanel {
 
+	List<Lugar> lugares;
+
 	/**
 	 * Creates new form JPCrearLugar
 	 */
 	public JPCrearLugar() {
 		initComponents();
-		actualizarTabla();
+		try {
+			lugares = Lugar.findAll();
+			actualizarTabla();
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPCrearLugar.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	/**
@@ -43,6 +46,12 @@ public class JPCrearLugar extends javax.swing.JPanel {
         b_agregar = new javax.swing.JButton();
 
         jLabel1.setText("Nombre:");
+
+        tf_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_nombreKeyReleased(evt);
+            }
+        });
 
         t_lugares.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -99,6 +108,8 @@ public class JPCrearLugar extends javax.swing.JPanel {
 			Lugar l = new Lugar(text);
 			try {
 				l.save();
+				lugares = Lugar.findAll();
+				actualizarTabla();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(this, "Sin base de datos",
 						"Error", JOptionPane.ERROR_MESSAGE);
@@ -106,18 +117,24 @@ public class JPCrearLugar extends javax.swing.JPanel {
 				JOptionPane.showMessageDialog(this, "El codigo ya existe",
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
-			actualizarTabla();
 		}
     }//GEN-LAST:event_b_agregarActionPerformed
 
-	public void actualizarTabla() {
+    private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
 		try {
-			ArrayList<Lugar> lugares = Lugar.findAll();
-			final LugarTableModel ltm = new LugarTableModel(lugares);
-			t_lugares.setModel(ltm);
+			List<Lugar> t = Lugar.findLike(tf_nombre.getText());
+			if (t.size() > 0) {
+				lugares = t;
+				actualizarTabla();
+			}
 		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(JPCrearLugar.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
 		}
+    }//GEN-LAST:event_tf_nombreKeyReleased
+
+	public void actualizarTabla() {
+		final LugarTableModel ltm = new LugarTableModel(lugares);
+		t_lugares.setModel(ltm);
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -132,7 +149,7 @@ public class JPCrearLugar extends javax.swing.JPanel {
 
 		List<Lugar> l;
 
-		private LugarTableModel(ArrayList<Lugar> lugares) {
+		private LugarTableModel(List<Lugar> lugares) {
 			this.l = lugares;
 		}
 

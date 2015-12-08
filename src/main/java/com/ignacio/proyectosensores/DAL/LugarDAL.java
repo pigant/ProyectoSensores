@@ -4,6 +4,7 @@ import com.ignacio.proyectosensores.BLL.Lugar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,9 +72,23 @@ public class LugarDAL {
 			r.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
-		}finally {
+		} finally {
 			bd.close();
 		}
 		return l;
 	}
+<<<<<<< HEAD
+=======
+
+	public static List<Lugar> findLike(String text) throws SinBaseDatosException {
+		ArrayList<Lugar> l = new ArrayList();
+		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_lugar, nombre "
+				+ "from lugar where lower(nombre) like '%" + text + "%'");
+		for (Object[] o : ob) {
+			l.add(new Lugar((int) o[0], (String) o[1]));
+		}
+		return l;
+	}
+
+>>>>>>> Buscador en crear lugar y tipo sensor
 }
