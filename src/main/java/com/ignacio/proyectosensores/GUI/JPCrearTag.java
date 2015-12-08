@@ -10,6 +10,7 @@ import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.Tag;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -36,7 +37,7 @@ public class JPCrearTag extends javax.swing.JPanel {
 		this.parent = parent;
 		initComponents();
 		//Obtener los protocolos
-		ArrayList<Protocolo> a;
+		List<Protocolo> a;
 		try {
 			a = Protocolo.findAll();
 			pcb = new ProtocoloComboBox(a);
@@ -228,9 +229,9 @@ public class JPCrearTag extends javax.swing.JPanel {
 
 class ProtocoloComboBox extends DefaultComboBoxModel<String> {
 
-	ArrayList<Protocolo> protocolos;
+	List<Protocolo> protocolos;
 
-	public ProtocoloComboBox(ArrayList<Protocolo> protocolos) {
+	public ProtocoloComboBox(List<Protocolo> protocolos) {
 		this.protocolos = protocolos;
 		for (Protocolo p : protocolos) {
 			addElement(p.getNombre());

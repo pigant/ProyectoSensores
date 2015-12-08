@@ -6,6 +6,7 @@ import com.ignacio.proyectosensores.DAL.SensorDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TipoSensorDAL;
 import com.ignacio.proyectosensores.DAL.TipoUnidadDAL;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class Sensor {
 
-	public static ArrayList<Sensor> findLike(String text) throws SinBaseDatosException {
+	public static List<Sensor> findLike(String text) throws SinBaseDatosException {
 		return SensorDAL.findLike(text);
 	}
 

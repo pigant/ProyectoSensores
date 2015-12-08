@@ -6,10 +6,12 @@
 package com.ignacio.proyectosensores.GUI;
 
 import com.ignacio.proyectosensores.BLL.Lugar;
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -96,7 +98,15 @@ public class JPCrearLugar extends javax.swing.JPanel {
 		final String text = tf_nombre.getText();
 		if (!text.isEmpty()) {
 			Lugar l = new Lugar(text);
-			l.save();
+			try {
+				l.save();
+			} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(this, "Sin base de datos", 
+						"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(this, "El codigo ya existe", 
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
 			actualizarTabla();
 		}
     }//GEN-LAST:event_b_agregarActionPerformed

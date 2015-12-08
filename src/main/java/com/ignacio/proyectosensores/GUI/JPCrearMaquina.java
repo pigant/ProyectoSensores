@@ -7,9 +7,14 @@ package com.ignacio.proyectosensores.GUI;
 
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,7 +33,7 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 	public JPCrearMaquina() throws SinBaseDatosException {
 		m = new Maquina();
 		initComponents();
-		ArrayList<Maquina> maquinas = Maquina.findAll();
+		List<Maquina> maquinas = Maquina.findAll();
 		mtm = new MaquinaTableModel(maquinas);
 		t_maquinas.setModel(mtm);
 		ArrayList<Lugar> lugares = Lugar.findAll();
@@ -163,7 +168,15 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 
     private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
 		System.out.println("Maquina {" + m.getNombre() + ", " + m.getLugar().getNombre() + "}");
-		m.save();
+		try {
+			m.save();
+		} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(this, "Sin base de datos", 
+						"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(this, "El codigo ya existe", 
+						"Error", JOptionPane.ERROR_MESSAGE);
+		}
     }//GEN-LAST:event_b_crearActionPerformed
 
 
@@ -181,9 +194,9 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 
 class MaquinaTableModel extends DefaultTableModel {
 
-	private final ArrayList<Maquina> maquinas;
+	private final List<Maquina> maquinas;
 
-	public MaquinaTableModel(ArrayList<Maquina> maquinas) {
+	public MaquinaTableModel(List<Maquina> maquinas) {
 		this.maquinas = maquinas;
 	}
 
