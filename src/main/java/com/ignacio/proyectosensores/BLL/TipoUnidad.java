@@ -3,6 +3,7 @@ package com.ignacio.proyectosensores.BLL;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TipoUnidadDAL;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,6 +11,10 @@ import java.util.Objects;
  * @author ignacio
  */
 public class TipoUnidad {
+
+	public static List<TipoUnidad> findAll() throws SinBaseDatosException {
+		return TipoUnidadDAL.findAll();
+	}
 
 	private Integer id;
 	private String nombre;

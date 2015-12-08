@@ -7,6 +7,7 @@ import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
 import com.ignacio.proyectosensores.GUI.JPCrearProtocolo;
 import com.ignacio.proyectosensores.GUI.JPCrearTag;
 import com.ignacio.proyectosensores.GUI.JPCrearTipoSensor;
+import com.ignacio.proyectosensores.GUI.JPCrearTipoUnidad;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -43,6 +44,7 @@ public class Main extends javax.swing.JFrame {
         mi_crearMaquina = new javax.swing.JMenuItem();
         mi_crearProtocolo = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -87,6 +89,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText("Tipo unidad");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
 
@@ -158,6 +168,11 @@ public class Main extends javax.swing.JFrame {
 		actualizarPantalla(j);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+		JPCrearTipoUnidad j = new JPCrearTipoUnidad();
+		actualizarPantalla(j);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -202,6 +217,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem mi_crearLugar;
     private javax.swing.JMenuItem mi_crearMaquina;
     private javax.swing.JMenuItem mi_crearProtocolo;

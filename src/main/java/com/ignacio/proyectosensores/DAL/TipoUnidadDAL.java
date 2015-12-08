@@ -3,6 +3,8 @@ package com.ignacio.proyectosensores.DAL;
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +60,16 @@ public class TipoUnidadDAL {
 			bd.close();
 		}
 		return ts;
+	}
+
+	public static List<TipoUnidad> findAll() throws SinBaseDatosException {
+		ArrayList<Object[]> ob = ObjectDAL.findAll(
+			"select id_t_unidad, nombre from t_unidad");
+		ArrayList<TipoUnidad> l = new ArrayList();
+		for (Object[] o : ob) {
+			l.add(new TipoUnidad((int) o[0], (String) o[1]));
+		}
+		return l;
 	}
 
 }
