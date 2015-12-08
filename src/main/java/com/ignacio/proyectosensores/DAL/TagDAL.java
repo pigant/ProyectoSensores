@@ -14,29 +14,33 @@ public class TagDAL {
 
 	public static Tag find(int id) throws SinBaseDatosException {
 		Object[] o = ObjectDAL.find("select id_tag, nombre, url, segundos, detalle "
-				+ "from tag where id_tag=?", id);
+			+ "from tag where id_tag=?", id);
 		Tag s = new Tag((int) o[0], (String) o[1], (String) o[2], (int) o[3]);
 		return s;
 	}
 
-	public static boolean actualizar(Integer id, String nombre, String url, int segundos, Integer id0, Integer id1) throws SinBaseDatosException {
+	public static boolean actualizar(Integer id, String nombre, String url,
+		int segundos, String detalle, Integer id0, Integer id1)
+		throws SinBaseDatosException {
+		//
 		return ObjectDAL.actualizar("update tag set "
-				+ "nombre=?, url=?, segundos=?, id_sensor=?, id_protocolo=?"
-				+ " where id_tag=?", nombre, url, segundos, id0, id1, id);
+			+ "nombre=?, url=?, segundos=?, id_sensor=?, id_protocolo=?,"
+			+ "detalle=? where id_tag=?", nombre, url, segundos,
+			id0, id1, id, detalle);
 	}
 
 	public static Integer guardar(
-			String nombre, String url, int segundos,
-			Integer id, Integer id0)
-			throws CodigoRepetidoException, SinBaseDatosException {
+		String nombre, String url, int segundos,
+		String detalle, Integer id, Integer id0)
+		throws CodigoRepetidoException, SinBaseDatosException {
 		return ObjectDAL.guardar("insert into tag "
-				+ "(nombre,url, segundos, id_sensor, id_protocolo) "
-				+ "values (?,?,?,?)",
-				nombre, url, segundos, id, id0);
+			+ "(nombre,url, segundos, detalle, id_sensor, id_protocolo) "
+			+ "values (?,?,?,?,?,?)",
+			nombre, url, segundos, detalle, id, id0);
 	}
 
 	public static boolean delete(Integer id) throws SinBaseDatosException {
-			return ObjectDAL.delete("delete from tag where id_tag=?", id);
+		return ObjectDAL.delete("delete from tag where id_tag=?", id);
 	}
 
 }
