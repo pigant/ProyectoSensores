@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class ObjectDAL {
 
 	public static Integer guardar(String consulta, Object... parametros)
-		throws SinBaseDatosException, CodigoRepetidoException {
+			throws SinBaseDatosException, CodigoRepetidoException {
 		Integer s = null;
 		try {
 			BD bd = new BD();
@@ -46,7 +46,7 @@ public class ObjectDAL {
 	}
 
 	public static boolean actualizar(String consulta,
-		Object... parametros) throws SinBaseDatosException {
+			Object... parametros) throws SinBaseDatosException {
 		//
 		boolean s = false;
 		try {
@@ -109,6 +109,25 @@ public class ObjectDAL {
 		}
 		return a;
 
+	}
+
+	public static ArrayList<Object[]> findRaw(String consulta) throws SinBaseDatosException {
+		ArrayList<Object[]> al = new ArrayList();
+		try {
+			BD bd = new BD();
+			ResultSet r = bd.createStatement().executeQuery(consulta);
+			int col = r.getMetaData().getColumnCount();
+			while (r.next()) {
+				Object o[] = new Object[col];
+				for (int i = 0; i < o.length; i++) {
+					o[i] = r.getObject(i + 1);
+				}
+				al.add(o);
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(ObjectDAL.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return al;
 	}
 
 }

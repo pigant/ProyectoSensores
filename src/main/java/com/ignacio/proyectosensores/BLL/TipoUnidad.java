@@ -16,6 +16,12 @@ public class TipoUnidad {
 		return TipoUnidadDAL.findAll();
 	}
 
+	public static List<TipoUnidad> findLike(String text) 
+			throws SinBaseDatosException {
+		//
+		return TipoUnidadDAL.findLike(text);
+	}
+
 	private Integer id;
 	private String nombre;
 

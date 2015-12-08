@@ -72,4 +72,15 @@ public class TipoUnidadDAL {
 		return l;
 	}
 
+	public static List<TipoUnidad> findLike(String text) throws SinBaseDatosException {
+		text = text.toLowerCase();
+		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_t_unidad, nombre from t_unidad "
+				+ "where lower(nombre) like '%" + text + "%'");
+		ArrayList<TipoUnidad> t = new ArrayList<>();
+		for (Object[] o : ob) {
+			t.add(new TipoUnidad((int) o[0], (String) o[1]));
+		}
+		return t;
+	}
+
 }
