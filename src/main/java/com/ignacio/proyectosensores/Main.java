@@ -8,6 +8,7 @@ package com.ignacio.proyectosensores;
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.DAL.ObjectDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
 import com.ignacio.proyectosensores.GUI.JPCrearLugar;
 import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
 import com.ignacio.proyectosensores.GUI.JPCrearTag;
@@ -47,10 +48,11 @@ public class Main extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mi_crearLugar = new javax.swing.JMenuItem();
         mi_crearMaquina = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setSize(new java.awt.Dimension(500, 500));
 
         p_principal.setMinimumSize(new java.awt.Dimension(500, 500));
         p_principal.setLayout(new javax.swing.BoxLayout(p_principal, javax.swing.BoxLayout.LINE_AXIS));
@@ -74,6 +76,18 @@ public class Main extends javax.swing.JFrame {
         jMenu1.add(mi_crearMaquina);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Ver");
+
+        jMenuItem1.setText("Ver Sensores");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -116,6 +130,11 @@ public class Main extends javax.swing.JFrame {
 		}
     }//GEN-LAST:event_mi_crearMaquinaActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+		JDBuscarSensor j = new JDBuscarSensor(this, true);
+		j.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -155,7 +174,9 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem mi_crearLugar;
     private javax.swing.JMenuItem mi_crearMaquina;
     private javax.swing.JPanel p_principal;

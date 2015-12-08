@@ -41,6 +41,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
         tf_fuzzy = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -53,6 +54,9 @@ public class JDBuscarSensor extends javax.swing.JDialog {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tf_fuzzyKeyTyped(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_fuzzyKeyReleased(evt);
+            }
         });
 
         jTable1.setModel(stm);
@@ -63,6 +67,8 @@ public class JDBuscarSensor extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jLabel1.setText("Búsqueda:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,14 +77,19 @@ public class JDBuscarSensor extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
-                    .addComponent(tf_fuzzy))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tf_fuzzy)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tf_fuzzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(tf_fuzzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE))
         );
@@ -101,26 +112,6 @@ public class JDBuscarSensor extends javax.swing.JDialog {
     }//GEN-LAST:event_tf_fuzzyActionPerformed
 
     private void tf_fuzzyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_fuzzyKeyTyped
-		String c = String.valueOf(evt.getKeyChar());
-		if (c.matches(".")) {
-			String text = tf_fuzzy.getText() + c;
-			List<Sensor> s;
-			if (text.length() > 2) {
-				try {
-					s = Sensor.findLike(text);
-				} catch (SinBaseDatosException ex) {
-					Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
-					s = new ArrayList<>();
-				}
-			} else {
-				s = new ArrayList<>();
-			}
-			stm = new SensorCompuestoTableModel(s);
-			stm.addColumn("Sensor");
-			stm.addColumn("Maquina");
-			stm.addColumn("Lugar");
-			jTable1.setModel(stm);
-		}
     }//GEN-LAST:event_tf_fuzzyKeyTyped
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -130,6 +121,26 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 			dispose();
 		}
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void tf_fuzzyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_fuzzyKeyReleased
+		String text = tf_fuzzy.getText();
+		List<Sensor> s;
+		if (text.length() > 2) {
+			try {
+				s = Sensor.findLike(text);
+			} catch (SinBaseDatosException ex) {
+				Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
+				s = new ArrayList<>();
+			}
+		} else {
+			s = new ArrayList<>();
+		}
+		stm = new SensorCompuestoTableModel(s);
+		stm.addColumn("Sensor");
+		stm.addColumn("Maquina");
+		stm.addColumn("Lugar");
+		jTable1.setModel(stm);
+    }//GEN-LAST:event_tf_fuzzyKeyReleased
 
 	/**
 	 * @param args the command line arguments
@@ -174,6 +185,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField tf_fuzzy;

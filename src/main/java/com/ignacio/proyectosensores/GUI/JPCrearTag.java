@@ -8,13 +8,14 @@ package com.ignacio.proyectosensores.GUI;
 import com.ignacio.proyectosensores.BLL.Protocolo;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.Tag;
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -80,23 +81,18 @@ public class JPCrearTag extends javax.swing.JPanel {
         jLabel5.setText("Protocolo");
 
         tf_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tf_nombreKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_nombreKeyReleased(evt);
             }
         });
 
         tf_url.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tf_urlKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_urlKeyReleased(evt);
             }
         });
 
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSpinner1StateChanged(evt);
-            }
-        });
 
         tf_sensorSeleccionado.setEditable(false);
 
@@ -186,29 +182,34 @@ public class JPCrearTag extends javax.swing.JPanel {
 		tf_sensorSeleccionado.setText(sensorSeleccionado.getNombre());
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
-		final int segundos = (int) jSpinner1.getValue();
-		tag.setSegundos(segundos);
-    }//GEN-LAST:event_jSpinner1StateChanged
-
     private void jcb_protocoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_protocoloActionPerformed
-		Protocolo p = (Protocolo)pcb.getAt(jcb_protocolo.getSelectedIndex());
+		Protocolo p = (Protocolo) pcb.getAt(jcb_protocolo.getSelectedIndex());
 		tag.setProtocolo(p);
     }//GEN-LAST:event_jcb_protocoloActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-		System.out.println(tag);
+		try {
+			final int segundos = (int) jSpinner1.getValue();
+			tag.setSegundos(segundos);
+			tag.save();
+			JOptionPane.showMessageDialog(this, "Tag agregado", "Exito",
+					JOptionPane.INFORMATION_MESSAGE);
+		} catch (SinBaseDatosException ex) {
+			JOptionPane.showMessageDialog(this, "Sin base de datos.");
+		} catch (CodigoRepetidoException ex) {
+			JOptionPane.showMessageDialog(this, "El codigo ya existe");
+		}
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void tf_nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyTyped
+    private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
 		final String text = tf_nombre.getText();
 		tag.setNombre(text);
-    }//GEN-LAST:event_tf_nombreKeyTyped
+    }//GEN-LAST:event_tf_nombreKeyReleased
 
-    private void tf_urlKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_urlKeyTyped
+    private void tf_urlKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_urlKeyReleased
 		final String text = tf_url.getText();
 		tag.setUrl(text);
-    }//GEN-LAST:event_tf_urlKeyTyped
+    }//GEN-LAST:event_tf_urlKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
