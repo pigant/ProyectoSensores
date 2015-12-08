@@ -13,6 +13,7 @@ public class Tag {
 	private Integer id;
 	private String nombre;
 	private String url;
+	private String detalle;
 	private int segundos;
 	private Sensor sensor;
 	private Protocolo protocolo;
@@ -41,25 +42,30 @@ public class Tag {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException, 
+		ParametrosFaltantesException {
 		boolean s = false;
-		if (id != null) {
-			//actualizar
-			s = TagDAL.actualizar(id,
-					nombre, url,
-					segundos,
-					sensor.getId(),
-					protocolo.getId());
-		} else {
-			//guardar
-			id = TagDAL.guardar(
-					nombre, url,
-					segundos,
-					sensor.getId(),
-					protocolo.getId());
+		if (protocolo != null && sensor != null) {
 			if (id != null) {
-				s = true;
+				//actualizar
+				s = TagDAL.actualizar(id,
+					nombre, url,
+					segundos, detalle,
+					sensor.getId(),
+					protocolo.getId());
+			} else {
+				//guardar
+				id = TagDAL.guardar(
+					nombre, url,
+					segundos, detalle,
+					sensor.getId(),
+					protocolo.getId());
+				if (id != null) {
+					s = true;
+				}
 			}
+		}else {
+			throw new ParametrosFaltantesException();
 		}
 		return s;
 	}
@@ -118,9 +124,20 @@ public class Tag {
 		return this.segundos;
 	}
 
+	public String getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
+	}
+
 	@Override
 	public String toString() {
-		return "Tag{" + "id=" + id + ", nombre=" + nombre + ", url=" + url + ", segundos=" + segundos + ", sensor=" + sensor + ", protocolo=" + protocolo + '}';
+		return "Tag{" + "id=" + id + ", nombre=" + nombre
+			+ ", url=" + url + ", segundos=" + segundos
+			+ ", sensor=" + sensor + ", protocolo="
+			+ protocolo + "detalle=" + detalle + '}';
 	}
 
 }

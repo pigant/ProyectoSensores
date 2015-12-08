@@ -5,6 +5,7 @@
  */
 package com.ignacio.proyectosensores.GUI;
 
+import com.ignacio.proyectosensores.BLL.ParametrosFaltantesException;
 import com.ignacio.proyectosensores.BLL.Protocolo;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.Tag;
@@ -43,7 +44,9 @@ public class JPCrearTag extends javax.swing.JPanel {
 			a = Protocolo.findAll();
 			pcb = new ProtocoloComboBox(a);
 			jcb_protocolo.setModel(pcb);
+			jcb_protocolo.setSelectedIndex(0);
 		} catch (SinBaseDatosException ex) {
+			JOptionPane.showMessageDialog(this, "Sin coneccion a la base datos");
 			Logger.getLogger(JPCrearTag.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
@@ -67,8 +70,11 @@ public class JPCrearTag extends javax.swing.JPanel {
         jSpinner1 = new javax.swing.JSpinner();
         tf_sensorSeleccionado = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jcb_protocolo = new javax.swing.JComboBox<>();
+        jcb_protocolo = new javax.swing.JComboBox<String>();
         jButton2 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ta_detalles = new javax.swing.JTextArea();
 
         jLabel1.setText("Nombre:");
 
@@ -92,7 +98,7 @@ public class JPCrearTag extends javax.swing.JPanel {
             }
         });
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         tf_sensorSeleccionado.setEditable(false);
 
@@ -103,7 +109,7 @@ public class JPCrearTag extends javax.swing.JPanel {
             }
         });
 
-        jcb_protocolo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcb_protocolo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcb_protocolo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcb_protocoloActionPerformed(evt);
@@ -116,6 +122,12 @@ public class JPCrearTag extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        jLabel6.setText("Detalles:");
+
+        ta_detalles.setColumns(20);
+        ta_detalles.setRows(5);
+        jScrollPane1.setViewportView(ta_detalles);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -130,17 +142,19 @@ public class JPCrearTag extends javax.swing.JPanel {
                             .addComponent(jLabel4)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tf_nombre)
                             .addComponent(tf_url)
                             .addComponent(jSpinner1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(tf_sensorSeleccionado, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                                .addComponent(tf_sensorSeleccionado, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jcb_protocolo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jcb_protocolo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)))
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -168,7 +182,11 @@ public class JPCrearTag extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jcb_protocolo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addContainerGap())
         );
@@ -191,13 +209,17 @@ public class JPCrearTag extends javax.swing.JPanel {
 		try {
 			final int segundos = (int) jSpinner1.getValue();
 			tag.setSegundos(segundos);
+			tag.setDetalle(ta_detalles.getText());
 			tag.save();
 			JOptionPane.showMessageDialog(this, "Tag agregado", "Exito",
-					JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.INFORMATION_MESSAGE);
 		} catch (SinBaseDatosException ex) {
 			JOptionPane.showMessageDialog(this, "Sin base de datos.");
 		} catch (CodigoRepetidoException ex) {
 			JOptionPane.showMessageDialog(this, "El codigo ya existe");
+		} catch (ParametrosFaltantesException ex) {
+			JOptionPane.showMessageDialog(this, "Faltan datos por rellenar",
+				"Error", JOptionPane.ERROR_MESSAGE);
 		}
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -220,8 +242,11 @@ public class JPCrearTag extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JComboBox<String> jcb_protocolo;
+    private javax.swing.JTextArea ta_detalles;
     private javax.swing.JTextField tf_nombre;
     private javax.swing.JTextField tf_sensorSeleccionado;
     private javax.swing.JTextField tf_url;
