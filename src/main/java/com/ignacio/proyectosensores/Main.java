@@ -1,23 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ignacio.proyectosensores;
 
-import com.ignacio.proyectosensores.BLL.Lugar;
-import com.ignacio.proyectosensores.DAL.ObjectDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
 import com.ignacio.proyectosensores.GUI.JPCrearLugar;
 import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
 import com.ignacio.proyectosensores.GUI.JPCrearProtocolo;
 import com.ignacio.proyectosensores.GUI.JPCrearTag;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JPanel;
 
 /**
