@@ -1,5 +1,15 @@
 package com.ignacio.proyectosensores.GUI;
 
+import com.ignacio.proyectosensores.BLL.TipoUnidad;
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.AbstractTableModel;
+
 /**
  *
  * @author ignacio
@@ -11,6 +21,18 @@ public class JPCrearTipoUnidad extends javax.swing.JPanel {
 	 */
 	public JPCrearTipoUnidad() {
 		initComponents();
+		actualizarTabla();
+	}
+
+	public final void actualizarTabla() {
+		try {
+			List<TipoUnidad> tipoUnidades = TipoUnidad.findAll();
+			final TipoUnidadTableModel ttm
+				= new TipoUnidadTableModel(tipoUnidades);
+			t_vista.setModel(ttm);
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	/**
@@ -23,24 +45,22 @@ public class JPCrearTipoUnidad extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        tf_nombre = new javax.swing.JTextField();
+        b_crear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        t_vista = new javax.swing.JTable();
 
         jLabel1.setText("Nombre:");
 
-        jButton1.setText("Crear");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre del tipo de unidad"
+        b_crear.setText("Crear");
+        b_crear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_crearActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        });
+
+        t_vista.setModel(new TipoUnidadTableModel());
+        jScrollPane1.setViewportView(t_vista);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -53,9 +73,9 @@ public class JPCrearTipoUnidad extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)
+                        .addComponent(tf_nombre)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(b_crear)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -63,21 +83,76 @@ public class JPCrearTipoUnidad extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                    .addComponent(b_crear))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
+		final String text = tf_nombre.getText();
+		if (!text.isEmpty()) {
+			TipoUnidad l = new TipoUnidad(text);
+			try {
+				l.save();
+			} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(this, "Sin base de datos",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(this, "El codigo ya existe",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			}
+			actualizarTabla();
+		}
+    }//GEN-LAST:event_b_crearActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton b_crear;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable t_vista;
+    private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
+
+	private class TipoUnidadTableModel extends AbstractTableModel {
+
+		List<TipoUnidad> l;
+
+		public TipoUnidadTableModel() {
+			l = new ArrayList();
+		}
+
+		public TipoUnidadTableModel(List<TipoUnidad> lista) {
+			this.l = lista;
+		}
+
+		public TipoUnidad getAt(int index) {
+			return l.get(index);
+		}
+
+		@Override
+		public int getRowCount() {
+			return l.size();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return 1;
+		}
+
+		@Override
+		public Object getValueAt(int arg0, int arg1) {
+			TipoUnidad t = l.get(arg0);
+			return t.getNombre();
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return "Tipo de unidades";
+		}
+	}
 }
