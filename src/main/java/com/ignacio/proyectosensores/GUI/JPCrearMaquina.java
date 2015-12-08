@@ -11,11 +11,9 @@ import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
@@ -36,9 +34,10 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 		List<Maquina> maquinas = Maquina.findAll();
 		mtm = new MaquinaTableModel(maquinas);
 		t_maquinas.setModel(mtm);
-		ArrayList<Lugar> lugares = Lugar.findAll();
+		List<Lugar> lugares = Lugar.findAll();
 		lcb = new LugarComboBox(lugares);
 		cb_lugar.setModel(lcb);
+		cb_lugar.setSelectedIndex(0);
 	}
 
 	/**
@@ -54,8 +53,11 @@ public class JPCrearMaquina extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tf_nombre = new javax.swing.JTextField();
-        cb_lugar = new javax.swing.JComboBox<>();
+        cb_lugar = new javax.swing.JComboBox<String>();
         b_crear = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ta_detalle = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_maquinas = new javax.swing.JTable();
 
@@ -66,8 +68,8 @@ public class JPCrearMaquina extends javax.swing.JPanel {
         jLabel2.setText("Lugar:");
 
         tf_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tf_nombreKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_nombreKeyReleased(evt);
             }
         });
 
@@ -84,28 +86,38 @@ public class JPCrearMaquina extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setText("Detalle:");
+
+        ta_detalle.setColumns(20);
+        ta_detalle.setRows(5);
+        jScrollPane2.setViewportView(ta_detalle);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(1, 1, 1)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cb_lugar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tf_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)))
-                    .addComponent(b_crear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(tf_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(b_crear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(tf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -113,22 +125,15 @@ public class JPCrearMaquina extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2)
                     .addComponent(cb_lugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(b_crear)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(b_crear))
         );
 
-        t_maquinas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        t_maquinas.setModel(new MaquinaTableModel());
         jScrollPane1.setViewportView(t_maquinas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -146,38 +151,42 @@ public class JPCrearMaquina extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tf_nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyTyped
+    private void cb_lugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_lugarActionPerformed
+		final int lugar_i = cb_lugar.getSelectedIndex();
+		final Lugar l = lcb.getAt(lugar_i);
+		m.setLugar(l);
+    }//GEN-LAST:event_cb_lugarActionPerformed
+
+    private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
+		String detalle = ta_detalle.getText();
+		m.setDetalle(detalle);
+		System.out.println("Maquina {" + m.getNombre() + ", " + m.getLugar().getNombre() + "}");
+		try {
+			m.save();
+			JOptionPane.showMessageDialog(this, "Registro guardado", "Exito",
+				JOptionPane.INFORMATION_MESSAGE);
+		} catch (SinBaseDatosException ex) {
+			JOptionPane.showMessageDialog(this, "Sin base de datos",
+				"Error", JOptionPane.ERROR_MESSAGE);
+		} catch (CodigoRepetidoException ex) {
+			JOptionPane.showMessageDialog(this, "El codigo ya existe",
+				"Error", JOptionPane.ERROR_MESSAGE);
+		}
+    }//GEN-LAST:event_b_crearActionPerformed
+
+    private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
 		final String text = tf_nombre.getText();
 		if (text.length() > 0) {
 			m.setNombre(text);
 		} else {
 			m.setNombre(null);
 		}
-    }//GEN-LAST:event_tf_nombreKeyTyped
-
-    private void cb_lugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_lugarActionPerformed
-		final int lugar_i= cb_lugar.getSelectedIndex();
-		final Lugar l = lcb.getAt(lugar_i);
-		m.setLugar(l);
-    }//GEN-LAST:event_cb_lugarActionPerformed
-
-    private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
-		System.out.println("Maquina {" + m.getNombre() + ", " + m.getLugar().getNombre() + "}");
-		try {
-			m.save();
-		} catch (SinBaseDatosException ex) {
-				JOptionPane.showMessageDialog(this, "Sin base de datos", 
-						"Error", JOptionPane.ERROR_MESSAGE);
-			} catch (CodigoRepetidoException ex) {
-				JOptionPane.showMessageDialog(this, "El codigo ya existe", 
-						"Error", JOptionPane.ERROR_MESSAGE);
-		}
-    }//GEN-LAST:event_b_crearActionPerformed
+    }//GEN-LAST:event_tf_nombreKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -185,74 +194,78 @@ public class JPCrearMaquina extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cb_lugar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable t_maquinas;
+    private javax.swing.JTextArea ta_detalle;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
-}
 
-class MaquinaTableModel extends DefaultTableModel {
+	class MaquinaTableModel extends AbstractTableModel {
 
-	private final List<Maquina> maquinas;
+		private final List<Maquina> maquinas;
 
-	public MaquinaTableModel(List<Maquina> maquinas) {
-		this.maquinas = maquinas;
-	}
-
-	@Override
-	public Object getValueAt(int row, int column) {
-		return maquinas.get(row);
-	}
-
-	@Override
-	public int getRowCount() {
-		if (maquinas != null) {
-			return maquinas.size();
+		public MaquinaTableModel() {
+			maquinas = new ArrayList();
 		}
-		return 0;
-	}
 
-	@Override
-	public String getColumnName(int column) {
-		switch (column) {
-			case 0:
-				return "Nombre";
-			case 1:
-				return "Lugar";
-			default:
-				throw new AssertionError();
+		public MaquinaTableModel(List<Maquina> maquinas) {
+			this.maquinas = maquinas;
+		}
+
+		@Override
+		public Object getValueAt(int row, int column) {
+			return maquinas.get(row);
+		}
+
+		@Override
+		public int getRowCount() {
+			if (maquinas != null) {
+				return maquinas.size();
+			}
+			return 0;
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			switch (column) {
+				case 0:
+					return "Nombre";
+				case 1:
+					return "Lugar";
+				default:
+					throw new AssertionError();
+			}
+		}
+
+		@Override
+		public int getColumnCount() {
+			return 2;
 		}
 	}
 
-	@Override
-	public int getColumnCount() {
-		return 2;
+	private class LugarComboBox extends DefaultComboBoxModel<String> {
+
+		private final List<Lugar> lugares;
+
+		public LugarComboBox(List<Lugar> lugares) {
+			this.lugares = lugares;
+		}
+
+		public Lugar getAt(int index) {
+			return lugares.get(index);
+		}
+
+		@Override
+		public String getElementAt(int index) {
+			return lugares.get(index).getNombre();
+		}
+
+		@Override
+		public int getSize() {
+			return lugares.size();
+		}
 	}
-
-}
-
-class LugarComboBox extends DefaultComboBoxModel<String> {
-
-	private final ArrayList<Lugar> lugares;
-	private Lugar seleccionado;
-
-	public LugarComboBox(ArrayList<Lugar> lugares) {
-		this.lugares = lugares;
-	}
-
-	public Lugar getAt(int index){
-		return lugares.get(index);
-	}
-
-	@Override
-	public String getElementAt(int index) {
-		return lugares.get(index).getNombre();
-	}
-
-	@Override
-	public int getSize() {
-		return lugares.size();
-	}
-
 }

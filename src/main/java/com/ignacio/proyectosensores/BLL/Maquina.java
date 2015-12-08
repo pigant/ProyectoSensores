@@ -19,6 +19,7 @@ public class Maquina {
 
 	private Integer id;
 	private String nombre;
+	private String detalle;
 	private Lugar lugar;
 
 	public Maquina() {
@@ -28,14 +29,16 @@ public class Maquina {
 		this.nombre = nombre;
 	}
 
-	public Maquina(int id, String nombre) {
+	public Maquina(int id, String nombre, String detalle) {
 		this.id = id;
 		this.nombre = nombre;
+		this.detalle = detalle;
 	}
 
-	public Maquina(int id, String nombre, Lugar lugar) {
+	public Maquina(int id, String nombre, String detalle,Lugar lugar) {
 		this.id = id;
 		this.nombre = nombre;
+		this.detalle = detalle;
 		this.lugar = lugar;
 	}
 
@@ -52,12 +55,12 @@ public class Maquina {
 		boolean s = false;
 		int idLugar = lugar.getId();
 		if (id == null) {
-			id = MaquinaDAL.guardar(nombre, idLugar);
+			id = MaquinaDAL.guardar(nombre, detalle, idLugar);
 			if (id != null) {
 				s = true;
 			}
 		} else {
-			s = MaquinaDAL.actualizar(id, nombre, idLugar);
+			s = MaquinaDAL.actualizar(id, nombre, detalle, idLugar);
 		}
 		return s;
 	}
@@ -87,6 +90,14 @@ public class Maquina {
 
 	public void setLugar(Lugar lugar) {
 		this.lugar = lugar;
+	}
+
+	public String getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
 	}
 
 	@Override
