@@ -11,6 +11,7 @@ import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
 import com.ignacio.proyectosensores.GUI.JPCrearLugar;
 import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
+import com.ignacio.proyectosensores.GUI.JPCrearProtocolo;
 import com.ignacio.proyectosensores.GUI.JPCrearTag;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -48,6 +49,7 @@ public class Main extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mi_crearLugar = new javax.swing.JMenuItem();
         mi_crearMaquina = new javax.swing.JMenuItem();
+        mi_crearProtocolo = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -57,7 +59,7 @@ public class Main extends javax.swing.JFrame {
         p_principal.setMinimumSize(new java.awt.Dimension(500, 500));
         p_principal.setLayout(new javax.swing.BoxLayout(p_principal, javax.swing.BoxLayout.LINE_AXIS));
 
-        jMenu1.setText("File");
+        jMenu1.setText("Crear");
 
         mi_crearLugar.setText("Lugar");
         mi_crearLugar.addActionListener(new java.awt.event.ActionListener() {
@@ -74,6 +76,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mi_crearMaquina);
+
+        mi_crearProtocolo.setText("Protocolo");
+        mi_crearProtocolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mi_crearProtocoloActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mi_crearProtocolo);
 
         jMenuBar1.add(jMenu1);
 
@@ -135,6 +145,11 @@ public class Main extends javax.swing.JFrame {
 		j.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void mi_crearProtocoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_crearProtocoloActionPerformed
+		JPCrearProtocolo j = new JPCrearProtocolo();
+		actualizarPantalla(j);
+    }//GEN-LAST:event_mi_crearProtocoloActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -179,6 +194,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem mi_crearLugar;
     private javax.swing.JMenuItem mi_crearMaquina;
+    private javax.swing.JMenuItem mi_crearProtocolo;
     private javax.swing.JPanel p_principal;
     // End of variables declaration//GEN-END:variables
 }
