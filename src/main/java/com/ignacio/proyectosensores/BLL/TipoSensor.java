@@ -104,5 +104,10 @@ public class TipoSensor {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return nombre;
+	}
+
 }
 
