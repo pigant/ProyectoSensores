@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author ignacio
@@ -61,40 +62,25 @@ public class SensorDAL {
 	}
 
 	public static List<Sensor> findLike(String text) throws SinBaseDatosException {
-		List<Sensor> s = new ArrayList<>();
-		BD bd = new BD();
-		ArrayList<Object[]> select = bd.select("sensor",
-				"lower(nombre) like '%" + text.toLowerCase() + "%'",
-				"id_sensor", "nombre",
-				"escala", "detalle", "p_escala");
-		for (Object[] o : select) {
-			s.add(new Sensor(
-					(int) o[0], (String) o[1], (String) o[2],
+		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_sensor, nombre, escala, detalle, p_escala"
+				+ " from sensor where lower(nombre) like '%" + text + "%'");
+		ArrayList<Sensor> l = new ArrayList(ob.size());
+		for (Object[] o : ob) {
+			l.add(new Sensor((int) o[0], (String) o[1],
+					(String) o[2], (String) o[3], (boolean) o[4]));
+		}
+		return l;
+	}
+
+	public static List<Sensor> findAll() throws SinBaseDatosException {
+		ArrayList<Object[]> ob = ObjectDAL.findAll("select id_sensor, nombre, escala, detalle, p_escala "
+				+ "from sensor");
+		ArrayList<Sensor> l = new ArrayList(ob.size());
+		for (Object[] o : ob) {
+			l.add(new Sensor((int) o[0], (String) o[1], (String) o[2],
 					(String) o[3], (boolean) o[4]));
 		}
-		try {
-			final String consulta = "select s.id_sensor, s.nombre, "
-					+ "s.escala, s.detalle, s.p_escala "
-					+ "from sensor as s "
-					+ "join maquina as m "
-					+ "on s.id_maquina=m.id_maquina "
-					+ "where lower(m.nombre) "
-					+ "like '%" + text.toLowerCase() + "%'";
-			ResultSet r = bd.createStatement().executeQuery(consulta);
-			while (r.next()) {
-				s.add(new Sensor(
-						r.getInt("id_sensor"),
-						r.getString("nombre"),
-						r.getString("escala"),
-						r.getString("detalle"),
-						r.getBoolean("p_escala")));
-			}
-			r.close();
-		} catch (SQLException ex) {
-			Logger.getLogger(SensorDAL.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		bd.close();
-		return s;
+		return l;
 	}
 
 }

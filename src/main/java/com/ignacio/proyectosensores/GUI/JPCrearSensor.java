@@ -6,10 +6,19 @@ import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractCellEditor;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -26,6 +35,23 @@ public class JPCrearSensor extends javax.swing.JPanel {
 	 */
 	public JPCrearSensor() {
 		initComponents();
+		rellenoComboBox();
+		try {
+			List<Sensor> ls = Sensor.findAll();
+			t_vista.setModel(new SensorTableModel(ls));
+			t_vista.getColumnModel().getColumn(1).setCellRenderer(
+					new MaquinaCellRenderer());
+			t_vista.getColumnModel().getColumn(1).setCellEditor(
+					new MaquinaCellEditor());
+
+		} catch (SinBaseDatosException ex) {
+			JOptionPane.showMessageDialog(
+					this, "Error al conectar a la base de datos");
+			Logger.getLogger(JPCrearSensor.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	private void rellenoComboBox() {
 		List<Maquina> maquinas;
 		List<TipoSensor> tipoSensores;
 		List<TipoUnidad> tipoUnidades;
@@ -78,6 +104,12 @@ public class JPCrearSensor extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(500, 500));
 
         jLabel1.setText("Nombre:");
+
+        tf_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_nombreKeyReleased(evt);
+            }
+        });
 
         jLabel2.setText("Escala:");
 
@@ -137,7 +169,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(cb_sensor, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cb_unidad, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tf_nombre, javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,13 +179,13 @@ public class JPCrearSensor extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(rb_negativo))
                             .addComponent(tf_descripcion, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cb_maquina, 0, 383, Short.MAX_VALUE)))
+                            .addComponent(cb_maquina, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(b_guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,11 +242,25 @@ public class JPCrearSensor extends javax.swing.JPanel {
 			Logger.getLogger(JPCrearSensor.class.getName()).log(
 					Level.SEVERE, null, ex);
 		} catch (CodigoRepetidoException ex) {
-			JOptionPane.showMessageDialog(this, "Problemas al guardar el sensor");
+			JOptionPane.showMessageDialog(
+					this, "Problemas al guardar el sensor");
 			Logger.getLogger(JPCrearSensor.class.getName()).log(
 					Level.SEVERE, null, ex);
 		}
     }//GEN-LAST:event_b_guardarActionPerformed
+
+    private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
+		final String text = tf_nombre.getText();
+		try {
+			List<Sensor> l = Sensor.findLike(text);
+			if (l.size() > 0) {
+				((SensorTableModel) t_vista.getModel()).setLista(l);
+			}
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPCrearSensor.class.getName()).log(
+					Level.SEVERE, null, ex);
+		}
+    }//GEN-LAST:event_tf_nombreKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -238,4 +284,81 @@ public class JPCrearSensor extends javax.swing.JPanel {
     private javax.swing.JTextField tf_escala;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
+
+	private static class MaquinaCellRenderer implements TableCellRenderer {
+
+		@Override
+		public Component getTableCellRendererComponent(JTable tabla,
+				Object valor, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			JButton b = new JButton("Editar");
+			return b;
+		}
+	}
+
+	private static class MaquinaCellEditor
+			extends AbstractCellEditor
+			implements TableCellEditor {
+
+		@Override
+		public Object getCellEditorValue() {
+			return true;
+		}
+
+		@Override
+		public Component getTableCellEditorComponent(final JTable tabla,
+				Object valor, boolean isSelected, final int row,
+				final int column) {
+			JButton b = new JButton("Editar");
+			b.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(null, "Savaje! ");
+				}
+			});
+			return b;
+		}
+	}
+
+	private class SensorTableModel extends AbstractTableModel {
+
+		String columnas[] = {"Nombre", "Editar"};
+		List<Sensor> l;
+
+		public SensorTableModel(List<Sensor> l) {
+			this.l = l;
+		}
+
+		public void setLista(List<Sensor> l) {
+			this.l = l;
+			fireTableDataChanged();
+		}
+
+		@Override
+		public int getRowCount() {
+			return l.size();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return columnas.length;
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return columnas[column];
+		}
+
+		@Override
+		public Object getValueAt(int row, int column) {
+			return l.get(row);
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return columnIndex == 1;
+		}
+
+	}
 }
