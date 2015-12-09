@@ -14,7 +14,26 @@ import java.util.Objects;
 public class Maquina {
 
 	public static List<Maquina> findAll() throws SinBaseDatosException {
-		return MaquinaDAL.findAll();
+		List<Maquina> l = MaquinaDAL.findAll();
+		return l;
+	}
+
+	public static List<Maquina> findLike(String text)
+			throws SinBaseDatosException {
+		List<Maquina> l = MaquinaDAL.findLike(text);
+		for (Maquina m : l) {
+			m.findDependencias();
+		}
+		return l;
+	}
+
+	public static List<Maquina> findAllWithDependency() 
+			throws SinBaseDatosException {
+		List<Maquina> l = MaquinaDAL.findAll();
+		for (Maquina m : l) {
+			m.findDependencias();
+		}
+		return l;
 	}
 
 	private Integer id;
@@ -35,20 +54,24 @@ public class Maquina {
 		this.detalle = detalle;
 	}
 
-	public Maquina(int id, String nombre, String detalle,Lugar lugar) {
+	public Maquina(int id, String nombre, String detalle, Lugar lugar) {
 		this.id = id;
 		this.nombre = nombre;
 		this.detalle = detalle;
 		this.lugar = lugar;
 	}
 
-	public static Maquina find(int id) throws SinBaseDatosException{
+	public static Maquina find(int id) throws SinBaseDatosException {
 		return MaquinaDAL.find(id);
 	}
 
-	public void findLugar() throws SinBaseDatosException{
+	public void findLugar() throws SinBaseDatosException {
 		Lugar lugar = LugarDAL.findByMaquina(id);
 		setLugar(lugar);
+	}
+
+	public void findDependencias() throws SinBaseDatosException {
+		findLugar();
 	}
 
 	public boolean save() throws SinBaseDatosException, CodigoRepetidoException {
@@ -65,9 +88,10 @@ public class Maquina {
 		return s;
 	}
 
-	public boolean delete() throws SinBaseDatosException{
+	public boolean delete() throws SinBaseDatosException {
 		return MaquinaDAL.delete(id);
 	}
+
 	public int getId() {
 		return id;
 	}

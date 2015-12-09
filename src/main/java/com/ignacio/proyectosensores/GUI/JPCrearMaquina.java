@@ -4,11 +4,21 @@ import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -22,17 +32,22 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 
 	/**
 	 * Creates new form JPCrearMaquina
+	 *
+	 * @throws com.ignacio.proyectosensores.DAL.SinBaseDatosException
 	 */
 	public JPCrearMaquina() throws SinBaseDatosException {
 		m = new Maquina();
 		initComponents();
-		List<Maquina> maquinas = Maquina.findAll();
+		List<Maquina> maquinas = Maquina.findAllWithDependency();
 		mtm = new MaquinaTableModel(maquinas);
 		t_maquinas.setModel(mtm);
+		t_maquinas.setRowHeight(24);
 		List<Lugar> lugares = Lugar.findAll();
 		lcb = new LugarComboBox(lugares);
 		cb_lugar.setModel(lcb);
 		cb_lugar.setSelectedIndex(0);
+		t_maquinas.setDefaultEditor(Lugar.class, new MaquinaCellEditor(lugares));
+		t_maquinas.setDefaultRenderer(Lugar.class, new MaquinaCellRenderer());
 	}
 
 	/**
@@ -48,7 +63,7 @@ public class JPCrearMaquina extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tf_nombre = new javax.swing.JTextField();
-        cb_lugar = new javax.swing.JComboBox<String>();
+        cb_lugar = new javax.swing.JComboBox<Lugar>();
         b_crear = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -56,7 +71,7 @@ public class JPCrearMaquina extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         t_maquinas = new javax.swing.JTable();
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Creación"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setText("Nombre:");
 
@@ -102,7 +117,7 @@ public class JPCrearMaquina extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cb_lugar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tf_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                            .addComponent(tf_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                             .addComponent(jScrollPane2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -153,24 +168,28 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 
     private void cb_lugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_lugarActionPerformed
 		final int lugar_i = cb_lugar.getSelectedIndex();
-		final Lugar l = lcb.getAt(lugar_i);
+		final Lugar l = lcb.getElementAt(lugar_i);
 		m.setLugar(l);
     }//GEN-LAST:event_cb_lugarActionPerformed
 
     private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
-		String detalle = ta_detalle.getText();
-		m.setDetalle(detalle);
-		System.out.println("Maquina {" + m.getNombre() + ", " + m.getLugar().getNombre() + "}");
-		try {
-			m.save();
-			JOptionPane.showMessageDialog(this, "Registro guardado", "Exito",
-				JOptionPane.INFORMATION_MESSAGE);
-		} catch (SinBaseDatosException ex) {
-			JOptionPane.showMessageDialog(this, "Sin base de datos",
-				"Error", JOptionPane.ERROR_MESSAGE);
-		} catch (CodigoRepetidoException ex) {
-			JOptionPane.showMessageDialog(this, "El codigo ya existe",
-				"Error", JOptionPane.ERROR_MESSAGE);
+		if (!tf_nombre.getText().isEmpty()) {
+			String detalle = ta_detalle.getText();
+			m.setDetalle(detalle);
+			System.out.println("Maquina {" + m.getNombre() + ", " + m.getLugar().getNombre() + "}");
+			try {
+				m.save();
+				JOptionPane.showMessageDialog(this, "Registro guardado", "Exito",
+						JOptionPane.INFORMATION_MESSAGE);
+				mtm = new MaquinaTableModel(Maquina.findAllWithDependency());
+				t_maquinas.setModel(mtm);
+			} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(this, "Sin base de datos",
+						"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(this, "El codigo ya existe",
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
     }//GEN-LAST:event_b_crearActionPerformed
 
@@ -181,12 +200,22 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 		} else {
 			m.setNombre(null);
 		}
+		List<Maquina> l;
+		try {
+			l = Maquina.findLike(text);
+			if (l.size() > 0) {
+				mtm = new MaquinaTableModel(l);
+				t_maquinas.setModel(mtm);
+			}
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPCrearMaquina.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }//GEN-LAST:event_tf_nombreKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_crear;
-    private javax.swing.JComboBox<String> cb_lugar;
+    private javax.swing.JComboBox<Lugar> cb_lugar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -201,6 +230,7 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 	class MaquinaTableModel extends AbstractTableModel {
 
 		private final List<Maquina> maquinas;
+		private final String columnas[] = {"Maquina", "Lugar"};
 
 		public MaquinaTableModel() {
 			maquinas = new ArrayList();
@@ -211,37 +241,67 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 		}
 
 		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			return getValueAt(0, columnIndex).getClass();
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return true;
+		}
+
+		@Override
 		public Object getValueAt(int row, int column) {
-			return maquinas.get(row);
-		}
-
-		@Override
-		public int getRowCount() {
-			if (maquinas != null) {
-				return maquinas.size();
-			}
-			return 0;
-		}
-
-		@Override
-		public String getColumnName(int column) {
 			switch (column) {
 				case 0:
-					return "Nombre";
+					return maquinas.get(row).getNombre();
 				case 1:
-					return "Lugar";
+					return maquinas.get(row).getLugar();
 				default:
 					throw new AssertionError();
 			}
 		}
 
 		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			Maquina m = maquinas.get(rowIndex);
+			switch (columnIndex) {
+				case 0:
+					m.setNombre((String) aValue);
+					break;
+				case 1:
+					m.setLugar((Lugar) aValue);
+					break;
+				default:
+					throw new AssertionError();
+			}
+			try {
+				m.save();
+			} catch (SinBaseDatosException ex) {
+				JOptionPane.showMessageDialog(null, "Sin base de datos");
+			} catch (CodigoRepetidoException ex) {
+				JOptionPane.showMessageDialog(null, "No se pudo guardar");
+				Logger.getLogger(JPCrearMaquina.class.getName()).log(Level.SEVERE, ex.getMessage());
+			}
+		}
+
+		@Override
+		public int getRowCount() {
+			return maquinas.size();
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return columnas[column];
+		}
+
+		@Override
 		public int getColumnCount() {
-			return 2;
+			return columnas.length;
 		}
 	}
 
-	private class LugarComboBox extends DefaultComboBoxModel<String> {
+	private class LugarComboBox extends DefaultComboBoxModel<Lugar> {
 
 		private final List<Lugar> lugares;
 
@@ -249,18 +309,64 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 			this.lugares = lugares;
 		}
 
-		public Lugar getAt(int index) {
-			return lugares.get(index);
-		}
-
 		@Override
-		public String getElementAt(int index) {
-			return lugares.get(index).getNombre();
+		public Lugar getElementAt(int index) {
+			return lugares.get(index);
 		}
 
 		@Override
 		public int getSize() {
 			return lugares.size();
+		}
+	}
+
+	private class MaquinaCellEditor
+			extends AbstractCellEditor
+			implements TableCellEditor {
+
+		private Lugar m;
+		private List<Lugar> l;
+
+		public MaquinaCellEditor(List<Lugar> lista) {
+			this.l = lista;
+		}
+
+		@Override
+		public Object getCellEditorValue() {
+			return m;
+		}
+
+		@Override
+		public Component getTableCellEditorComponent(
+				JTable arg0, Object arg1, boolean arg2, int arg3, int arg4) {
+			JComboBox<Lugar> c = new JComboBox<>();
+			for (Lugar lugar : l) {
+				c.addItem(lugar);
+			}
+			c.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JComboBox<Maquina> c = (JComboBox<Maquina>) e.getSource();
+					m = (Lugar) c.getSelectedItem();
+				}
+			});
+			return c;
+		}
+
+	}
+
+	private class MaquinaCellRenderer implements TableCellRenderer {
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value,
+				boolean isSelected, boolean hasFocus, int row, int column) {
+			Lugar l = null;
+			if (value instanceof Lugar) {
+				l = (Lugar) value;
+			}
+			JComboBox<Lugar> b = new JComboBox();
+			b.addItem(l);
+			return b;
 		}
 	}
 }

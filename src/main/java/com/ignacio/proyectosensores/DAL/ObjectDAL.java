@@ -113,6 +113,7 @@ public class ObjectDAL {
 
 	public static ArrayList<Object[]> findRaw(String consulta) throws SinBaseDatosException {
 		ArrayList<Object[]> al = new ArrayList();
+		consulta = consulta.toLowerCase();
 		try {
 			BD bd = new BD();
 			ResultSet r = bd.createStatement().executeQuery(consulta);
