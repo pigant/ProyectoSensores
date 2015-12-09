@@ -21,6 +21,18 @@ public class Sensor {
 		return SensorDAL.findLike(text);
 	}
 
+	public static List<Sensor> findAll() throws SinBaseDatosException {
+		return SensorDAL.findAll();
+	}
+
+	public static List<Sensor> findAllWithDependency() throws SinBaseDatosException {
+		List<Sensor> l = SensorDAL.findAll();
+		for (Sensor s : l) {
+			s.findDependencias();
+		}
+		return l;
+	}
+
 	private Integer id;
 	private String nombre;
 	private String escala;
