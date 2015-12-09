@@ -5,6 +5,7 @@ import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
 import com.ignacio.proyectosensores.GUI.JPCrearLugar;
 import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
 import com.ignacio.proyectosensores.GUI.JPCrearProtocolo;
+import com.ignacio.proyectosensores.GUI.JPCrearSensor;
 import com.ignacio.proyectosensores.GUI.JPCrearTag;
 import com.ignacio.proyectosensores.GUI.JPCrearTipoSensor;
 import com.ignacio.proyectosensores.GUI.JPCrearTipoUnidad;
@@ -42,6 +43,7 @@ public class Main extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mi_crearLugar = new javax.swing.JMenuItem();
         mi_crearMaquina = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         mi_crearProtocolo = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -73,6 +75,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mi_crearMaquina);
+
+        jMenuItem5.setText("Sensor");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
 
         mi_crearProtocolo.setText("Protocolo");
         mi_crearProtocolo.addActionListener(new java.awt.event.ActionListener() {
@@ -173,6 +183,11 @@ public class Main extends javax.swing.JFrame {
 		actualizarPantalla(j);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+		JPCrearSensor j = new JPCrearSensor();
+		actualizarPantalla(j);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -218,6 +233,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem mi_crearLugar;
     private javax.swing.JMenuItem mi_crearMaquina;
     private javax.swing.JMenuItem mi_crearProtocolo;
