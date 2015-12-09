@@ -105,4 +105,9 @@ public class TipoUnidad {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return nombre;
+	}
+
 }

@@ -1,13 +1,17 @@
 package com.ignacio.proyectosensores.GUI;
 
 import com.ignacio.proyectosensores.BLL.Maquina;
+import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import javax.swing.JOptionPane;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 /**
  *
@@ -15,18 +19,26 @@ import java.util.logging.Logger;
  */
 public class JPCrearSensor extends javax.swing.JPanel {
 
+	Sensor s = new Sensor();
+
 	/**
 	 * Creates new form JPCrearSensor
 	 */
 	public JPCrearSensor() {
 		initComponents();
 		List<Maquina> maquinas;
+		List<TipoSensor> tipoSensores;
+		List<TipoUnidad> tipoUnidades;
 		try {
 			maquinas = Maquina.findAll();
-			for (Maquina m : maquinas) {
-				cb_maquina.addItem(m);
-				//AutoCompleteDecorator.decorate(cb_maquina);
-			}
+			tipoSensores = TipoSensor.findAll();
+			tipoUnidades = TipoUnidad.findAll();
+			cb_maquina.setModel(new ListComboBoxModel<>(maquinas));
+			cb_sensor.setModel(new ListComboBoxModel<>(tipoSensores));
+			cb_unidad.setModel(new ListComboBoxModel<>(tipoUnidades));
+			AutoCompleteDecorator.decorate(cb_maquina);
+			AutoCompleteDecorator.decorate(cb_sensor);
+			AutoCompleteDecorator.decorate(cb_unidad);
 		} catch (SinBaseDatosException ex) {
 			Logger.getLogger(JPCrearSensor.class.getName()).log(
 					Level.SEVERE, null, ex);
@@ -42,6 +54,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        escala = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         tf_nombre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -68,12 +81,17 @@ public class JPCrearSensor extends javax.swing.JPanel {
 
         jLabel2.setText("Escala:");
 
+        tf_escala.setToolTipText("Por ejemplo 2*x+1, donde cada oparacion debe dejarse expresada explicitamente");
+
         jLabel3.setText("Descripción:");
 
         jLabel4.setText("Tipo de escala:");
 
+        escala.add(rb_positivo);
+        rb_positivo.setSelected(true);
         rb_positivo.setText("Positiva");
 
+        escala.add(rb_negativo);
         rb_negativo.setText("Negativa");
 
         jLabel5.setText("Tipo de unidad:");
@@ -82,9 +100,12 @@ public class JPCrearSensor extends javax.swing.JPanel {
 
         jLabel7.setText("Maquina:");
 
-        cb_maquina.setEditable(true);
-
         b_guardar.setText("Guardar");
+        b_guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_guardarActionPerformed(evt);
+            }
+        });
 
         t_vista.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -173,12 +194,35 @@ public class JPCrearSensor extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void b_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_guardarActionPerformed
+		s.setNombre(tf_nombre.getText());
+		s.setEscala(tf_escala.getText());
+		s.setEscalaPositiva(rb_positivo.isSelected());
+		s.setDetalle(tf_descripcion.getText());
+		s.setMaquina((Maquina) cb_maquina.getSelectedItem());
+		s.setTipoSensor((TipoSensor) cb_sensor.getSelectedItem());
+		s.setTipoUnidad((TipoUnidad) cb_unidad.getSelectedItem());
+		try {
+			s.save();
+			JOptionPane.showMessageDialog(this, "Guardado exitosamente");
+		} catch (SinBaseDatosException ex) {
+			JOptionPane.showMessageDialog(this, "Sin base de datos");
+			Logger.getLogger(JPCrearSensor.class.getName()).log(
+					Level.SEVERE, null, ex);
+		} catch (CodigoRepetidoException ex) {
+			JOptionPane.showMessageDialog(this, "Problemas al guardar el sensor");
+			Logger.getLogger(JPCrearSensor.class.getName()).log(
+					Level.SEVERE, null, ex);
+		}
+    }//GEN-LAST:event_b_guardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_guardar;
     private javax.swing.JComboBox<Maquina> cb_maquina;
     private javax.swing.JComboBox<TipoSensor> cb_sensor;
     private javax.swing.JComboBox<TipoUnidad> cb_unidad;
+    private javax.swing.ButtonGroup escala;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
