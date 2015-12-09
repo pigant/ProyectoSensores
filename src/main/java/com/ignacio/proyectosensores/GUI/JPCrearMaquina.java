@@ -176,7 +176,8 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 		if (!tf_nombre.getText().isEmpty()) {
 			String detalle = ta_detalle.getText();
 			m.setDetalle(detalle);
-			System.out.println("Maquina {" + m.getNombre() + ", " + m.getLugar().getNombre() + "}");
+			System.out.println("Maquina {" + m.getNombre() + ", "
+					+ m.getLugar().getNombre() + "}");
 			try {
 				m.save();
 				JOptionPane.showMessageDialog(this, "Registro guardado", "Exito",
