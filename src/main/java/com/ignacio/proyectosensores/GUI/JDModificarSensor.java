@@ -276,6 +276,7 @@ public class JDModificarSensor extends javax.swing.JDialog {
 
 		/* Create and display the dialog */
 		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				JDModificarSensor dialog = new JDModificarSensor(
 						new javax.swing.JFrame(), true, new Sensor());
