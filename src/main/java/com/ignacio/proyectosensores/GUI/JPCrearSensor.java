@@ -6,7 +6,9 @@ import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import com.ignacio.proyectosensores.Main;
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -28,7 +31,7 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  */
 public class JPCrearSensor extends javax.swing.JPanel {
 
-	Sensor s = new Sensor();
+	private final Sensor s = new Sensor();
 
 	/**
 	 * Creates new form JPCrearSensor
@@ -36,6 +39,10 @@ public class JPCrearSensor extends javax.swing.JPanel {
 	public JPCrearSensor() {
 		initComponents();
 		rellenoComboBox();
+		rellenoTabla();
+	}
+
+	private void rellenoTabla() throws HeadlessException {
 		try {
 			List<Sensor> ls = Sensor.findAll();
 			t_vista.setModel(new SensorTableModel(ls));
@@ -86,7 +93,6 @@ public class JPCrearSensor extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         tf_escala = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        tf_descripcion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         rb_positivo = new javax.swing.JRadioButton();
         rb_negativo = new javax.swing.JRadioButton();
@@ -99,6 +105,8 @@ public class JPCrearSensor extends javax.swing.JPanel {
         b_guardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_vista = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ta_descripcion = new javax.swing.JTextArea();
 
         setMinimumSize(new java.awt.Dimension(500, 500));
         setPreferredSize(new java.awt.Dimension(500, 500));
@@ -152,6 +160,10 @@ public class JPCrearSensor extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(t_vista);
 
+        ta_descripcion.setColumns(20);
+        ta_descripcion.setRows(5);
+        jScrollPane2.setViewportView(ta_descripcion);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -174,12 +186,13 @@ public class JPCrearSensor extends javax.swing.JPanel {
                             .addComponent(cb_unidad, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tf_nombre, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tf_escala, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cb_maquina, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(rb_positivo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rb_negativo))
-                            .addComponent(tf_descripcion, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cb_maquina, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(rb_negativo)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,7 +214,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(tf_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(rb_negativo)
@@ -222,7 +235,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(b_guardar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -230,7 +243,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
 		s.setNombre(tf_nombre.getText());
 		s.setEscala(tf_escala.getText());
 		s.setEscalaPositiva(rb_positivo.isSelected());
-		s.setDetalle(tf_descripcion.getText());
+		s.setDetalle(ta_descripcion.getText());
 		s.setMaquina((Maquina) cb_maquina.getSelectedItem());
 		s.setTipoSensor((TipoSensor) cb_sensor.getSelectedItem());
 		s.setTipoUnidad((TipoUnidad) cb_unidad.getSelectedItem());
@@ -277,13 +290,16 @@ public class JPCrearSensor extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JRadioButton rb_negativo;
     private javax.swing.JRadioButton rb_positivo;
     private javax.swing.JTable t_vista;
-    private javax.swing.JTextField tf_descripcion;
+    private javax.swing.JTextArea ta_descripcion;
     private javax.swing.JTextField tf_escala;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
+
+	private final JPCrearSensor instancia = this;
 
 	private static class MaquinaCellRenderer implements TableCellRenderer {
 
@@ -310,11 +326,18 @@ public class JPCrearSensor extends javax.swing.JPanel {
 				Object valor, boolean isSelected, final int row,
 				final int column) {
 			JButton b = new JButton("Editar");
+			final JPCrearSensor panel = ((JPCrearSensor) 
+					tabla.getParent().getParent().getParent());
+			final Sensor s = (Sensor) tabla.getModel().getValueAt(row, column);
+			s.findDependencias();
 			b.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(null, "Savaje! ");
+					JDModificarSensor d = new JDModificarSensor(
+							Main.instancia, true, s);
+					d.setVisible(true);
+					panel.rellenoTabla();
 				}
 			});
 			return b;

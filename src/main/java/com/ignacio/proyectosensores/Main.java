@@ -26,7 +26,10 @@ public class Main extends javax.swing.JFrame {
 		initComponents();
 		p_principal.add(new JPCrearTag(this));
 		p_principal.repaint();
+		instancia = this;
 	}
+
+	public static Main instancia = null; 
 
 	/**
 	 * This method is called from within the constructor to initialize
