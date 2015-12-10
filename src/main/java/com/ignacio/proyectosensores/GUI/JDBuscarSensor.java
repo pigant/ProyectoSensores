@@ -1,12 +1,19 @@
 package com.ignacio.proyectosensores.GUI;
 
+import com.ignacio.proyectosensores.BLL.Lugar;
+import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JComboBox;
+import javax.swing.table.AbstractTableModel;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -14,8 +21,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JDBuscarSensor extends javax.swing.JDialog {
 
-	private SensorCompuestoTableModel stm = new SensorCompuestoTableModel(new ArrayList<Sensor>());
+	private SensorTableModel stm;
 	private Sensor sensorSeleccionado;
+	private Set<Lugar> lugares;
+	private Set<Maquina> maquinas;
 
 	public Sensor getSensorSeleccionado() {
 		return sensorSeleccionado;
@@ -23,10 +32,38 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 
 	/**
 	 * Creates new form JDBuscarSensor
+	 *
+	 * @param parent
+	 * @param modal
+	 * @param sensores
 	 */
-	public JDBuscarSensor(java.awt.Frame parent, boolean modal) {
+	public JDBuscarSensor(java.awt.Frame parent, boolean modal,
+			List<Sensor> sensores) {
 		super(parent, modal);
+		stm = new SensorTableModel(sensores);
 		initComponents();
+		rellenoComboBox(sensores);
+	}
+
+	private void rellenoComboBox(List<Sensor> sensores) {
+		List<ActionListener[]> arrayAction = quitarListener(cb_lugar, cb_maquina);
+		lugares = new HashSet<>();
+		maquinas = new HashSet<>();
+		for (Sensor s : sensores) {
+			lugares.add(s.getMaquina().getLugar());
+			maquinas.add(s.getMaquina());
+		}
+		for (Lugar l : lugares) {
+			cb_lugar.addItem(l);
+		}
+		for (Maquina m : maquinas) {
+			cb_maquina.addItem(m);
+		}
+		cb_lugar.setSelectedIndex(-1);
+		cb_maquina.setSelectedIndex(-1);
+		AutoCompleteDecorator.decorate(cb_lugar);
+		AutoCompleteDecorator.decorate(cb_maquina);
+		addActionListener(arrayAction, cb_lugar, cb_maquina);
 	}
 
 	/**
@@ -40,8 +77,15 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 
         tf_fuzzy = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        t_vista = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cb_maquina = new javax.swing.JComboBox<Maquina>();
+        jLabel3 = new javax.swing.JLabel();
+        cb_lugar = new javax.swing.JComboBox<Lugar>();
+        b_limpiar = new javax.swing.JButton();
+        b_salir = new javax.swing.JButton();
+        b_seleccionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -59,15 +103,52 @@ public class JDBuscarSensor extends javax.swing.JDialog {
             }
         });
 
-        jTable1.setModel(stm);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        t_vista.setModel(stm);
+        t_vista.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                t_vistaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(t_vista);
 
         jLabel1.setText("Búsqueda:");
+
+        jLabel2.setText("Filtrar por maquina:");
+
+        cb_maquina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_maquinaActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Filtrar por lugar:");
+
+        cb_lugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_lugarActionPerformed(evt);
+            }
+        });
+
+        b_limpiar.setText("Limpiar filtros");
+        b_limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_limpiarActionPerformed(evt);
+            }
+        });
+
+        b_salir.setText("Salir");
+        b_salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_salirActionPerformed(evt);
+            }
+        });
+
+        b_seleccionar.setText("Seleccionar");
+        b_seleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_seleccionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,9 +159,22 @@ public class JDBuscarSensor extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tf_fuzzy)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tf_fuzzy)
+                            .addComponent(cb_lugar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cb_maquina, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(b_limpiar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(b_seleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(b_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -90,8 +184,23 @@ public class JDBuscarSensor extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1)
                     .addComponent(tf_fuzzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cb_maquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cb_lugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(b_limpiar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(b_salir)
+                    .addComponent(b_seleccionar))
+                .addContainerGap())
         );
 
         pack();
@@ -106,7 +215,8 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 					System.out.println(s);
 				}
 			} catch (SinBaseDatosException ex) {
-				Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(JDBuscarSensor.class.getName()).
+						log(Level.SEVERE, null, ex);
 			}
 		}
     }//GEN-LAST:event_tf_fuzzyActionPerformed
@@ -114,33 +224,90 @@ public class JDBuscarSensor extends javax.swing.JDialog {
     private void tf_fuzzyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_fuzzyKeyTyped
     }//GEN-LAST:event_tf_fuzzyKeyTyped
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void t_vistaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_vistaMouseClicked
 		if (evt.getClickCount() == 2) {
-			int seleccionado = jTable1.getSelectedRow();
-			sensorSeleccionado = (Sensor) stm.getValueAt(seleccionado, 0);
-			dispose();
+			b_seleccionarActionPerformed(null);
 		}
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_t_vistaMouseClicked
 
     private void tf_fuzzyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_fuzzyKeyReleased
 		String text = tf_fuzzy.getText();
-		List<Sensor> s;
-		if (text.length() > 2) {
-			try {
-				s = Sensor.findLike(text);
-			} catch (SinBaseDatosException ex) {
-				Logger.getLogger(JDBuscarSensor.class.getName()).log(Level.SEVERE, null, ex);
-				s = new ArrayList<>();
-			}
-		} else {
-			s = new ArrayList<>();
-		}
-		stm = new SensorCompuestoTableModel(s);
-		stm.addColumn("Sensor");
-		stm.addColumn("Maquina");
-		stm.addColumn("Lugar");
-		jTable1.setModel(stm);
+		stm.filtrarTexto(text);
     }//GEN-LAST:event_tf_fuzzyKeyReleased
+
+    private void cb_lugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_lugarActionPerformed
+		Lugar l = (Lugar) cb_lugar.getSelectedItem();
+		if (l != null) {
+			stm.filtrarPorLugar(l);
+		}
+		((AbstractTableModel) t_vista.getModel()).fireTableDataChanged();
+		ActionListener a[] = cb_maquina.getActionListeners();
+		for (ActionListener a1 : a) {
+			cb_maquina.removeActionListener(a1);
+		}
+		cb_maquina.removeAllItems();
+		for (Maquina m : maquinas) {
+			if (m.getLugar().equals(l)) {
+				cb_maquina.addItem(m);
+			}
+		}
+		cb_maquina.setSelectedIndex(-1);
+		for (ActionListener a1 : a) {
+			cb_maquina.addActionListener(a1);
+		}
+    }//GEN-LAST:event_cb_lugarActionPerformed
+
+    private void cb_maquinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_maquinaActionPerformed
+		Maquina m = (Maquina) cb_maquina.getSelectedItem();
+		stm.filtrarPorMaquina(m);
+		((AbstractTableModel) t_vista.getModel()).fireTableDataChanged();
+		if (cb_lugar.getSelectedIndex() == -1) {
+			List<ActionListener[]> a = quitarListener(cb_lugar);
+			cb_lugar.setSelectedItem(m.getLugar());
+			addActionListener(a, cb_lugar);
+		}
+    }//GEN-LAST:event_cb_maquinaActionPerformed
+
+    private void b_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_limpiarActionPerformed
+		List<ActionListener[]> a = quitarListener(cb_lugar, cb_maquina);
+		cb_lugar.setSelectedIndex(-1);
+		cb_maquina.setSelectedIndex(-1);
+		tf_fuzzy.setText("");
+		stm.limpiarFiltros();
+		addActionListener(a, cb_lugar, cb_maquina);
+
+    }//GEN-LAST:event_b_limpiarActionPerformed
+
+	private void addActionListener(List<ActionListener[]> a, JComboBox... c) {
+		for (int i = 0; i < c.length; i++) {
+			ActionListener[] array = a.get(i);
+			for (ActionListener valorArray : array) {
+				c[i].addActionListener(valorArray);
+			}
+		}
+	}
+
+	private List<ActionListener[]> quitarListener(JComboBox... combobox) {
+		ArrayList<ActionListener[]> array = new ArrayList<>(combobox.length);
+		for (JComboBox a : combobox) {
+			final ActionListener[] acciones = a.getActionListeners();
+			array.add(acciones);
+			for (ActionListener a1 : acciones) {
+				a.removeActionListener(a1);
+			}
+		}
+		return array;
+	}
+
+    private void b_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_salirActionPerformed
+		dispose();
+    }//GEN-LAST:event_b_salirActionPerformed
+
+    private void b_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_seleccionarActionPerformed
+		int seleccionado = t_vista.getSelectedRow();
+		sensorSeleccionado = (Sensor) stm.getValueAt(seleccionado, 0);
+		dispose();
+    }//GEN-LAST:event_b_seleccionarActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -149,7 +316,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 		/* Set the Nimbus look and feel */
 		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
 		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
 		 */
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -172,7 +339,8 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 		/* Create and display the dialog */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				JDBuscarSensor dialog = new JDBuscarSensor(new javax.swing.JFrame(), true);
+				JDBuscarSensor dialog = new JDBuscarSensor(
+						new javax.swing.JFrame(), true, new ArrayList());
 				dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 					@Override
 					public void windowClosing(java.awt.event.WindowEvent e) {
@@ -185,45 +353,119 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_limpiar;
+    private javax.swing.JButton b_salir;
+    private javax.swing.JButton b_seleccionar;
+    private javax.swing.JComboBox<Lugar> cb_lugar;
+    private javax.swing.JComboBox<Maquina> cb_maquina;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable t_vista;
     private javax.swing.JTextField tf_fuzzy;
     // End of variables declaration//GEN-END:variables
-}
 
-class SensorCompuestoTableModel extends DefaultTableModel {
+	private class SensorTableModel extends AbstractTableModel {
 
-	final List<Sensor> sensores;
+		final List<Sensor> sensores;
+		List<Sensor> salida;
+		String columnas[] = {"Sensor", "Maquina", "Lugar"};
+		Maquina maquinaFiltro;
+		Lugar lugarFiltro;
 
-	public SensorCompuestoTableModel(List<Sensor> sensores) {
-		this.sensores = sensores;
-	}
-
-	@Override
-	public int getRowCount() {
-		if (sensores != null) {
-			return sensores.size();
+		public SensorTableModel(List<Sensor> sensores) {
+			this.sensores = sensores;
+			salida = sensores;
 		}
-		return 0;
-	}
 
-	@Override
-	public boolean isCellEditable(int row, int column) {
-		return false;
-	}
-
-	@Override
-	public Object getValueAt(int row, int column) {
-		if (column == 0) {
-			return sensores.get(row);
-		} else {
-			return ";";
+		public void limpiarFiltros() {
+			maquinaFiltro = null;
+			lugarFiltro = null;
+			salida = sensores;
+			fireTableDataChanged();
 		}
-	}
 
-	@Override
-	public void addRow(Object[] rowData) {
-	}
+		public void filtrarPorLugar(Lugar l) {
+			lugarFiltro = l;
+			salida = new ArrayList();
+			for (int i = 0; i < sensores.size(); i++) {
+				Lugar lugar = sensores.get(i).getMaquina().getLugar();
+				if (lugar.equals(l)) {
+					salida.add(sensores.get(i));
+				}
+			}
+		}
 
+		public void filtrarPorMaquina(Maquina m) {
+			maquinaFiltro = m;
+			salida = new ArrayList();
+			for (int i = 0; i < sensores.size(); i++) {
+				Maquina maquina = sensores.get(i).getMaquina();
+				if (maquina.equals(m)) {
+					salida.add(sensores.get(i));
+				}
+			}
+		}
+
+		public void filtrarTexto(String s) {
+			ArrayList<Sensor> nls = new ArrayList(salida);
+			boolean encontrado = false;
+			if (maquinaFiltro != null) {
+				filtrarPorMaquina(maquinaFiltro);
+			} else if (lugarFiltro != null) {
+				filtrarPorLugar(lugarFiltro);
+			}else {
+				salida = sensores;
+			}
+			for (Sensor se : salida) {
+				if (se.getNombre().toLowerCase().matches(".*" + s + ".*")) {
+					if (!encontrado) {
+						encontrado = true;
+						nls = new ArrayList<>();
+					}
+					nls.add(se);
+				}
+			}
+			salida = nls;
+			fireTableDataChanged();
+		}
+
+		@Override
+		public int getRowCount() {
+			return salida.size();
+		}
+
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+
+		@Override
+		public Object getValueAt(int row, int column) {
+			Sensor s = salida.get(row);
+			Maquina m = s.getMaquina();
+			switch (column) {
+				case 0:
+					return s;
+				case 1:
+					return m;
+				case 2:
+					return s.getMaquina().getLugar();
+				default:
+					throw new AssertionError();
+			}
+		}
+
+		@Override
+		public int getColumnCount() {
+			return columnas.length;
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return columnas[column];
+		}
+
+	}
 }
