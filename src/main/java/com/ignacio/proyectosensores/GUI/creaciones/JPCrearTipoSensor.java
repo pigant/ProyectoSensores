@@ -1,6 +1,6 @@
-package com.ignacio.proyectosensores.GUI;
+package com.ignacio.proyectosensores.GUI.creaciones;
 
-import com.ignacio.proyectosensores.BLL.Lugar;
+import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.List;
@@ -13,21 +13,27 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author ignacio
  */
-public class JPCrearLugar extends javax.swing.JPanel {
+public class JPCrearTipoSensor extends javax.swing.JPanel {
 
-	List<Lugar> lugares;
+	List<TipoSensor> tipoSensores;
 
 	/**
-	 * Creates new form JPCrearLugar
+	 * Creates new form JPCrearTipoSensor
 	 */
-	public JPCrearLugar() {
+	public JPCrearTipoSensor() {
 		initComponents();
 		try {
-			lugares = Lugar.findAll();
+			tipoSensores = TipoSensor.findAll();
 			actualizarTabla();
 		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(JPCrearLugar.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(JPCrearTipoSensor.class.getName()).log(Level.SEVERE, null, ex);
 		}
+	}
+
+	public final void actualizarTabla() {
+		final TipoSensorTableModel ttm
+				= new TipoSensorTableModel(tipoSensores);
+		t_vista.setModel(ttm);
 	}
 
 	/**
@@ -42,8 +48,8 @@ public class JPCrearLugar extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         tf_nombre = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        t_lugares = new javax.swing.JTable();
-        b_agregar = new javax.swing.JButton();
+        t_vista = new javax.swing.JTable();
+        b_crear = new javax.swing.JButton();
 
         jLabel1.setText("Nombre:");
 
@@ -53,20 +59,13 @@ public class JPCrearLugar extends javax.swing.JPanel {
             }
         });
 
-        t_lugares.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        t_vista.setModel(new TipoSensorTableModel());
+        jScrollPane1.setViewportView(t_vista);
 
-            },
-            new String [] {
-                "Lugares existentes"
-            }
-        ));
-        jScrollPane1.setViewportView(t_lugares);
-
-        b_agregar.setText("Agregar");
-        b_agregar.addActionListener(new java.awt.event.ActionListener() {
+        b_crear.setText("Crear");
+        b_crear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_agregarActionPerformed(evt);
+                b_crearActionPerformed(evt);
             }
         });
 
@@ -75,41 +74,37 @@ public class JPCrearLugar extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tf_nombre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(b_agregar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addGap(14, 14, 14)
+                        .addComponent(b_crear)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1)
                     .addComponent(tf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(b_agregar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(b_crear))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
+    private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
 		final String text = tf_nombre.getText();
 		if (!text.isEmpty()) {
-			Lugar l = new Lugar(text);
+			TipoSensor l = new TipoSensor(text);
 			try {
 				l.save();
-				lugares = Lugar.findAll();
-				actualizarTabla();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(this, "Sin base de datos",
 						"Error", JOptionPane.ERROR_MESSAGE);
@@ -117,14 +112,15 @@ public class JPCrearLugar extends javax.swing.JPanel {
 				JOptionPane.showMessageDialog(this, "El codigo ya existe",
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
+			actualizarTabla();
 		}
-    }//GEN-LAST:event_b_agregarActionPerformed
+    }//GEN-LAST:event_b_crearActionPerformed
 
     private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
 		try {
-			List<Lugar> t = Lugar.findLike(tf_nombre.getText());
+			List<TipoSensor> t = TipoSensor.findLike(tf_nombre.getText());
 			if (t.size() > 0) {
-				lugares = t;
+				tipoSensores = t;
 				actualizarTabla();
 			}
 		} catch (SinBaseDatosException ex) {
@@ -132,28 +128,27 @@ public class JPCrearLugar extends javax.swing.JPanel {
 		}
     }//GEN-LAST:event_tf_nombreKeyReleased
 
-	public void actualizarTabla() {
-		final LugarTableModel ltm = new LugarTableModel(lugares);
-		t_lugares.setModel(ltm);
-	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b_agregar;
+    private javax.swing.JButton b_crear;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable t_lugares;
+    private javax.swing.JTable t_vista;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
 
-	private class LugarTableModel extends AbstractTableModel {
+	private class TipoSensorTableModel extends AbstractTableModel {
 
-		List<Lugar> l;
+		List<TipoSensor> l;
 
-		private LugarTableModel(List<Lugar> lugares) {
-			this.l = lugares;
+		public TipoSensorTableModel() {
 		}
 
-		public Lugar getAt(int index) {
+		public TipoSensorTableModel(List<TipoSensor> lista) {
+			this.l = lista;
+		}
+
+		public TipoSensor getAt(int index) {
 			return l.get(index);
 		}
 
@@ -163,32 +158,23 @@ public class JPCrearLugar extends javax.swing.JPanel {
 		}
 
 		@Override
-		public String getColumnName(int column) {
-			switch (column) {
-				case 0:
-					return "Lugares existentes";
-				default:
-					throw new AssertionError();
-			}
-		}
-
-		@Override
 		public int getColumnCount() {
 			return 1;
 		}
 
 		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			return l.get(rowIndex);
+		public Object getValueAt(int arg0, int arg1) {
+			TipoSensor t = l.get(arg0);
+			return t.getNombre();
 		}
 
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 			super.setValueAt(aValue, rowIndex, columnIndex); //To change body of generated methods, choose Tools | Templates.
-			Lugar lugar = l.get(rowIndex);
-			lugar.setNombre((String) aValue);
+			TipoSensor sensor = l.get(rowIndex);
+			sensor.setNombre((String) aValue);
 			try {
-				lugar.save();
+				sensor.save();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(null,
 						"Sin base de datos");
@@ -206,5 +192,9 @@ public class JPCrearLugar extends javax.swing.JPanel {
 			return true;
 		}
 
+		@Override
+		public String getColumnName(int column) {
+			return "Tipo de sensores";
+		}
 	}
 }

@@ -1,6 +1,6 @@
-package com.ignacio.proyectosensores.GUI;
+package com.ignacio.proyectosensores.GUI.creaciones;
 
-import com.ignacio.proyectosensores.BLL.Protocolo;
+import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
@@ -14,14 +14,27 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author ignacio
  */
-public class JPCrearProtocolo extends javax.swing.JPanel {
+public class JPCrearTipoUnidad extends javax.swing.JPanel {
 
 	/**
-	 * Creates new form JPCrearProtocolo
+	 * Creates new form JPCrearTipoUnidad
 	 */
-	public JPCrearProtocolo() {
+	public JPCrearTipoUnidad() {
 		initComponents();
-		actualizarTabla();
+		try {
+			tipoUnidades = TipoUnidad.findAll();
+			actualizarTabla();
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	List<TipoUnidad> tipoUnidades;
+
+	public final void actualizarTabla() {
+		final TipoUnidadTableModel ttm
+				= new TipoUnidadTableModel(tipoUnidades);
+		t_vista.setModel(ttm);
 	}
 
 	/**
@@ -37,9 +50,15 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
         tf_nombre = new javax.swing.JTextField();
         b_crear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        t_protocolo = new javax.swing.JTable();
+        t_vista = new javax.swing.JTable();
 
         jLabel1.setText("Nombre:");
+
+        tf_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tf_nombreKeyReleased(evt);
+            }
+        });
 
         b_crear.setText("Crear");
         b_crear.addActionListener(new java.awt.event.ActionListener() {
@@ -48,8 +67,8 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
             }
         });
 
-        t_protocolo.setModel(new ProtocoloTableModel());
-        jScrollPane1.setViewportView(t_protocolo);
+        t_vista.setModel(new TipoUnidadTableModel());
+        jScrollPane1.setViewportView(t_vista);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -58,11 +77,11 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tf_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                        .addComponent(tf_nombre)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(b_crear)))
                 .addContainerGap())
@@ -84,9 +103,9 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
     private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
 		final String text = tf_nombre.getText();
 		if (!text.isEmpty()) {
-			Protocolo p = new Protocolo(text);
+			TipoUnidad l = new TipoUnidad(text);
 			try {
-				p.save();
+				l.save();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(this, "Sin base de datos",
 						"Error", JOptionPane.ERROR_MESSAGE);
@@ -94,44 +113,56 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
 				JOptionPane.showMessageDialog(this, "El codigo ya existe",
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
-			actualizarTabla();
+			try {
+				tipoUnidades = TipoUnidad.findAll();
+				actualizarTabla();
+			} catch (SinBaseDatosException ex) {
+				Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
     }//GEN-LAST:event_b_crearActionPerformed
 
-	public void actualizarTabla() {
+    private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
 		try {
-			List<Protocolo> protocolos = Protocolo.findAll();
-			ProtocoloTableModel ptm = new ProtocoloTableModel(protocolos);
-			t_protocolo.setModel(ptm);
-			System.out.println(protocolos);
+			List<TipoUnidad> t = TipoUnidad.findLike(tf_nombre.getText());
+			if (t.size() > 0) {
+				tipoUnidades = t;
+				actualizarTabla();
+			}
 		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(JPCrearLugar.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
 		}
-	}
+
+    }//GEN-LAST:event_tf_nombreKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_crear;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable t_protocolo;
+    private javax.swing.JTable t_vista;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
 
-	private class ProtocoloTableModel extends AbstractTableModel {
+	private class TipoUnidadTableModel extends AbstractTableModel {
 
-		final List<Protocolo> protocolos;
+		List<TipoUnidad> l;
 
-		public ProtocoloTableModel() {
-			protocolos = new ArrayList<>();
+		public TipoUnidadTableModel() {
+			l = new ArrayList();
 		}
 
-		public ProtocoloTableModel(List<Protocolo> protocolos) {
-			this.protocolos = protocolos;
+		public TipoUnidadTableModel(List<TipoUnidad> lista) {
+			this.l = lista;
+		}
+
+		public TipoUnidad getAt(int index) {
+			return l.get(index);
 		}
 
 		@Override
 		public int getRowCount() {
-			return protocolos.size();
+			return l.size();
 		}
 
 		@Override
@@ -140,17 +171,18 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
 		}
 
 		@Override
-		public Object getValueAt(int row, int column) {
-			return protocolos.get(row);
+		public Object getValueAt(int arg0, int arg1) {
+			TipoUnidad t = l.get(arg0);
+			return t.getNombre();
 		}
 
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 			super.setValueAt(aValue, rowIndex, columnIndex); //To change body of generated methods, choose Tools | Templates.
-			Protocolo protocolo = protocolos.get(rowIndex);
-			protocolo.setNombre((String) aValue);
+			TipoUnidad unidad = l.get(rowIndex);
+			unidad.setNombre((String) aValue);
 			try {
-				protocolo.save();
+				unidad.save();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(null,
 						"Sin base de datos");
@@ -170,12 +202,7 @@ public class JPCrearProtocolo extends javax.swing.JPanel {
 
 		@Override
 		public String getColumnName(int column) {
-			if (column == 0) {
-				return "Protocolos";
-			} else {
-				return "";
-			}
+			return "Tipo de unidades";
 		}
-
 	}
 }

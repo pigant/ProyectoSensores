@@ -1,4 +1,4 @@
-package com.ignacio.proyectosensores.GUI;
+package com.ignacio.proyectosensores.GUI.creaciones;
 
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.Sensor;
@@ -6,6 +6,7 @@ import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import com.ignacio.proyectosensores.GUI.JDModificarSensor;
 import com.ignacio.proyectosensores.Main;
 import java.awt.Component;
 import java.awt.HeadlessException;
@@ -98,9 +99,9 @@ public class JPCrearSensor extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        cb_unidad = new javax.swing.JComboBox<TipoUnidad>();
-        cb_sensor = new javax.swing.JComboBox<TipoSensor>();
-        cb_maquina = new javax.swing.JComboBox<Maquina>();
+        cb_unidad = new javax.swing.JComboBox<>();
+        cb_sensor = new javax.swing.JComboBox<>();
+        cb_maquina = new javax.swing.JComboBox<>();
         b_guardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_vista = new javax.swing.JTable();

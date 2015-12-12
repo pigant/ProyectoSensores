@@ -3,12 +3,17 @@ package com.ignacio.proyectosensores.BLL;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TagDAL;
+import java.util.List;
 
 /**
  *
  * @author ignacio
  */
 public class Tag {
+
+	public static List<Tag> findByLugar(int id) throws SinBaseDatosException {
+		return TagDAL.findByLugar(id);
+	}
 
 	private Integer id;
 	private String nombre;
@@ -27,11 +32,13 @@ public class Tag {
 		this.segundos = segundos;
 	}
 
-	public Tag(Integer id, String nombre, String url, int segundos) {
+	public Tag(Integer id, String nombre, String url,
+			String detalle, int segundos) {
 		this.id = id;
 		this.nombre = nombre;
 		this.url = url;
 		this.segundos = segundos;
+		this.detalle = detalle;
 	}
 
 	public static Tag find(int id) throws SinBaseDatosException {
@@ -42,29 +49,29 @@ public class Tag {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	public boolean save() throws SinBaseDatosException, CodigoRepetidoException, 
-		ParametrosFaltantesException {
+	public boolean save() throws SinBaseDatosException, CodigoRepetidoException,
+			ParametrosFaltantesException {
 		boolean s = false;
 		if (protocolo != null && sensor != null) {
 			if (id != null) {
 				//actualizar
 				s = TagDAL.actualizar(id,
-					nombre, url,
-					segundos, detalle,
-					sensor.getId(),
-					protocolo.getId());
+						nombre, url,
+						segundos, detalle,
+						sensor.getId(),
+						protocolo.getId());
 			} else {
 				//guardar
 				id = TagDAL.guardar(
-					nombre, url,
-					segundos, detalle,
-					sensor.getId(),
-					protocolo.getId());
+						nombre, url,
+						segundos, detalle,
+						sensor.getId(),
+						protocolo.getId());
 				if (id != null) {
 					s = true;
 				}
 			}
-		}else {
+		} else {
 			throw new ParametrosFaltantesException();
 		}
 		return s;
@@ -134,10 +141,11 @@ public class Tag {
 
 	@Override
 	public String toString() {
-		return "Tag{" + "id=" + id + ", nombre=" + nombre
-			+ ", url=" + url + ", segundos=" + segundos
-			+ ", sensor=" + sensor + ", protocolo="
-			+ protocolo + "detalle=" + detalle + '}';
+		return nombre;
+	}
+
+	public void findDependencias() throws SinBaseDatosException {
+		this.sensor = Sensor.findByTag(id);
 	}
 
 }

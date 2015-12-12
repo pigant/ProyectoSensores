@@ -5,6 +5,7 @@
  */
 package com.ignacio.proyectosensores.GUI;
 
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearSensor;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.TipoSensor;

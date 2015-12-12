@@ -83,4 +83,23 @@ public class SensorDAL {
 		return l;
 	}
 
+	public static Sensor findByTag(int id) throws SinBaseDatosException {
+		Sensor s = null;
+		ArrayList<Object[]> p = ObjectDAL.findRaw(
+				"select s.id_sensor, s.nombre, s.escala, s.detalle, s.p_escala "
+				+ "from sensor as s "
+				+ "join tag as t on t.id_sensor=s.id_sensor "
+				+ "where t.id_tag=" + id);
+		if (p.size() > 0) {
+			Object[] o = p.get(0);
+			s = new Sensor(
+					(int) o[0], 		//id
+					(String) o[1], 		//nombre
+					(String) o[2],		//Escala
+					(String) o[3], 		//Detalle
+					(Boolean) o[4]);	//p_escala
+		}
+		return s;
+	}
+
 }
