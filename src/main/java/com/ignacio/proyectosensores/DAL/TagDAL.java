@@ -84,4 +84,21 @@ public class TagDAL {
 		return tags;
 	}
 
+	public static List<Tag> findLike(String text) throws SinBaseDatosException {
+		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_tag, nombre, url, segundos, detalle "
+				+ "from tag "
+				+ "where lower(nombre) like '%" + text + "%'");
+		ArrayList<Tag> t = new ArrayList<>(ob.size());
+		for (Object[] o : ob) {
+			t.add(new Tag(
+					(int) o[0],		//id
+					(String) o[1],	//nombre
+					(String) o[2],	//url
+					(String) o[4],  //detalle
+					(int) o[3]		//detalle
+			));
+		}
+		return t;
+	}
+
 }

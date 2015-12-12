@@ -131,10 +131,20 @@ public class JPVerTodo extends javax.swing.JPanel {
 					= new DefaultMutableTreeNode("Lugares");
 			DefaultMutableTreeNode maquinas
 					= new DefaultMutableTreeNode("Maquinas");
-			root.add(lugares);
-			root.add(maquinas);
+			DefaultMutableTreeNode tags
+					= new DefaultMutableTreeNode("Tags");
 			buscarPorLugar(text, lugares);
 			buscarPorMaquina(text, maquinas);
+			buscarPorTag(text, tags);
+			if (lugares.getChildCount() > 0) {
+				root.add(lugares);
+			}
+			if (maquinas.getChildCount() > 0) {
+				root.add(maquinas);
+			}
+			if (tags.getChildCount() > 0) {
+				root.add(tags);
+			}
 			final DefaultTreeModel modelo = new DefaultTreeModel(root);
 			arbol.setModel(modelo);
 		} catch (SinBaseDatosException ex) {
@@ -199,7 +209,7 @@ public class JPVerTodo extends javax.swing.JPanel {
 		List<Maquina> ms = Maquina.findLike(text);
 		for (Maquina m : ms) {
 			DefaultMutableTreeNode tnMaquina = tnMaquinas.get(m);
-			if (tnMaquina == null){
+			if (tnMaquina == null) {
 				tnMaquina = new DefaultMutableTreeNode(m);
 				tnMaquinas.put(m, tnMaquina);
 			}
@@ -211,6 +221,14 @@ public class JPVerTodo extends javax.swing.JPanel {
 				tnMaquina.add(new DefaultMutableTreeNode(t));
 			}
 
+		}
+	}
+
+	private void buscarPorTag(String text, DefaultMutableTreeNode tags)
+			throws SinBaseDatosException {
+		List<Tag> ts = Tag.findLike(text);
+		for (Tag t : ts) {
+			tags.add(new DefaultMutableTreeNode(t));
 		}
 	}
 }

@@ -19,6 +19,10 @@ public class Tag {
 		return TagDAL.findByMaquina(id);
 	}
 
+	public static List<Tag> findLike(String text) throws SinBaseDatosException {
+		return TagDAL.findLike(text);
+	}
+
 	private Integer id;
 	private String nombre;
 	private String url;
