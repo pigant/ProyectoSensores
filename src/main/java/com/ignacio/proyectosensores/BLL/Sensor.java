@@ -82,6 +82,10 @@ public class Sensor {
 		setTipoUnidad(tu);
 	}
 
+	public static Sensor findByTag(int id) throws SinBaseDatosException{
+		return SensorDAL.findByTag(id);
+	}
+
 	public void findDependencias(){
 		try {
 			findMaquina();

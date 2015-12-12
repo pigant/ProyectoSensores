@@ -1,4 +1,4 @@
-package com.ignacio.proyectosensores.GUI;
+package com.ignacio.proyectosensores.GUI.creaciones;
 
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.ParametrosFaltantesException;
@@ -7,6 +7,7 @@ import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.Tag;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
 import java.awt.HeadlessException;
 import java.util.List;
 import java.util.logging.Level;
@@ -71,7 +72,7 @@ public class JPCrearTag extends javax.swing.JPanel {
         s_tiempo = new javax.swing.JSpinner();
         tf_sensorSeleccionado = new javax.swing.JTextField();
         b_buscarSensor = new javax.swing.JButton();
-        cb_protocolo = new javax.swing.JComboBox<String>();
+        cb_protocolo = new javax.swing.JComboBox<>();
         b_agregar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -99,7 +100,7 @@ public class JPCrearTag extends javax.swing.JPanel {
             }
         });
 
-        s_tiempo.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        s_tiempo.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         tf_sensorSeleccionado.setEditable(false);
 

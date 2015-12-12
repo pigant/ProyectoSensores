@@ -1,4 +1,4 @@
-package com.ignacio.proyectosensores.GUI;
+package com.ignacio.proyectosensores.GUI.creaciones;
 
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
@@ -63,7 +63,7 @@ public class JPCrearMaquina extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tf_nombre = new javax.swing.JTextField();
-        cb_lugar = new javax.swing.JComboBox<Lugar>();
+        cb_lugar = new javax.swing.JComboBox<>();
         b_crear = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();

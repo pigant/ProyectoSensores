@@ -1,8 +1,9 @@
-package com.ignacio.proyectosensores.GUI;
+package com.ignacio.proyectosensores.GUI.creaciones;
 
-import com.ignacio.proyectosensores.BLL.TipoSensor;
+import com.ignacio.proyectosensores.BLL.Protocolo;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,27 +14,14 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author ignacio
  */
-public class JPCrearTipoSensor extends javax.swing.JPanel {
-
-	List<TipoSensor> tipoSensores;
+public class JPCrearProtocolo extends javax.swing.JPanel {
 
 	/**
-	 * Creates new form JPCrearTipoSensor
+	 * Creates new form JPCrearProtocolo
 	 */
-	public JPCrearTipoSensor() {
+	public JPCrearProtocolo() {
 		initComponents();
-		try {
-			tipoSensores = TipoSensor.findAll();
-			actualizarTabla();
-		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(JPCrearTipoSensor.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
-
-	public final void actualizarTabla() {
-		final TipoSensorTableModel ttm
-				= new TipoSensorTableModel(tipoSensores);
-		t_vista.setModel(ttm);
+		actualizarTabla();
 	}
 
 	/**
@@ -47,20 +35,11 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         tf_nombre = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        t_vista = new javax.swing.JTable();
         b_crear = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        t_protocolo = new javax.swing.JTable();
 
         jLabel1.setText("Nombre:");
-
-        tf_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tf_nombreKeyReleased(evt);
-            }
-        });
-
-        t_vista.setModel(new TipoSensorTableModel());
-        jScrollPane1.setViewportView(t_vista);
 
         b_crear.setText("Crear");
         b_crear.addActionListener(new java.awt.event.ActionListener() {
@@ -69,6 +48,9 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
             }
         });
 
+        t_protocolo.setModel(new ProtocoloTableModel());
+        jScrollPane1.setViewportView(t_protocolo);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -76,12 +58,12 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tf_nombre)
-                        .addGap(14, 14, 14)
+                        .addComponent(tf_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(b_crear)))
                 .addContainerGap())
         );
@@ -102,9 +84,9 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
     private void b_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_crearActionPerformed
 		final String text = tf_nombre.getText();
 		if (!text.isEmpty()) {
-			TipoSensor l = new TipoSensor(text);
+			Protocolo p = new Protocolo(text);
 			try {
-				l.save();
+				p.save();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(this, "Sin base de datos",
 						"Error", JOptionPane.ERROR_MESSAGE);
@@ -116,45 +98,40 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 		}
     }//GEN-LAST:event_b_crearActionPerformed
 
-    private void tf_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_nombreKeyReleased
+	public void actualizarTabla() {
 		try {
-			List<TipoSensor> t = TipoSensor.findLike(tf_nombre.getText());
-			if (t.size() > 0) {
-				tipoSensores = t;
-				actualizarTabla();
-			}
+			List<Protocolo> protocolos = Protocolo.findAll();
+			ProtocoloTableModel ptm = new ProtocoloTableModel(protocolos);
+			t_protocolo.setModel(ptm);
+			System.out.println(protocolos);
 		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(JPCrearLugar.class.getName()).log(Level.SEVERE, null, ex);
 		}
-    }//GEN-LAST:event_tf_nombreKeyReleased
-
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_crear;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable t_vista;
+    private javax.swing.JTable t_protocolo;
     private javax.swing.JTextField tf_nombre;
     // End of variables declaration//GEN-END:variables
 
-	private class TipoSensorTableModel extends AbstractTableModel {
+	private class ProtocoloTableModel extends AbstractTableModel {
 
-		List<TipoSensor> l;
+		final List<Protocolo> protocolos;
 
-		public TipoSensorTableModel() {
+		public ProtocoloTableModel() {
+			protocolos = new ArrayList<>();
 		}
 
-		public TipoSensorTableModel(List<TipoSensor> lista) {
-			this.l = lista;
-		}
-
-		public TipoSensor getAt(int index) {
-			return l.get(index);
+		public ProtocoloTableModel(List<Protocolo> protocolos) {
+			this.protocolos = protocolos;
 		}
 
 		@Override
 		public int getRowCount() {
-			return l.size();
+			return protocolos.size();
 		}
 
 		@Override
@@ -163,18 +140,17 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 		}
 
 		@Override
-		public Object getValueAt(int arg0, int arg1) {
-			TipoSensor t = l.get(arg0);
-			return t.getNombre();
+		public Object getValueAt(int row, int column) {
+			return protocolos.get(row);
 		}
 
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 			super.setValueAt(aValue, rowIndex, columnIndex); //To change body of generated methods, choose Tools | Templates.
-			TipoSensor sensor = l.get(rowIndex);
-			sensor.setNombre((String) aValue);
+			Protocolo protocolo = protocolos.get(rowIndex);
+			protocolo.setNombre((String) aValue);
 			try {
-				sensor.save();
+				protocolo.save();
 			} catch (SinBaseDatosException ex) {
 				JOptionPane.showMessageDialog(null,
 						"Sin base de datos");
@@ -194,7 +170,12 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 
 		@Override
 		public String getColumnName(int column) {
-			return "Tipo de sensores";
+			if (column == 0) {
+				return "Protocolos";
+			} else {
+				return "";
+			}
 		}
+
 	}
 }

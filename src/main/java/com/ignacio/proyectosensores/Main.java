@@ -3,13 +3,14 @@ package com.ignacio.proyectosensores;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
-import com.ignacio.proyectosensores.GUI.JPCrearLugar;
-import com.ignacio.proyectosensores.GUI.JPCrearMaquina;
-import com.ignacio.proyectosensores.GUI.JPCrearProtocolo;
-import com.ignacio.proyectosensores.GUI.JPCrearSensor;
-import com.ignacio.proyectosensores.GUI.JPCrearTag;
-import com.ignacio.proyectosensores.GUI.JPCrearTipoSensor;
-import com.ignacio.proyectosensores.GUI.JPCrearTipoUnidad;
+import com.ignacio.proyectosensores.GUI.JPVerTodo;
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearLugar;
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearMaquina;
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearProtocolo;
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearSensor;
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTag;
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTipoSensor;
+import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTipoUnidad;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,8 +27,8 @@ public class Main extends javax.swing.JFrame {
 	 */
 	public Main() {
 		initComponents();
-		p_principal.add(new JPCrearTag(this));
-		p_principal.repaint();
+		//p_principal.add(new JPCrearTag(this));
+		//p_principal.repaint();
 		instancia = this;
 	}
 
@@ -43,6 +44,7 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         p_principal = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -52,11 +54,15 @@ public class Main extends javax.swing.JFrame {
         mi_crearProtocolo = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         jMenuItem2.setText("jMenuItem2");
+
+        jMenuItem7.setText("jMenuItem7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,6 +119,14 @@ public class Main extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem4);
 
+        jMenuItem6.setText("Tag");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
+
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Ver");
@@ -124,6 +138,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem1);
+
+        jMenuItem8.setText("Monitoreo");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
 
         jMenuBar1.add(jMenu3);
 
@@ -201,6 +223,16 @@ public class Main extends javax.swing.JFrame {
 		actualizarPantalla(j);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+		JPCrearTag j = new JPCrearTag(this);
+		actualizarPantalla(j);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+		JPVerTodo j = new JPVerTodo();
+		actualizarPantalla(j);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -247,9 +279,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem mi_crearLugar;
     private javax.swing.JMenuItem mi_crearMaquina;
     private javax.swing.JMenuItem mi_crearProtocolo;
     private javax.swing.JPanel p_principal;
     // End of variables declaration//GEN-END:variables
+
 }

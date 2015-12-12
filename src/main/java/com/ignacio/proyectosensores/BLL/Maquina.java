@@ -36,6 +36,10 @@ public class Maquina {
 		return l;
 	}
 
+	public static Maquina findByTag(Integer id) throws SinBaseDatosException {
+		return MaquinaDAL.findByTag(id);
+	}
+
 	private Integer id;
 	private String nombre;
 	private String detalle;
