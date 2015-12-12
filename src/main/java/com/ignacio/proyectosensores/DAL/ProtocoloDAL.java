@@ -24,7 +24,7 @@ public class ProtocoloDAL {
 	public static boolean actualizar(Integer id, String nombre) throws SinBaseDatosException {
 		return ObjectDAL.actualizar("update protocolo set nombre=? "
 				+ "where id_protocolo=?",
-				id);
+				nombre, id);
 	}
 
 	public static boolean delete(Integer id) throws SinBaseDatosException {
