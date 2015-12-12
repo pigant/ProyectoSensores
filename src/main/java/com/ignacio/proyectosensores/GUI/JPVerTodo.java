@@ -123,54 +123,65 @@ public class JPVerTodo extends javax.swing.JPanel {
 
     private void tf_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_buscarActionPerformed
 		String text = tf_buscar.getText();
-		Map<Lugar, DefaultMutableTreeNode> tnLugares = new HashMap<>();
-		Map<Maquina, DefaultMutableTreeNode> tnMaquinas = new HashMap<>();
-		Map<Sensor, DefaultMutableTreeNode> tnSensores = new HashMap<>();
 		try {
 			ArrayList<DefaultMutableTreeNode> tns = new ArrayList<>();
-			DefaultMutableTreeNode root = new DefaultMutableTreeNode("Busqueda");
-			DefaultMutableTreeNode lugares = new DefaultMutableTreeNode("Lugares");
+			DefaultMutableTreeNode root
+					= new DefaultMutableTreeNode("Busqueda");
+			DefaultMutableTreeNode lugares
+					= new DefaultMutableTreeNode("Lugares");
+			DefaultMutableTreeNode maquinas
+					= new DefaultMutableTreeNode("Maquinas");
 			root.add(lugares);
-			List<Lugar> ls = Lugar.findLike(text);
-			for (Lugar l : ls) {
-				//crea o busca el lugar
-				DefaultMutableTreeNode tnLugar = tnLugares.get(l);
-				if (tnLugar == null) {
-					tnLugares.put(l, new DefaultMutableTreeNode(l));
-					tnLugar = tnLugares.get(l);
-					lugares.add(tnLugar);
-				}
-				List<Tag> t = Tag.findByLugar(l.getId());
-				for (Tag tag : t) {
-					tag.findDependencias();
-					Maquina m = Maquina.findByTag(tag.getId());
-					m.setLugar(l);
-					tag.getSensor().setMaquina(m);
-					//Busca o crea maquina
-					DefaultMutableTreeNode tnMaquina = tnMaquinas.get(m);
-					if (tnMaquina == null) {
-						tnMaquinas.put(m, new DefaultMutableTreeNode(m));
-						tnMaquina = tnMaquinas.get(m);
-						tnLugar.add(tnMaquina);
-					}
-					//Busca o crea sensor
-					DefaultMutableTreeNode tnSensor = tnSensores.get(m);
-					if (tnMaquina == null) {
-						tnSensores.put(tag.getSensor(), new DefaultMutableTreeNode(m));
-						tnSensor = tnSensores.get(tag.getSensor());
-						tnMaquina.add(tnSensor);
-					}
-					//Crea el tag
-					DefaultMutableTreeNode tnTag = new DefaultMutableTreeNode(tag);
-					tnMaquina.add(tnTag);
-				}
-			}
+			root.add(maquinas);
+			buscarPorLugar(text, lugares);
+			buscarPorMaquina(text, maquinas);
 			final DefaultTreeModel modelo = new DefaultTreeModel(root);
 			arbol.setModel(modelo);
 		} catch (SinBaseDatosException ex) {
 			Logger.getLogger(JPVerTodo.class.getName()).log(Level.SEVERE, null, ex);
 		}
     }//GEN-LAST:event_tf_buscarActionPerformed
+
+	private void buscarPorLugar(String text, DefaultMutableTreeNode lugares) throws SinBaseDatosException {
+		//Busqueda por lugar
+		Map<Lugar, DefaultMutableTreeNode> tnLugares = new HashMap<>();
+		Map<Maquina, DefaultMutableTreeNode> tnMaquinas = new HashMap<>();
+		Map<Sensor, DefaultMutableTreeNode> tnSensores = new HashMap<>();
+		List<Lugar> ls = Lugar.findLike(text);
+		for (Lugar l : ls) {
+			//crea o busca el lugar
+			DefaultMutableTreeNode tnLugar = tnLugares.get(l);
+			if (tnLugar == null) {
+				tnLugares.put(l, new DefaultMutableTreeNode(l));
+				tnLugar = tnLugares.get(l);
+				lugares.add(tnLugar);
+			}
+			List<Tag> t = Tag.findByLugar(l.getId());
+			for (Tag tag : t) {
+				tag.findDependencias();
+				Maquina m = Maquina.findByTag(tag.getId());
+				m.setLugar(l);
+				tag.getSensor().setMaquina(m);
+				//Busca o crea maquina
+				DefaultMutableTreeNode tnMaquina = tnMaquinas.get(m);
+				if (tnMaquina == null) {
+					tnMaquinas.put(m, new DefaultMutableTreeNode(m));
+					tnMaquina = tnMaquinas.get(m);
+					tnLugar.add(tnMaquina);
+				}
+				//Busca o crea sensor
+//				DefaultMutableTreeNode tnSensor = tnSensores.get(m);
+//				if (tnMaquina == null) {
+//					tnSensores.put(tag.getSensor(), new DefaultMutableTreeNode(m));
+//					tnSensor = tnSensores.get(tag.getSensor());
+//					tnMaquina.add(tnSensor);
+//				}
+				//Crea el tag
+				DefaultMutableTreeNode tnTag = new DefaultMutableTreeNode(tag);
+				tnMaquina.add(tnTag);
+			}
+		}
+	}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -181,4 +192,25 @@ public class JPVerTodo extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField tf_buscar;
     // End of variables declaration//GEN-END:variables
+
+	private void buscarPorMaquina(String text, DefaultMutableTreeNode maquinas)
+			throws SinBaseDatosException {
+		HashMap<Maquina, DefaultMutableTreeNode> tnMaquinas = new HashMap<>();
+		List<Maquina> ms = Maquina.findLike(text);
+		for (Maquina m : ms) {
+			DefaultMutableTreeNode tnMaquina = tnMaquinas.get(m);
+			if (tnMaquina == null){
+				tnMaquina = new DefaultMutableTreeNode(m);
+				tnMaquinas.put(m, tnMaquina);
+			}
+			maquinas.add(tnMaquina);
+			m.findDependencias();
+			List<Tag> ts = Tag.findByMaquina(m.getId());
+			for (Tag t : ts) {
+				t.findDependencias();
+				tnMaquina.add(new DefaultMutableTreeNode(t));
+			}
+
+		}
+	}
 }

@@ -64,4 +64,24 @@ public class TagDAL {
 		return tags;
 	}
 
+	public static List<Tag> findByMaquina(int id) throws SinBaseDatosException {
+		ArrayList<Object[]> tagsRaw = ObjectDAL.findRaw(
+				"select t.id_tag, t.nombre, t.url, t.segundos, "
+				+ "t.detalle from tag as t "
+				+ "join sensor as s on t.id_sensor=s.id_sensor "
+				+ "join maquina as m on s.id_maquina=m.id_maquina "
+				+ "where m.id_maquina=" + id);
+		ArrayList<Tag> tags = new ArrayList(tagsRaw.size());
+		for (Object[] ob : tagsRaw) {
+			tags.add(new Tag((
+					int) 		ob[0], //id
+					(String) 	ob[1], //nombre
+					(String) 	ob[2], //url
+					(String) 	ob[4], //detalle
+					(Integer)	ob[3]) //segundos
+			);
+		}
+		return tags;
+	}
+
 }
