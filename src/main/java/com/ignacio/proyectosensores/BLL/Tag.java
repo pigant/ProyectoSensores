@@ -15,6 +15,10 @@ public class Tag {
 		return TagDAL.findByLugar(id);
 	}
 
+	public static List<Tag> findByMaquina(int id) throws SinBaseDatosException {
+		return TagDAL.findByMaquina(id);
+	}
+
 	private Integer id;
 	private String nombre;
 	private String url;
