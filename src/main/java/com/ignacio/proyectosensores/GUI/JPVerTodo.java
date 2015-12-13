@@ -5,6 +5,7 @@
  */
 package com.ignacio.proyectosensores.GUI;
 
+import com.ignacio.proyectosensores.BLL.Historial;
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.Sensor;
@@ -12,13 +13,19 @@ import com.ignacio.proyectosensores.BLL.Tag;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 
 /**
  *
@@ -31,6 +38,7 @@ public class JPVerTodo extends javax.swing.JPanel {
 	 */
 	public JPVerTodo() {
 		initComponents();
+		//
 	}
 
 	/**
@@ -46,8 +54,8 @@ public class JPVerTodo extends javax.swing.JPanel {
         tf_buscar = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         arbol = new javax.swing.JTree();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        p_meta = new javax.swing.JPanel();
+        p_grafico = new javax.swing.JPanel();
 
         jLabel1.setText("Buscar:");
 
@@ -57,35 +65,20 @@ public class JPVerTodo extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Escriba en el buscador");
         arbol.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        arbol.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                arbolMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(arbol);
 
-        jPanel1.setBackground(new java.awt.Color(215, 239, 236));
+        p_meta.setBackground(new java.awt.Color(215, 239, 236));
+        p_meta.setLayout(new javax.swing.BoxLayout(p_meta, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 244, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jPanel2.setBackground(new java.awt.Color(230, 230, 230));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 164, Short.MAX_VALUE)
-        );
+        p_grafico.setBackground(new java.awt.Color(230, 230, 230));
+        p_grafico.setLayout(new javax.swing.BoxLayout(p_grafico, javax.swing.BoxLayout.LINE_AXIS));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -94,11 +87,11 @@ public class JPVerTodo extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(p_grafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(p_meta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -115,9 +108,9 @@ public class JPVerTodo extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(p_meta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(p_grafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -151,6 +144,32 @@ public class JPVerTodo extends javax.swing.JPanel {
 			Logger.getLogger(JPVerTodo.class.getName()).log(Level.SEVERE, null, ex);
 		}
     }//GEN-LAST:event_tf_buscarActionPerformed
+
+    private void arbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolMouseClicked
+		if (evt.getClickCount() > 1) {
+			return;
+		}
+		DefaultMutableTreeNode o = (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
+		if (o != null) {
+			Object u = o.getUserObject();
+			if (u instanceof Tag) {
+				Tag t = (Tag) u;
+				System.out.println("El tag es: " + t);
+				List<Historial> hs2 = Historial.findLast1000(t.getId());
+				TimeSeries s1 = new TimeSeries("Fecha", Second.class);
+				for (Historial h : hs2) {
+					s1.add(new Second(h.getFecha()), h.getValor());
+				}
+				TimeSeriesCollection c = new TimeSeriesCollection(s1);
+				JFreeChart graficoTiempo = ChartFactory.createTimeSeriesChart("", "Tiempo", "valor", c, false, false, false);
+				final ChartPanel panelTiempo = new ChartPanel(graficoTiempo);
+				panelTiempo.setPreferredSize(p_grafico.getPreferredSize());
+				p_grafico.removeAll();
+				p_grafico.add(panelTiempo);
+				p_grafico.revalidate();
+			}
+		}
+    }//GEN-LAST:event_arbolMouseClicked
 
 	private void buscarPorLugar(String text, DefaultMutableTreeNode lugares) throws SinBaseDatosException {
 		//Busqueda por lugar
@@ -197,9 +216,9 @@ public class JPVerTodo extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arbol;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel p_grafico;
+    private javax.swing.JPanel p_meta;
     private javax.swing.JTextField tf_buscar;
     // End of variables declaration//GEN-END:variables
 
