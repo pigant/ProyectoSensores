@@ -6,6 +6,7 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.HistorialDAL;
+import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,7 +29,8 @@ public class Historial {
 		this.valor = valor;
 	}
 
-	public static List<Historial> findLast1000(int idTag){
+	public static List<Historial> findLast1000(int idTag) 
+			throws SinBaseDatosException{
 		return HistorialDAL.findLast1000(idTag);
 	}
 
