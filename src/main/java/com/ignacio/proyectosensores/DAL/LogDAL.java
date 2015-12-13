@@ -29,5 +29,25 @@ public class LogDAL {
 		}
 		return ls;
 	}
+
+	public static List<Log> findAllWithProblems(int idSensor) throws SinBaseDatosException {
+		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_log, mensaje, fecha, activo "
+				+ "from log where id_sensor=" + idSensor + " and activo=true");
+		ArrayList<Log> ls = new ArrayList<>(ob.size());
+		for (Object[] o : ob) {
+			ls.add(new Log(
+					(int)o[0],
+					(String) o[1],
+					(Timestamp) o[2],
+					(boolean) o[3]));
+		}
+		return ls;
+	}
+
+	public static void changeStatus(int idSensor) throws SinBaseDatosException { 
+		ObjectDAL.actualizar("update log "
+				+ "set activo=false "
+				+ "where activo=true and id_sensor=?", idSensor);
+	}
 	
 }

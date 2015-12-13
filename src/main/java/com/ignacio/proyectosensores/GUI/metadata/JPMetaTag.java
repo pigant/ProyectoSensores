@@ -9,6 +9,8 @@ import com.ignacio.proyectosensores.BLL.Historial;
 import com.ignacio.proyectosensores.BLL.Log;
 import com.ignacio.proyectosensores.BLL.Tag;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import com.ignacio.proyectosensores.GUI.JDVerLogs;
+import com.ignacio.proyectosensores.Main;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -34,14 +36,7 @@ public class JPMetaTag extends javax.swing.JPanel {
 		try {
 			tag.findDependencias();
 			tf_actualizacion.setText(String.valueOf(tag.getSegundos()));
-			List<Log> ls = Log.findAllOf(tag.getSensor().getId());
-			int w = 0;
-			for (Log l : ls) {
-				if(l.isActivo()){
-					w++;
-				}
-			}
-			tf_problemas.setText(String.valueOf(w));
+			actualizarProblemas();
 			SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yy");
 			tf_fecha.setText(formato.format(ultimo.getFecha()));
 			formato.applyPattern("HH:mm:ss");
@@ -50,6 +45,17 @@ public class JPMetaTag extends javax.swing.JPanel {
 		} catch (SinBaseDatosException ex) {
 			Logger.getLogger(JPMetaTag.class.getName()).log(Level.SEVERE, null, ex);
 		}
+	}
+
+	private void actualizarProblemas() throws SinBaseDatosException {
+		List<Log> ls = Log.findAllOf(this.tag.getSensor().getId());
+		int w = 0;
+		for (Log l : ls) {
+			if(l.isActivo()){
+				w++;
+			}
+		}
+		tf_problemas.setText(String.valueOf(w));
 	}
 
 	/**
@@ -80,6 +86,11 @@ public class JPMetaTag extends javax.swing.JPanel {
         jLabel5.setText("En alerta:");
 
         jButton1.setText("Historial de fallas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Problemas detectados:");
 
@@ -188,6 +199,16 @@ public class JPMetaTag extends javax.swing.JPanel {
     private void tf_actualizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_actualizacionActionPerformed
 		// TODO add your handling code here:
     }//GEN-LAST:event_tf_actualizacionActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+		JDVerLogs d = new JDVerLogs(Main.instancia, true, this.tag.getId());
+		d.setVisible(true);
+		try {
+			actualizarProblemas();
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPMetaTag.class.getName()).log(Level.SEVERE, null, ex);
+		}
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

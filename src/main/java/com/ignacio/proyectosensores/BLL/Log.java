@@ -16,6 +16,15 @@ import java.util.List;
  */
 public class Log {
 
+	public static List<Log> findAllWithProblems(int idSensor) 
+			throws SinBaseDatosException {
+		return LogDAL.findAllWithProblems(idSensor);
+	}
+
+	public static void changeStatus(int idSensor) throws SinBaseDatosException {
+		LogDAL.changeStatus(idSensor);
+	}
+
 	private int id;
 	private String mensaje;
 	Timestamp fecha;
