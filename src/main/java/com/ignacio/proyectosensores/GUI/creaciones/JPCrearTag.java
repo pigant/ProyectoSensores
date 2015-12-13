@@ -1,6 +1,5 @@
 package com.ignacio.proyectosensores.GUI.creaciones;
 
-import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.ParametrosFaltantesException;
 import com.ignacio.proyectosensores.BLL.Protocolo;
 import com.ignacio.proyectosensores.BLL.Sensor;
@@ -8,13 +7,25 @@ import com.ignacio.proyectosensores.BLL.Tag;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
+import com.ignacio.proyectosensores.GUI.JDModificarTag;
+import com.ignacio.proyectosensores.GUI.util.ProtocoloComboModel;
+import com.ignacio.proyectosensores.Main;
+import java.awt.Component;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.AbstractCellEditor;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -23,7 +34,7 @@ import javax.swing.JOptionPane;
 public class JPCrearTag extends javax.swing.JPanel {
 
 	private final Tag tag;
-	private ProtocoloComboBox pcb;
+	private ProtocoloComboModel pcb;
 	private final JFrame parent;
 
 	/**
@@ -37,6 +48,19 @@ public class JPCrearTag extends javax.swing.JPanel {
 		this.parent = parent;
 		initComponents();
 		rellenoComboBox();
+		rellenoTabla();
+	}
+
+	private void rellenoTabla() {
+		try {
+			List<Tag> ts = Tag.findAll();
+			t_vista.setModel(new TagTableModel(ts));
+			final TableColumn column = t_vista.getColumnModel().getColumn(1);
+			column.setCellEditor(new TagCellEditor(this));
+			column.setCellRenderer(new TagCellRenderer());
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JPCrearTag.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	private void rellenoComboBox() throws HeadlessException {
@@ -44,7 +68,7 @@ public class JPCrearTag extends javax.swing.JPanel {
 		List<Protocolo> a;
 		try {
 			a = Protocolo.findAll();
-			pcb = new ProtocoloComboBox(a);
+			pcb = new ProtocoloComboModel(a);
 			cb_protocolo.setModel(pcb);
 			cb_protocolo.setSelectedIndex(0);
 		} catch (SinBaseDatosException ex) {
@@ -77,6 +101,8 @@ public class JPCrearTag extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ta_detalles = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        t_vista = new javax.swing.JTable();
 
         jLabel1.setText("Nombre:");
 
@@ -130,6 +156,16 @@ public class JPCrearTag extends javax.swing.JPanel {
         ta_detalles.setRows(5);
         jScrollPane1.setViewportView(ta_detalles);
 
+        t_vista.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(t_vista);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -151,11 +187,12 @@ public class JPCrearTag extends javax.swing.JPanel {
                             .addComponent(tf_url)
                             .addComponent(s_tiempo)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(tf_sensorSeleccionado, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                                .addComponent(tf_sensorSeleccionado)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(b_buscarSensor, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(cb_protocolo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane1)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
                     .addComponent(b_agregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -187,9 +224,11 @@ public class JPCrearTag extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(b_agregar)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -261,32 +300,105 @@ public class JPCrearTag extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner s_tiempo;
+    private javax.swing.JTable t_vista;
     private javax.swing.JTextArea ta_detalles;
     private javax.swing.JTextField tf_nombre;
     private javax.swing.JTextField tf_sensorSeleccionado;
     private javax.swing.JTextField tf_url;
     // End of variables declaration//GEN-END:variables
-}
 
-class ProtocoloComboBox extends DefaultComboBoxModel<String> {
+	//Tabla
 
-	List<Protocolo> protocolos;
+	private static class TagCellRenderer implements TableCellRenderer {
 
-	public ProtocoloComboBox(List<Protocolo> protocolos) {
-		this.protocolos = protocolos;
-		for (Protocolo p : protocolos) {
-			addElement(p.getNombre());
+		@Override
+		public Component getTableCellRendererComponent(JTable tabla,
+				Object valor, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			JButton b = new JButton("Editar");
+			return b;
 		}
 	}
 
-	public Protocolo getAt(int index) {
-		return protocolos.get(index);
+	private static class TagCellEditor
+			extends AbstractCellEditor
+			implements TableCellEditor {
+
+		private final JPCrearTag panel;
+
+		public TagCellEditor(JPCrearTag t) {
+			this.panel = t;
+		}
+
+		@Override
+		public Object getCellEditorValue() {
+			return true;
+		}
+
+		@Override
+		public Component getTableCellEditorComponent(final JTable tabla,
+				Object valor, boolean isSelected, final int row,
+				final int column) {
+			JButton b = new JButton("Editar");
+			final Tag t = (Tag) tabla.getModel().getValueAt(row, column);
+			try {
+				t.findDependencias();
+				b.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						JDModificarTag d = new JDModificarTag(
+								Main.instancia, true, t);
+						d.setVisible(true);
+						panel.rellenoTabla();
+					}
+				});
+			} catch (SinBaseDatosException ex) {
+				Logger.getLogger(TagCellRenderer.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			return b;
+		}
 	}
 
-	@Override
-	public String getElementAt(int index) {
-		return protocolos.get(index).getNombre();
-	}
+	private class TagTableModel extends AbstractTableModel {
 
+		String columnas[] = {"Nombre", "Editar"};
+		List<Tag> l;
+
+		public TagTableModel(List<Tag> l) {
+			this.l = l;
+		}
+
+		public void setLista(List<Tag> l) {
+			this.l = l;
+			fireTableDataChanged();
+		}
+
+		@Override
+		public int getRowCount() {
+			return l.size();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return columnas.length;
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return columnas[column];
+		}
+
+		@Override
+		public Object getValueAt(int row, int column) {
+			return l.get(row);
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return columnIndex == 1;
+		}
+
+	}
 }

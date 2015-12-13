@@ -43,26 +43,22 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
         p_principal = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        mi_crearProtocolo = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mi_crearLugar = new javax.swing.JMenuItem();
         mi_crearMaquina = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
-        mi_crearProtocolo = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-
-        jMenuItem2.setText("jMenuItem2");
-
-        jMenuItem7.setText("jMenuItem7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,6 +66,35 @@ public class Main extends javax.swing.JFrame {
         p_principal.setLayout(new javax.swing.BoxLayout(p_principal, javax.swing.BoxLayout.LINE_AXIS));
 
         jMenu1.setText("Crear");
+
+        jMenu4.setText("Tipos");
+
+        jMenuItem3.setText("Tipo sensor");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem3);
+
+        jMenuItem4.setText("Tipo unidad");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem4);
+
+        mi_crearProtocolo.setText("Protocolo");
+        mi_crearProtocolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mi_crearProtocoloActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mi_crearProtocolo);
+
+        jMenu1.add(jMenu4);
+        jMenu1.add(jSeparator1);
 
         mi_crearLugar.setText("Lugar");
         mi_crearLugar.addActionListener(new java.awt.event.ActionListener() {
@@ -94,30 +119,6 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem5);
-
-        mi_crearProtocolo.setText("Protocolo");
-        mi_crearProtocolo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mi_crearProtocoloActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mi_crearProtocolo);
-
-        jMenuItem3.setText("Tipo sensor");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem3);
-
-        jMenuItem4.setText("Tipo unidad");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem4);
 
         jMenuItem6.setText("Tag");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
@@ -273,15 +274,15 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem mi_crearLugar;
     private javax.swing.JMenuItem mi_crearMaquina;
     private javax.swing.JMenuItem mi_crearProtocolo;
