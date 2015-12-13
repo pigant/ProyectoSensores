@@ -11,12 +11,15 @@ import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.Tag;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import com.ignacio.proyectosensores.GUI.metadata.JPMetaTag;
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import org.jfree.chart.ChartFactory;
@@ -89,9 +92,9 @@ public class JPVerTodo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(p_grafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(p_meta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(p_meta, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -110,7 +113,7 @@ public class JPVerTodo extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                     .addComponent(p_meta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(p_grafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(p_grafico, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -141,7 +144,9 @@ public class JPVerTodo extends javax.swing.JPanel {
 			final DefaultTreeModel modelo = new DefaultTreeModel(root);
 			arbol.setModel(modelo);
 		} catch (SinBaseDatosException ex) {
-			Logger.getLogger(JPVerTodo.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(JPVerTodo.class.getName()).log(
+					Level.SEVERE, null, ex);
+			JOptionPane.showMessageDialog(this, "Error de conexion");
 		}
     }//GEN-LAST:event_tf_buscarActionPerformed
 
@@ -149,29 +154,49 @@ public class JPVerTodo extends javax.swing.JPanel {
 		if (evt.getClickCount() > 1) {
 			return;
 		}
-		DefaultMutableTreeNode o = (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
+		DefaultMutableTreeNode o
+				= (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
 		if (o != null) {
 			Object u = o.getUserObject();
 			if (u instanceof Tag) {
-				Tag t = (Tag) u;
-				System.out.println("El tag es: " + t);
-				List<Historial> hs2 = Historial.findLast1000(t.getId());
-				TimeSeries s1 = new TimeSeries("Fecha", Second.class);
-				for (Historial h : hs2) {
-					s1.add(new Second(h.getFecha()), h.getValor());
+				try {
+					Tag t = (Tag) u;
+					List<Historial> hs = Historial.findLast1000(t.getId());
+					if (hs.size() > 0) {
+						rellenoGrafico(t, hs);
+						JPMetaTag mt = new JPMetaTag(t, hs.get(hs.size() - 1));
+						mt.setPreferredSize(p_meta.getPreferredSize());
+						p_meta.removeAll();
+						p_meta.add(mt);
+					}
+				} catch (SinBaseDatosException ex) {
+					Logger.getLogger(JPVerTodo.class.getName()).log(Level.SEVERE, null, ex);
 				}
-				TimeSeriesCollection c = new TimeSeriesCollection(s1);
-				JFreeChart graficoTiempo = ChartFactory.createTimeSeriesChart("", "Tiempo", "valor", c, false, false, false);
-				final ChartPanel panelTiempo = new ChartPanel(graficoTiempo);
-				panelTiempo.setPreferredSize(p_grafico.getPreferredSize());
-				p_grafico.removeAll();
-				p_grafico.add(panelTiempo);
-				p_grafico.revalidate();
 			}
 		}
     }//GEN-LAST:event_arbolMouseClicked
 
-	private void buscarPorLugar(String text, DefaultMutableTreeNode lugares) throws SinBaseDatosException {
+	private void rellenoGrafico(Tag t, List<Historial> hs) {
+		System.out.println("El tag es: " + t);
+		TimeSeries s1 = new TimeSeries("Fecha", Second.class);
+		for (Historial h : hs) {
+			s1.add(new Second(h.getFecha()), h.getValor());
+		}
+		TimeSeriesCollection c = new TimeSeriesCollection(s1);
+		JFreeChart graficoTiempo
+				= ChartFactory.createTimeSeriesChart(
+						"", "Tiempo", "valor", c,
+						false, false, false);
+		final ChartPanel panelTiempo
+				= new ChartPanel(graficoTiempo);
+		panelTiempo.setPreferredSize(p_grafico.getPreferredSize());
+		p_grafico.removeAll();
+		p_grafico.add(panelTiempo);
+		p_grafico.revalidate();
+	}
+
+	private void buscarPorLugar(String text, DefaultMutableTreeNode lugares)
+			throws SinBaseDatosException {
 		//Busqueda por lugar
 		Map<Lugar, DefaultMutableTreeNode> tnLugares = new HashMap<>();
 		Map<Maquina, DefaultMutableTreeNode> tnMaquinas = new HashMap<>();
@@ -198,13 +223,6 @@ public class JPVerTodo extends javax.swing.JPanel {
 					tnMaquina = tnMaquinas.get(m);
 					tnLugar.add(tnMaquina);
 				}
-				//Busca o crea sensor
-//				DefaultMutableTreeNode tnSensor = tnSensores.get(m);
-//				if (tnMaquina == null) {
-//					tnSensores.put(tag.getSensor(), new DefaultMutableTreeNode(m));
-//					tnSensor = tnSensores.get(tag.getSensor());
-//					tnMaquina.add(tnSensor);
-//				}
 				//Crea el tag
 				DefaultMutableTreeNode tnTag = new DefaultMutableTreeNode(tag);
 				tnMaquina.add(tnTag);
