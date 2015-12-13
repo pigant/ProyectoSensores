@@ -36,12 +36,24 @@ public class ProtocoloDAL {
 	public static List<Protocolo> findAll() throws SinBaseDatosException {
 		List<Protocolo> s = new ArrayList<>();
 		BD bd = new BD();
-		List<Object[]> select = bd.select("protocolo", "true", 
+		List<Object[]> select = bd.select("protocolo", "true",
 				"id_protocolo", "nombre");
 		for (Object[] o : select) {
 			s.add(new Protocolo((int) o[0], (String) o[1]));
 		}
 		return s;
+	}
+
+	public static Protocolo findByTag(Integer id) throws SinBaseDatosException {
+		Protocolo p = null;
+		ArrayList<Object[]> ob = ObjectDAL.findRaw("select p.id_protocolo, p.nombre from protocolo as p "
+				+ "join tag as t on t.id_protocolo=p.id_protocolo "
+				+ "where t.id_tag=" + id);
+		if (ob.size() > 0) {
+			Object[] o = ob.get(0);
+			p = new Protocolo((int) o[0], (String) o[1]);
+		}
+		return p;
 	}
 
 }

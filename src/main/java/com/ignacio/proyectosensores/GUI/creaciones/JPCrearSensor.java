@@ -42,7 +42,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
 		rellenoTabla();
 	}
 
-	private void rellenoTabla() throws HeadlessException {
+	void rellenoTabla() throws HeadlessException {
 		try {
 			List<Sensor> ls = Sensor.findAll();
 			t_vista.setModel(new SensorTableModel(ls));
@@ -50,6 +50,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
 					new MaquinaCellRenderer());
 			t_vista.getColumnModel().getColumn(1).setCellEditor(
 					new MaquinaCellEditor());
+			t_vista.updateUI();
 
 		} catch (SinBaseDatosException ex) {
 			JOptionPane.showMessageDialog(
@@ -149,13 +150,10 @@ public class JPCrearSensor extends javax.swing.JPanel {
 
         t_vista.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(t_vista);

@@ -23,6 +23,10 @@ public class Tag {
 		return TagDAL.findLike(text);
 	}
 
+	public static List<Tag> findAll() throws SinBaseDatosException {
+		return TagDAL.findAll();
+	}
+
 	private Integer id;
 	private String nombre;
 	private String url;
@@ -154,6 +158,7 @@ public class Tag {
 
 	public void findDependencias() throws SinBaseDatosException {
 		this.sensor = Sensor.findByTag(id);
+		this.protocolo = Protocolo.findByTag(id);
 	}
 
 }

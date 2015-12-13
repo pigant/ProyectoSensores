@@ -19,14 +19,14 @@ public class TagDAL {
 		return s;
 	}
 
-	public static boolean actualizar(Integer id, String nombre, String url,
-			int segundos, String detalle, Integer id0, Integer id1)
+	public static boolean actualizar(Integer idTag, String nombre, String url,
+			int segundos, String detalle, Integer idSensor, Integer idProtocolo)
 			throws SinBaseDatosException {
 		//
 		return ObjectDAL.actualizar("update tag set "
 				+ "nombre=?, url=?, segundos=?, id_sensor=?, id_protocolo=?,"
 				+ "detalle=? where id_tag=?", nombre, url, segundos,
-				id0, id1, id, detalle);
+				idSensor, idProtocolo, detalle, idTag);
 	}
 
 	public static Integer guardar(
@@ -99,6 +99,22 @@ public class TagDAL {
 			));
 		}
 		return t;
+	}
+
+	public static List<Tag> findAll() throws SinBaseDatosException {
+		ArrayList<Object[]> ob = ObjectDAL.findAll("select id_tag, nombre, url, segundos, detalle "
+				+ "from tag");
+		ArrayList<Tag> ts = new ArrayList(ob.size());
+		for (Object[] o : ob) {
+			ts.add(new Tag(
+					(int) o[0],		//id
+					(String) o[1],	//nombre
+					(String) o[2],	//url
+					(String) o[4],  //detalle
+					(int) o[3]		//detalle
+			));
+		}
+		return ts;
 	}
 
 }

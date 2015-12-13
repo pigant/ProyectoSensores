@@ -16,6 +16,10 @@ public class Protocolo {
 		return ProtocoloDAL.findAll();
 	}
 
+	static Protocolo findByTag(Integer id) throws SinBaseDatosException {
+		return ProtocoloDAL.findByTag(id);
+	}
+
 	private Integer id;
 	private String nombre;
 
