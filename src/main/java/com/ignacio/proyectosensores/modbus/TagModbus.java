@@ -29,6 +29,7 @@ public class TagModbus implements Observer {
 
 	public TagModbus(Tag tag) {
 		this.tag = tag;
+		this.segundos = tag.getSegundos();
 	}
 
 	public void reiniciar() {
@@ -52,6 +53,8 @@ public class TagModbus implements Observer {
 				tag);
 		try {
 			Integer b = h.save();
+			System.out.println("Se guardo de " + tag.getNombre()
+					+ " el valor: " + (int) arg1);
 		} catch (SinBaseDatosException ex) {
 			Logger.getLogger(TagModbus.class.getName()).log(
 					Level.SEVERE, null, ex);

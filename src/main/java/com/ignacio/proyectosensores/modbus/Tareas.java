@@ -6,8 +6,6 @@
 package com.ignacio.proyectosensores.modbus;
 
 import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  *
@@ -43,7 +41,6 @@ public class Tareas {
 		while(pedidos.size()>0){
 			pedidos.getFirst().operacion(mc);
 			pedidos.removeFirst();
-			System.out.println("loop " + i++);
 		}
 		mc.cerrar();
 	}

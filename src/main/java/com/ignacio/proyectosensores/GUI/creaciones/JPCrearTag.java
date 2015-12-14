@@ -10,6 +10,7 @@ import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
 import com.ignacio.proyectosensores.GUI.JDModificarTag;
 import com.ignacio.proyectosensores.GUI.util.ProtocoloComboModel;
 import com.ignacio.proyectosensores.Main;
+import com.ignacio.proyectosensores.modbus.manejo.BusquedaTag;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -266,6 +267,7 @@ public class JPCrearTag extends javax.swing.JPanel {
 			tag.setSegundos(segundos);
 			tag.setDetalle(ta_detalles.getText());
 			tag.save();
+			BusquedaTag.getInstance().addTag(tag);
 			JOptionPane.showMessageDialog(this, "Tag agregado", "Exito",
 					JOptionPane.INFORMATION_MESSAGE);
 		} catch (SinBaseDatosException ex) {
