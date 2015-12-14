@@ -5,6 +5,7 @@
  */
 package com.ignacio.proyectosensores.BLL;
 
+import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.HistorialDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.math.BigDecimal;
@@ -20,13 +21,15 @@ public class Historial {
 
 	Timestamp fecha;
 	BigDecimal valor;
+	Tag tag;
 
 	public Historial() {
 	}
 
-	public Historial(Timestamp fecha, BigDecimal valor) {
+	public Historial(Timestamp fecha, BigDecimal valor, Tag t) {
 		this.fecha = fecha;
 		this.valor = valor;
+		this.tag = t;
 	}
 
 	public static List<Historial> findLast1000(int idTag) 
@@ -52,6 +55,11 @@ public class Historial {
 
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+
+	public Integer save() 
+			throws SinBaseDatosException, CodigoRepetidoException {
+		return HistorialDAL.guardar(fecha, valor, tag.getId());
 	}
 	
 }

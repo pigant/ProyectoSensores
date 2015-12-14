@@ -27,6 +27,14 @@ public class Tag {
 		return TagDAL.findAll();
 	}
 
+	public static List<Tag> findAllWithDependency() throws SinBaseDatosException {
+		List<Tag> ts = findAll();
+		for (Tag t : ts) {
+			t.findDependencias();
+		}
+		return ts;
+	}
+
 	private Integer id;
 	private String nombre;
 	private String url;

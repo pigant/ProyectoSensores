@@ -11,6 +11,7 @@ import com.ignacio.proyectosensores.GUI.creaciones.JPCrearSensor;
 import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTag;
 import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTipoSensor;
 import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTipoUnidad;
+import com.ignacio.proyectosensores.modbus.manejo.BusquedaTag;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -268,6 +269,15 @@ public class Main extends javax.swing.JFrame {
 				new Main().setVisible(true);
 			}
 		});
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				BusquedaTag bt = new BusquedaTag();
+				bt.atender();
+			}
+		});
+		t.start();
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
