@@ -113,7 +113,7 @@ public class JPVerTodo extends javax.swing.JPanel {
     private void tf_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_buscarActionPerformed
 		String text = tf_buscar.getText();
 		try {
-			ArrayList<DefaultMutableTreeNode> tns = new ArrayList<>();
+			List<DefaultMutableTreeNode> tns = new ArrayList<>();
 			DefaultMutableTreeNode root
 					= new DefaultMutableTreeNode("Busqueda");
 			DefaultMutableTreeNode lugares

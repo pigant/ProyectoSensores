@@ -1,12 +1,8 @@
 package com.ignacio.proyectosensores.DAL;
 
 import com.ignacio.proyectosensores.BLL.Sensor;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -62,9 +58,9 @@ public class SensorDAL {
 	}
 
 	public static List<Sensor> findLike(String text) throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_sensor, nombre, escala, detalle, p_escala"
+		List<Object[]> ob = ObjectDAL.findRaw("select id_sensor, nombre, escala, detalle, p_escala"
 				+ " from sensor where lower(nombre) like '%" + text + "%'");
-		ArrayList<Sensor> l = new ArrayList(ob.size());
+		List<Sensor> l = new ArrayList(ob.size());
 		for (Object[] o : ob) {
 			l.add(new Sensor((int) o[0], (String) o[1],
 					(String) o[2], (String) o[3], (boolean) o[4]));
@@ -73,9 +69,9 @@ public class SensorDAL {
 	}
 
 	public static List<Sensor> findAll() throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findAll("select id_sensor, nombre, escala, detalle, p_escala "
+		List<Object[]> ob = ObjectDAL.findAll("select id_sensor, nombre, escala, detalle, p_escala "
 				+ "from sensor");
-		ArrayList<Sensor> l = new ArrayList(ob.size());
+		List<Sensor> l = new ArrayList(ob.size());
 		for (Object[] o : ob) {
 			l.add(new Sensor((int) o[0], (String) o[1], (String) o[2],
 					(String) o[3], (boolean) o[4]));
@@ -85,7 +81,7 @@ public class SensorDAL {
 
 	public static Sensor findByTag(int id) throws SinBaseDatosException {
 		Sensor s = null;
-		ArrayList<Object[]> p = ObjectDAL.findRaw(
+		List<Object[]> p = ObjectDAL.findRaw(
 				"select s.id_sensor, s.nombre, s.escala, s.detalle, s.p_escala "
 				+ "from sensor as s "
 				+ "join tag as t on t.id_sensor=s.id_sensor "

@@ -63,8 +63,8 @@ public class TipoSensorDAL {
 	}
 
 	public static List<TipoSensor> findAll() throws SinBaseDatosException {
-		ArrayList<Object[]> o = ObjectDAL.findAll("select id_t_sensor, nombre from t_sensor");
-		ArrayList<TipoSensor> t = new ArrayList(o.size());
+		List<Object[]> o = ObjectDAL.findAll("select id_t_sensor, nombre from t_sensor");
+		List<TipoSensor> t = new ArrayList(o.size());
 		for (Object[] ob : o) {
 			t.add(new TipoSensor((int) ob[0], (String) ob[1]));
 		}
@@ -72,8 +72,8 @@ public class TipoSensorDAL {
 	}
 
 	public static List<TipoSensor> findLike(String text) throws SinBaseDatosException {
-		ArrayList<TipoSensor> l = new ArrayList();
-		ArrayList<Object[]> r = ObjectDAL.findRaw(
+		List<TipoSensor> l = new ArrayList();
+		List<Object[]> r = ObjectDAL.findRaw(
 				"select id_t_sensor, nombre from t_sensor "
 				+ "where lower(nombre) like '%" + text + "%'");
 		for (Object[] o : r) {

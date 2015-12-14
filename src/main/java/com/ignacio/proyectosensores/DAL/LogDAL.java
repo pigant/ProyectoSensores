@@ -17,9 +17,9 @@ import java.util.List;
 public class LogDAL {
 
 	public static List<Log> findAllOf(int idSensor) throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_log, mensaje, fecha, activo "
+		List<Object[]> ob = ObjectDAL.findRaw("select id_log, mensaje, fecha, activo "
 				+ "from log where id_sensor=" + idSensor);
-		ArrayList<Log> ls = new ArrayList<>(ob.size());
+		List<Log> ls = new ArrayList<>(ob.size());
 		for (Object[] o : ob) {
 			ls.add(new Log(
 					(int)o[0],
@@ -31,9 +31,9 @@ public class LogDAL {
 	}
 
 	public static List<Log> findAllWithProblems(int idSensor) throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_log, mensaje, fecha, activo "
+		List<Object[]> ob = ObjectDAL.findRaw("select id_log, mensaje, fecha, activo "
 				+ "from log where id_sensor=" + idSensor + " and activo=true");
-		ArrayList<Log> ls = new ArrayList<>(ob.size());
+		List<Log> ls = new ArrayList<>(ob.size());
 		for (Object[] o : ob) {
 			ls.add(new Log(
 					(int)o[0],

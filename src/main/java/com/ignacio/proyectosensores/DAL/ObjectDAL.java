@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -88,8 +89,8 @@ public class ObjectDAL {
 		return l;
 	}
 
-	public static ArrayList<Object[]> findAll(String consulta) throws SinBaseDatosException {
-		ArrayList<Object[]> a = new ArrayList();
+	public static List<Object[]> findAll(String consulta) throws SinBaseDatosException {
+		List<Object[]> a = new ArrayList();
 		try {
 			BD bd = new BD();
 			PreparedStatement ps = bd.createStatement(consulta);
@@ -111,8 +112,8 @@ public class ObjectDAL {
 
 	}
 
-	public static ArrayList<Object[]> findRaw(String consulta) throws SinBaseDatosException {
-		ArrayList<Object[]> al = new ArrayList();
+	public static List<Object[]> findRaw(String consulta) throws SinBaseDatosException {
+		List<Object[]> al = new ArrayList();
 		consulta = consulta.toLowerCase();
 		try {
 			BD bd = new BD();

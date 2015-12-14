@@ -46,7 +46,7 @@ public class ProtocoloDAL {
 
 	public static Protocolo findByTag(Integer id) throws SinBaseDatosException {
 		Protocolo p = null;
-		ArrayList<Object[]> ob = ObjectDAL.findRaw("select p.id_protocolo, p.nombre from protocolo as p "
+		List<Object[]> ob = ObjectDAL.findRaw("select p.id_protocolo, p.nombre from protocolo as p "
 				+ "join tag as t on t.id_protocolo=p.id_protocolo "
 				+ "where t.id_tag=" + id);
 		if (ob.size() > 0) {

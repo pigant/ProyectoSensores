@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +65,7 @@ public class BD {
 		return c.prepareStatement(consulta);
 	}
 
-	public ArrayList<Object[]> select(
+	public List<Object[]> select(
 			String tabla,
 			String condicion,
 			String... columnas) {
@@ -80,7 +81,7 @@ public class BD {
 					append(condicion);
 			//System.out.println(sb.toString());
 			ResultSet r = c.createStatement().executeQuery(sb.toString());
-			ArrayList<Object[]> array = new ArrayList<>();
+			List<Object[]> array = new ArrayList<>();
 			while (r.next()) {
 				Object[] o = new Object[columnas.length];
 				for (int i = 0; i < columnas.length; i++) {

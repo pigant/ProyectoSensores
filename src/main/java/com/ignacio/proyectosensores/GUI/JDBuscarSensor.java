@@ -288,7 +288,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 	}
 
 	private List<ActionListener[]> quitarListener(JComboBox... combobox) {
-		ArrayList<ActionListener[]> array = new ArrayList<>(combobox.length);
+		List<ActionListener[]> array = new ArrayList<>(combobox.length);
 		for (JComboBox a : combobox) {
 			final ActionListener[] acciones = a.getActionListeners();
 			array.add(acciones);
@@ -411,7 +411,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 		}
 
 		public void filtrarTexto(String s) {
-			ArrayList<Sensor> nls = new ArrayList(salida);
+			List<Sensor> nls = new ArrayList(salida);
 			boolean encontrado = false;
 			if (maquinaFiltro != null) {
 				filtrarPorMaquina(maquinaFiltro);

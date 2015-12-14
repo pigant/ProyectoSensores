@@ -44,14 +44,14 @@ public class TagDAL {
 	}
 
 	public static List<Tag> findByLugar(int id) throws SinBaseDatosException {
-		ArrayList<Object[]> tagsRaw = ObjectDAL.findRaw(
+		List<Object[]> tagsRaw = ObjectDAL.findRaw(
 				"select t.id_tag, t.nombre, t.url, t.segundos, "
 				+ "t.detalle from tag as t "
 				+ "join sensor as s on t.id_sensor=s.id_sensor "
 				+ "join maquina as m on s.id_maquina=m.id_maquina "
 				+ "join lugar as l on m.id_lugar=l.id_lugar "
 				+ "where l.id_lugar=" + id);
-		ArrayList<Tag> tags = new ArrayList(tagsRaw.size());
+		List<Tag> tags = new ArrayList(tagsRaw.size());
 		for (Object[] ob : tagsRaw) {
 			tags.add(new Tag((
 					int) 		ob[0], //id
@@ -65,13 +65,13 @@ public class TagDAL {
 	}
 
 	public static List<Tag> findByMaquina(int id) throws SinBaseDatosException {
-		ArrayList<Object[]> tagsRaw = ObjectDAL.findRaw(
+		List<Object[]> tagsRaw = ObjectDAL.findRaw(
 				"select t.id_tag, t.nombre, t.url, t.segundos, "
 				+ "t.detalle from tag as t "
 				+ "join sensor as s on t.id_sensor=s.id_sensor "
 				+ "join maquina as m on s.id_maquina=m.id_maquina "
 				+ "where m.id_maquina=" + id);
-		ArrayList<Tag> tags = new ArrayList(tagsRaw.size());
+		List<Tag> tags = new ArrayList(tagsRaw.size());
 		for (Object[] ob : tagsRaw) {
 			tags.add(new Tag((
 					int) 		ob[0], //id
@@ -85,10 +85,10 @@ public class TagDAL {
 	}
 
 	public static List<Tag> findLike(String text) throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_tag, nombre, url, segundos, detalle "
+		List<Object[]> ob = ObjectDAL.findRaw("select id_tag, nombre, url, segundos, detalle "
 				+ "from tag "
 				+ "where lower(nombre) like '%" + text + "%'");
-		ArrayList<Tag> t = new ArrayList<>(ob.size());
+		List<Tag> t = new ArrayList<>(ob.size());
 		for (Object[] o : ob) {
 			t.add(new Tag(
 					(int) o[0],		//id
@@ -102,9 +102,9 @@ public class TagDAL {
 	}
 
 	public static List<Tag> findAll() throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findAll("select id_tag, nombre, url, segundos, detalle "
+		List<Object[]> ob = ObjectDAL.findAll("select id_tag, nombre, url, segundos, detalle "
 				+ "from tag");
-		ArrayList<Tag> ts = new ArrayList(ob.size());
+		List<Tag> ts = new ArrayList(ob.size());
 		for (Object[] o : ob) {
 			ts.add(new Tag(
 					(int) o[0],		//id

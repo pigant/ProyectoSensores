@@ -14,9 +14,9 @@ import java.util.logging.Logger;
  */
 public class LugarDAL {
 
-	public static ArrayList<Lugar> findAll() throws SinBaseDatosException {
-		ArrayList<Lugar> al = new ArrayList();
-		ArrayList<Object[]> todos = ObjectDAL.findAll(
+	public static List<Lugar> findAll() throws SinBaseDatosException {
+		List<Lugar> al = new ArrayList();
+		List<Object[]> todos = ObjectDAL.findAll(
 				"select id_lugar, nombre from lugar");
 		for (Object[] parte : todos) {
 			Lugar l = new Lugar(
@@ -77,18 +77,13 @@ public class LugarDAL {
 		}
 		return l;
 	}
-<<<<<<< HEAD
-=======
-
 	public static List<Lugar> findLike(String text) throws SinBaseDatosException {
-		ArrayList<Lugar> l = new ArrayList();
-		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_lugar, nombre "
+		List<Lugar> l = new ArrayList();
+		List<Object[]> ob = ObjectDAL.findRaw("select id_lugar, nombre "
 				+ "from lugar where lower(nombre) like '%" + text + "%'");
 		for (Object[] o : ob) {
 			l.add(new Lugar((int) o[0], (String) o[1]));
 		}
 		return l;
 	}
-
->>>>>>> Buscador en crear lugar y tipo sensor
 }

@@ -1,12 +1,8 @@
 package com.ignacio.proyectosensores.DAL;
 
 import com.ignacio.proyectosensores.BLL.Maquina;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -84,8 +80,8 @@ public class MaquinaDAL {
 //		return m;
 //	}
 	public static List<Maquina> findLike(String text) throws SinBaseDatosException {
-		ArrayList<Maquina> l = new ArrayList();
-		ArrayList<Object[]> ob = ObjectDAL.findRaw(
+		List<Maquina> l = new ArrayList();
+		List<Object[]> ob = ObjectDAL.findRaw(
 				"select id_maquina, nombre, detalle "
 				+ "from maquina where lower(nombre) like '%" + text + "%'");
 		for (Object[] o : ob) {
@@ -96,7 +92,7 @@ public class MaquinaDAL {
 
 	public static Maquina findByTag(int id) throws SinBaseDatosException {
 		Maquina m = null;
-		ArrayList<Object[]> ob = ObjectDAL.findRaw(
+		List<Object[]> ob = ObjectDAL.findRaw(
 				"select m.id_maquina, m.nombre, m.detalle "
 				+ "from maquina as m "
 				+ "join sensor as s on s.id_maquina=m.id_maquina "
@@ -112,7 +108,7 @@ public class MaquinaDAL {
 
 	public static Maquina findBySensor(int id) throws SinBaseDatosException {
 		Maquina m = null;
-		ArrayList<Object[]> ob = ObjectDAL.findRaw(
+		List<Object[]> ob = ObjectDAL.findRaw(
 				"select m.id_maquina, m.nombre, m.detalle "
 				+ "from maquina as m "
 				+ "join sensor as s on s.id_maquina=m.id_maquina "

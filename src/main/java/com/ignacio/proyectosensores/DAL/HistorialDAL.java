@@ -19,13 +19,13 @@ public class HistorialDAL {
 
 	public static List<Historial> findLast1000(int idTag)
 			throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findRaw(
+		List<Object[]> ob = ObjectDAL.findRaw(
 				"select fecha, valor "
 				+ "from historial "
 				+ "where id_tag=" + idTag
 				+ "order by fecha ASC "
 				+ "limit 1000");
-		ArrayList<Historial> a = new ArrayList<>(ob.size());
+		List<Historial> a = new ArrayList<>(ob.size());
 		for (Object[] o : ob) {
 			a.add(new Historial((Timestamp) o[0], (BigDecimal) o[1]));
 		}

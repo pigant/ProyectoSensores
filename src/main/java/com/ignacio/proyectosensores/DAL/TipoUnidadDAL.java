@@ -63,9 +63,9 @@ public class TipoUnidadDAL {
 	}
 
 	public static List<TipoUnidad> findAll() throws SinBaseDatosException {
-		ArrayList<Object[]> ob = ObjectDAL.findAll(
+		List<Object[]> ob = ObjectDAL.findAll(
 			"select id_t_unidad, nombre from t_unidad");
-		ArrayList<TipoUnidad> l = new ArrayList();
+		List<TipoUnidad> l = new ArrayList();
 		for (Object[] o : ob) {
 			l.add(new TipoUnidad((int) o[0], (String) o[1]));
 		}
@@ -74,9 +74,9 @@ public class TipoUnidadDAL {
 
 	public static List<TipoUnidad> findLike(String text) throws SinBaseDatosException {
 		text = text.toLowerCase();
-		ArrayList<Object[]> ob = ObjectDAL.findRaw("select id_t_unidad, nombre from t_unidad "
+		List<Object[]> ob = ObjectDAL.findRaw("select id_t_unidad, nombre from t_unidad "
 				+ "where lower(nombre) like '%" + text + "%'");
-		ArrayList<TipoUnidad> t = new ArrayList<>();
+		List<TipoUnidad> t = new ArrayList<>();
 		for (Object[] o : ob) {
 			t.add(new TipoUnidad((int) o[0], (String) o[1]));
 		}
