@@ -273,8 +273,8 @@ public class Main extends javax.swing.JFrame {
 
 			@Override
 			public void run() {
-				BusquedaTag bt = BusquedaTag.getInstance();
-				bt.atender();
+				//BusquedaTag bt = BusquedaTag.getInstance();
+				//bt.atender();
 			}
 		});
 		t.start();

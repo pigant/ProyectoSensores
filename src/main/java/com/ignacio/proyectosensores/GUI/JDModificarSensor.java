@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ignacio.proyectosensores.GUI;
 
+import com.ignacio.proyectosensores.BLL.Advertencia;
 import com.ignacio.proyectosensores.GUI.creaciones.JPCrearSensor;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.BLL.Sensor;
@@ -93,9 +89,9 @@ public class JDModificarSensor extends javax.swing.JDialog {
         b_guardar1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         ta_descripcion = new javax.swing.JTextArea(sensor.getDetalle());
+        b_guardar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(380, 350));
 
         jLabel1.setText("Nombre:");
 
@@ -139,6 +135,13 @@ public class JDModificarSensor extends javax.swing.JDialog {
         ta_descripcion.setRows(5);
         jScrollPane1.setViewportView(ta_descripcion);
 
+        b_guardar2.setText("Eliminar");
+        b_guardar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_guardar2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -167,11 +170,13 @@ public class JDModificarSensor extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(rb_negativo)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(b_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(b_guardar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(b_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(b_guardar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(b_guardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -210,10 +215,11 @@ public class JDModificarSensor extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel7)
                     .addComponent(cb_maquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_guardar)
-                    .addComponent(b_guardar1))
+                    .addComponent(b_guardar1)
+                    .addComponent(b_guardar2))
                 .addContainerGap())
         );
 
@@ -247,6 +253,24 @@ public class JDModificarSensor extends javax.swing.JDialog {
     private void b_guardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_guardar1ActionPerformed
 		dispose();
     }//GEN-LAST:event_b_guardar1ActionPerformed
+
+    private void b_guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_guardar2ActionPerformed
+		try {
+			int sel = JOptionPane.showConfirmDialog(this, "¿ Desea eliminar ?");
+			if (sel == JOptionPane.OK_OPTION) {
+				Advertencia a = Advertencia.getBySensor(sensor.getId());
+				if (a != null) {
+					a.delete();
+				}
+				sensor.delete();
+				JOptionPane.showMessageDialog(this, "Elemento eliminado");
+			}
+		} catch (SinBaseDatosException ex) {
+			Logger.getLogger(JDModificarSensor.class.getName()).log(Level.SEVERE, null, ex);
+			JOptionPane.showMessageDialog(this, "No se pudo eliminar el sensor");
+		}
+		dispose();
+    }//GEN-LAST:event_b_guardar2ActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -295,6 +319,7 @@ public class JDModificarSensor extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_guardar;
     private javax.swing.JButton b_guardar1;
+    private javax.swing.JButton b_guardar2;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<Maquina> cb_maquina;
     private javax.swing.JComboBox<TipoSensor> cb_sensor;

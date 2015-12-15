@@ -50,7 +50,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
 					new MaquinaCellRenderer());
 			t_vista.getColumnModel().getColumn(1).setCellEditor(
 					new MaquinaCellEditor());
-			t_vista.updateUI();
+			t_vista.repaint();
 
 		} catch (SinBaseDatosException ex) {
 			JOptionPane.showMessageDialog(
@@ -100,9 +100,9 @@ public class JPCrearSensor extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        cb_unidad = new javax.swing.JComboBox<>();
-        cb_sensor = new javax.swing.JComboBox<>();
-        cb_maquina = new javax.swing.JComboBox<>();
+        cb_unidad = new javax.swing.JComboBox<TipoUnidad>();
+        cb_sensor = new javax.swing.JComboBox<TipoSensor>();
+        cb_maquina = new javax.swing.JComboBox<Maquina>();
         b_guardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_vista = new javax.swing.JTable();
@@ -194,8 +194,8 @@ public class JPCrearSensor extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(b_guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                            .addComponent(b_guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -248,6 +248,13 @@ public class JPCrearSensor extends javax.swing.JPanel {
 		try {
 			s.save();
 			JOptionPane.showMessageDialog(this, "Guardado exitosamente");
+			int sel = JOptionPane.showConfirmDialog(this, "Desea agregar una advertencia?");
+			if (sel == JOptionPane.OK_OPTION) {
+				JDCrearAdvertencia a = new JDCrearAdvertencia(
+						Main.instancia, true, s.getId());
+				a.setVisible(true);
+			}
+			rellenoTabla();
 		} catch (SinBaseDatosException ex) {
 			JOptionPane.showMessageDialog(this, "Sin base de datos");
 			Logger.getLogger(JPCrearSensor.class.getName()).log(
@@ -324,8 +331,7 @@ public class JPCrearSensor extends javax.swing.JPanel {
 				Object valor, boolean isSelected, final int row,
 				final int column) {
 			JButton b = new JButton("Editar");
-			final JPCrearSensor panel = ((JPCrearSensor) 
-					tabla.getParent().getParent().getParent());
+			final JPCrearSensor panel = ((JPCrearSensor) tabla.getParent().getParent().getParent());
 			final Sensor s = (Sensor) tabla.getModel().getValueAt(row, column);
 			s.findDependencias();
 			b.addActionListener(new ActionListener() {

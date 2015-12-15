@@ -305,7 +305,7 @@ public class JDBuscarSensor extends javax.swing.JDialog {
 
     private void b_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_seleccionarActionPerformed
 		int seleccionado = t_vista.getSelectedRow();
-		if (seleccionado > 0) {
+		if (seleccionado >= 0) {
 			sensorSeleccionado = (Sensor) stm.getValueAt(seleccionado, 0);
 		}
 		dispose();

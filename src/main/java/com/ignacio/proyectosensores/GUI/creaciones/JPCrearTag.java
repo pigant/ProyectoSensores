@@ -97,7 +97,7 @@ public class JPCrearTag extends javax.swing.JPanel {
         s_tiempo = new javax.swing.JSpinner();
         tf_sensorSeleccionado = new javax.swing.JTextField();
         b_buscarSensor = new javax.swing.JButton();
-        cb_protocolo = new javax.swing.JComboBox<>();
+        cb_protocolo = new javax.swing.JComboBox<String>();
         b_agregar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -127,7 +127,7 @@ public class JPCrearTag extends javax.swing.JPanel {
             }
         });
 
-        s_tiempo.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        s_tiempo.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         tf_sensorSeleccionado.setEditable(false);
 
@@ -312,7 +312,6 @@ public class JPCrearTag extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
 	//Tabla
-
 	private static class TagCellRenderer implements TableCellRenderer {
 
 		@Override
