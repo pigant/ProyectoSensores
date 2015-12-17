@@ -80,6 +80,9 @@
               <Connection code="new TipoUnidadTableModel()" type="code"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="t_vistaKeyReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

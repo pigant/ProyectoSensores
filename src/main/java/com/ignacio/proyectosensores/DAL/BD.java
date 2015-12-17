@@ -38,22 +38,35 @@ public class BD {
 	}
 
 	public boolean update(String consulta, Object... parametros)
-			throws CodigoRepetidoException {
+			throws CodigoRepetidoException, RestriccionException {
+		PreparedStatement ps = null;
 		try {
-			PreparedStatement ps = c.prepareStatement(consulta);
+			ps = c.prepareStatement(consulta);
 			for (int i = 0; i < parametros.length; i++) {
 				Object o = parametros[i];
 				ps.setObject(i + 1, o);
 			}
 			int sa = ps.executeUpdate();
-			ps.close();
 			return sa == 1;
 		} catch (SQLException ex) {
-			if ("23505".equals(ex.getSQLState())) {
-				throw new CodigoRepetidoException(ex);
+			System.out.println("Error: " + ex.getSQLState());
+			switch (ex.getSQLState()) {
+				case "23505":
+					throw new CodigoRepetidoException(ex);
+				case "23503":
+					throw new RestriccionException(ex);
 			}
+
 			Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException ex) {
+					Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
 		}
 	}
 

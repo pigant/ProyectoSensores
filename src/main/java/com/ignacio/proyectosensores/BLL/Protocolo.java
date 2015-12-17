@@ -2,6 +2,7 @@ package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.ProtocoloDAL;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class Protocolo {
 		return s;
 	}
 
-	public boolean delete() throws SinBaseDatosException {
+	public boolean delete() throws SinBaseDatosException, RestriccionException {
 		return ProtocoloDAL.delete(id);
 	}
 

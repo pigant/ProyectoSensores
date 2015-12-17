@@ -53,7 +53,8 @@ public class SensorDAL {
 				idMaquina, idTipoSensor, idTipoUnidad, id);
 	}
 
-	public static boolean delete(Integer id) throws SinBaseDatosException {
+	public static boolean delete(Integer id)
+			throws SinBaseDatosException, RestriccionException {
 		return ObjectDAL.delete("delete from sensor where id_sensor=?", id);
 	}
 
@@ -89,10 +90,10 @@ public class SensorDAL {
 		if (p.size() > 0) {
 			Object[] o = p.get(0);
 			s = new Sensor(
-					(int) o[0], 		//id
-					(String) o[1], 		//nombre
-					(String) o[2],		//Escala
-					(String) o[3], 		//Detalle
+					(int) o[0], //id
+					(String) o[1], //nombre
+					(String) o[2], //Escala
+					(String) o[3], //Detalle
 					(Boolean) o[4]);	//p_escala
 		}
 		return s;

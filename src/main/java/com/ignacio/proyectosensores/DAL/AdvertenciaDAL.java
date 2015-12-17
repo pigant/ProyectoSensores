@@ -33,7 +33,7 @@ public class AdvertenciaDAL {
 	}
 
 	public static boolean borrar(int idAdvertencia)
-			throws SinBaseDatosException {
+			throws SinBaseDatosException, RestriccionException {
 		return ObjectDAL.delete("delete from advertencia "
 				+ "where id_advertencia=?", idAdvertencia);
 	}

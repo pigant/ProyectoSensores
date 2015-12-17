@@ -31,11 +31,14 @@ public class ObjectDAL {
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(LugarDAL.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (RestriccionException ex) {
+			//no aplica
 		}
 		return s;
 	}
 
-	public static boolean delete(String consulta, int id) throws SinBaseDatosException {
+	public static boolean delete(String consulta, int id) 
+			throws SinBaseDatosException, RestriccionException {
 		boolean s = false;
 		try {
 			BD bd = new BD();
@@ -54,6 +57,8 @@ public class ObjectDAL {
 			BD bd = new BD();
 			s = bd.update(consulta, parametros);
 		} catch (CodigoRepetidoException ex) {
+			//no aplica
+		} catch (RestriccionException ex) {
 			//no aplica
 		}
 		return s;

@@ -2,7 +2,9 @@ package com.ignacio.proyectosensores.GUI.creaciones;
 
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +63,11 @@ public class JPCrearLugar extends javax.swing.JPanel {
                 "Lugares existentes"
             }
         ));
+        t_lugares.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                t_lugaresKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(t_lugares);
 
         b_agregar.setText("Agregar");
@@ -131,6 +138,33 @@ public class JPCrearLugar extends javax.swing.JPanel {
 			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
 		}
     }//GEN-LAST:event_tf_nombreKeyReleased
+
+    private void t_lugaresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_lugaresKeyReleased
+		if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+			int op = JOptionPane.showConfirmDialog(
+					this,
+					"¿ Desea eliminar el registro ?", "Confirmación",
+					JOptionPane.OK_CANCEL_OPTION);
+			if (op == JOptionPane.OK_OPTION) {
+				int r = t_lugares.getSelectedRow();
+				Lugar l = (Lugar) t_lugares.getModel().getValueAt(r, 0);
+				try {
+					l.delete();
+					lugares = Lugar.findAll();
+					actualizarTabla();
+				} catch (SinBaseDatosException ex) {
+					Logger.getLogger(JPCrearLugar.class.getName()).log(Level.SEVERE, null, ex);
+				} catch (RestriccionException ex) {
+					JOptionPane.showMessageDialog(
+							this,
+							"Para eliminar este registro es necesario "
+							+ "borrar sus dependencias",
+							"Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
+    }//GEN-LAST:event_t_lugaresKeyReleased
 
 	public void actualizarTabla() {
 		final LugarTableModel ltm = new LugarTableModel(lugares);

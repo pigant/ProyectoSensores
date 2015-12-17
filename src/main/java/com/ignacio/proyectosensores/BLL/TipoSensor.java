@@ -1,6 +1,7 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TipoSensorDAL;
 import java.util.List;
@@ -54,7 +55,7 @@ public class TipoSensor {
 		return s;
 	}
 
-	public boolean delete() throws SinBaseDatosException{
+	public boolean delete() throws SinBaseDatosException, RestriccionException{
 		return TipoSensorDAL.delete(id);
 	}
 

@@ -2,6 +2,7 @@ package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.MaquinaDAL;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SensorDAL;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TipoSensorDAL;
@@ -136,7 +137,7 @@ public class Sensor {
 	}
 
 	//delete
-	public boolean delete() throws SinBaseDatosException {
+	public boolean delete() throws SinBaseDatosException, RestriccionException {
 		return SensorDAL.delete(id);
 	}
 

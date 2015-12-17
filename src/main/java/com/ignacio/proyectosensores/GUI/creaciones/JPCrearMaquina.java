@@ -3,10 +3,12 @@ package com.ignacio.proyectosensores.GUI.creaciones;
 import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -63,7 +65,7 @@ public class JPCrearMaquina extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tf_nombre = new javax.swing.JTextField();
-        cb_lugar = new javax.swing.JComboBox<>();
+        cb_lugar = new javax.swing.JComboBox<Lugar>();
         b_crear = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -144,6 +146,11 @@ public class JPCrearMaquina extends javax.swing.JPanel {
         );
 
         t_maquinas.setModel(new MaquinaTableModel());
+        t_maquinas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                t_maquinasKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(t_maquinas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -213,6 +220,35 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 		}
     }//GEN-LAST:event_tf_nombreKeyReleased
 
+    private void t_maquinasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_maquinasKeyReleased
+		if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+			int op = JOptionPane.showConfirmDialog(
+					this,
+					"¿ Desea eliminar el registro ?", "Confirmación",
+					JOptionPane.OK_CANCEL_OPTION);
+			if (op == JOptionPane.OK_OPTION) {
+				int r = t_maquinas.getSelectedRow();
+				Maquina l
+						= ((MaquinaTableModel) t_maquinas.getModel()).getAt(r);
+				try {
+					l.delete();
+					mtm = new MaquinaTableModel(Maquina.findAllWithDependency());
+					t_maquinas.setModel(mtm);
+				} catch (SinBaseDatosException ex) {
+					Logger.getLogger(JPCrearLugar.class.getName()).log(
+							Level.SEVERE, null, ex);
+				} catch (RestriccionException ex) {
+					JOptionPane.showMessageDialog(
+							this,
+							"Para eliminar este registro es necesario "
+							+ "borrar sus dependencias",
+							"Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
+    }//GEN-LAST:event_t_maquinasKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_crear;
@@ -235,6 +271,10 @@ public class JPCrearMaquina extends javax.swing.JPanel {
 
 		public MaquinaTableModel() {
 			maquinas = new ArrayList();
+		}
+
+		public Maquina getAt(int index) {
+			return maquinas.get(index);
 		}
 
 		public MaquinaTableModel(List<Maquina> maquinas) {

@@ -5,6 +5,7 @@ import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.GUI.JDModificarSensor;
 import com.ignacio.proyectosensores.Main;
@@ -12,6 +13,7 @@ import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -156,6 +158,11 @@ public class JPCrearSensor extends javax.swing.JPanel {
 
             }
         ));
+        t_vista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                t_vistaKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(t_vista);
 
         ta_descripcion.setColumns(20);
@@ -279,6 +286,34 @@ public class JPCrearSensor extends javax.swing.JPanel {
 					Level.SEVERE, null, ex);
 		}
     }//GEN-LAST:event_tf_nombreKeyReleased
+
+    private void t_vistaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_vistaKeyReleased
+		if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+			int op = JOptionPane.showConfirmDialog(
+					this,
+					"¿ Desea eliminar el registro ?","Confirmación", 
+					JOptionPane.OK_CANCEL_OPTION);
+			if (op == JOptionPane.OK_OPTION) {
+				int r = t_vista.getSelectedRow();
+				Sensor l
+						= (Sensor) t_vista.getModel().getValueAt(r, 0);
+				try {
+					l.delete();
+					rellenoTabla();
+				} catch (SinBaseDatosException ex) {
+					Logger.getLogger(JPCrearLugar.class.getName()).log(
+							Level.SEVERE, null, ex);
+				} catch (RestriccionException ex) {
+					JOptionPane.showMessageDialog(
+							this,
+							"Para eliminar este registro es necesario "
+							+ "borrar sus dependencias",
+							"Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
+    }//GEN-LAST:event_t_vistaKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

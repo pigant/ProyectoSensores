@@ -27,7 +27,8 @@ public class MaquinaDAL {
 				nombre, idLugar, detalle, id);
 	}
 
-	public static boolean delete(Integer id) throws SinBaseDatosException {
+	public static boolean delete(Integer id)
+			throws SinBaseDatosException, RestriccionException {
 		return ObjectDAL.delete("delete from maquina where id_maquina=?", id);
 	}
 

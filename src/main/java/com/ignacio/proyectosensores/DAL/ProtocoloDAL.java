@@ -27,7 +27,8 @@ public class ProtocoloDAL {
 				nombre, id);
 	}
 
-	public static boolean delete(Integer id) throws SinBaseDatosException {
+	public static boolean delete(Integer id)
+			throws SinBaseDatosException, RestriccionException {
 		return ObjectDAL.delete(
 				"delete from protocolo where id_protocolo=?",
 				id);

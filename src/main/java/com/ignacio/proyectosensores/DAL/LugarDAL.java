@@ -33,7 +33,8 @@ public class LugarDAL {
 				"insert into lugar (nombre) values (?)", nombre);
 	}
 
-	public static boolean delete(int id) throws SinBaseDatosException {
+	public static boolean delete(int id) 
+			throws SinBaseDatosException, RestriccionException {
 		return ObjectDAL.delete("delete from lugar where id_lugar=?", id);
 	}
 

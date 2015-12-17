@@ -7,6 +7,7 @@ package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.AdvertenciaDAL;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 
 /**
@@ -84,7 +85,7 @@ public class Advertencia {
 		this.idSensor = idSensor;
 	}
 
-	public boolean delete() throws SinBaseDatosException {
+	public boolean delete() throws SinBaseDatosException, RestriccionException {
 		return AdvertenciaDAL.borrar(idAdvertencia);
 	}
 

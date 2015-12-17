@@ -39,7 +39,8 @@ public class TagDAL {
 				nombre, url, segundos, detalle, id, id0);
 	}
 
-	public static boolean delete(Integer id) throws SinBaseDatosException {
+	public static boolean delete(Integer id) 
+			throws SinBaseDatosException, RestriccionException {
 		return ObjectDAL.delete("delete from tag where id_tag=?", id);
 	}
 

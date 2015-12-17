@@ -5,6 +5,7 @@ import com.ignacio.proyectosensores.BLL.Protocolo;
 import com.ignacio.proyectosensores.BLL.Sensor;
 import com.ignacio.proyectosensores.BLL.Tag;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.GUI.JDBuscarSensor;
 import com.ignacio.proyectosensores.GUI.JDModificarTag;
@@ -15,6 +16,7 @@ import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -165,6 +167,11 @@ public class JPCrearTag extends javax.swing.JPanel {
 
             }
         ));
+        t_vista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                t_vistaKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(t_vista);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -289,6 +296,34 @@ public class JPCrearTag extends javax.swing.JPanel {
 		final String text = tf_url.getText();
 		tag.setUrl(text);
     }//GEN-LAST:event_tf_urlKeyReleased
+
+    private void t_vistaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_vistaKeyReleased
+		if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+			int op = JOptionPane.showConfirmDialog(
+					this,
+					"¿ Desea eliminar el registro ?","Confirmación", 
+					JOptionPane.OK_CANCEL_OPTION);
+			if (op == JOptionPane.OK_OPTION) {
+				int r = t_vista.getSelectedRow();
+				Tag l
+						= (Tag) t_vista.getModel().getValueAt(r, 0);
+				try {
+					l.delete();
+					rellenoTabla();
+				} catch (SinBaseDatosException ex) {
+					Logger.getLogger(JPCrearLugar.class.getName()).log(
+							Level.SEVERE, null, ex);
+				} catch (RestriccionException ex) {
+					JOptionPane.showMessageDialog(
+							this,
+							"Para eliminar este registro es necesario "
+							+ "borrar sus dependencias",
+							"Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
+    }//GEN-LAST:event_t_vistaKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

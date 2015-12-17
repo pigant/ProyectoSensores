@@ -3,6 +3,7 @@ package com.ignacio.proyectosensores.BLL;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
 import com.ignacio.proyectosensores.DAL.LugarDAL;
 import com.ignacio.proyectosensores.DAL.MaquinaDAL;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.util.List;
 import java.util.Objects;
@@ -92,7 +93,7 @@ public class Maquina {
 		return s;
 	}
 
-	public boolean delete() throws SinBaseDatosException {
+	public boolean delete() throws SinBaseDatosException, RestriccionException {
 		return MaquinaDAL.delete(id);
 	}
 

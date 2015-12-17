@@ -1,6 +1,7 @@
 package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import com.ignacio.proyectosensores.DAL.TagDAL;
 import java.util.List;
@@ -97,7 +98,7 @@ public class Tag {
 		return s;
 	}
 
-	public boolean delete() throws SinBaseDatosException {
+	public boolean delete() throws SinBaseDatosException, RestriccionException {
 		boolean s;
 		s = TagDAL.delete(id);
 		return s;

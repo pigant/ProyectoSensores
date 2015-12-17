@@ -35,7 +35,8 @@ public class TipoSensorDAL {
 				nombre, id);
 	}
 
-	public static boolean delete(Integer id) throws SinBaseDatosException {
+	public static boolean delete(Integer id) 
+			throws SinBaseDatosException, RestriccionException {
 		return ObjectDAL.delete(
 				"delete from t_sensor where id_t_sensor=?",
 				id);

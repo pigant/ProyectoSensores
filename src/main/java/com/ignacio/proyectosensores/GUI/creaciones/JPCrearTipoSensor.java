@@ -2,7 +2,9 @@ package com.ignacio.proyectosensores.GUI.creaciones;
 
 import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +62,11 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
         });
 
         t_vista.setModel(new TipoSensorTableModel());
+        t_vista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                t_vistaKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(t_vista);
 
         b_crear.setText("Crear");
@@ -127,6 +134,36 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 			Logger.getLogger(JPCrearTipoUnidad.class.getName()).log(Level.SEVERE, null, ex);
 		}
     }//GEN-LAST:event_tf_nombreKeyReleased
+
+    private void t_vistaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_vistaKeyReleased
+		if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+			int op = JOptionPane.showConfirmDialog(
+					this,
+					"¿ Desea eliminar el registro ?","Confirmación", 
+					JOptionPane.OK_CANCEL_OPTION);
+			if (op == JOptionPane.OK_OPTION) {
+				int r = t_vista.getSelectedRow();
+				TipoSensor l
+						= (TipoSensor) t_vista.getModel().getValueAt(r, 0);
+				try {
+					l.delete();
+					List<TipoSensor> findAll = TipoSensor.findAll();
+					TipoSensorTableModel t = new TipoSensorTableModel(findAll);
+					t_vista.setModel(t);
+				} catch (SinBaseDatosException ex) {
+					Logger.getLogger(JPCrearLugar.class.getName()).log(
+							Level.SEVERE, null, ex);
+				} catch (RestriccionException ex) {
+					JOptionPane.showMessageDialog(
+							this,
+							"Para eliminar este registro es necesario "
+							+ "borrar sus dependencias",
+							"Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
+    }//GEN-LAST:event_t_vistaKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
