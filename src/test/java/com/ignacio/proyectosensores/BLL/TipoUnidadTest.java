@@ -9,6 +9,7 @@ package com.ignacio.proyectosensores.BLL;
 import com.ignacio.proyectosensores.BLL.TipoUnidad;
 import com.ignacio.proyectosensores.DAL.BD;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
@@ -50,7 +51,10 @@ public class TipoUnidadTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_tipo_unidad() throws SinBaseDatosException, CodigoRepetidoException {
+	public void CRUD_tipo_unidad() 
+			throws SinBaseDatosException, 
+			CodigoRepetidoException, 
+			RestriccionException {
 		//creacion
 		TipoUnidad t = new TipoUnidad("celsius test");
 		boolean s = t.save();

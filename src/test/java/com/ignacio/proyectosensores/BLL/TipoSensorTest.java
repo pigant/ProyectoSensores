@@ -3,6 +3,7 @@ package com.ignacio.proyectosensores.BLL;
 import com.ignacio.proyectosensores.BLL.TipoSensor;
 import com.ignacio.proyectosensores.DAL.BD;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
@@ -44,7 +45,10 @@ public class TipoSensorTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_tipo_sensor() throws SinBaseDatosException, CodigoRepetidoException {
+	public void CRUD_tipo_sensor() 
+			throws SinBaseDatosException, 
+			CodigoRepetidoException, 
+			RestriccionException {
 		//creacion
 		TipoSensor t = new TipoSensor("Termomentro test");
 		boolean s = t.save();

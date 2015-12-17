@@ -9,6 +9,7 @@ import com.ignacio.proyectosensores.BLL.Lugar;
 import com.ignacio.proyectosensores.BLL.Maquina;
 import com.ignacio.proyectosensores.DAL.BD;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
@@ -50,7 +51,10 @@ public class MaquinaTest {
 	// @Test
 	// public void hello() {}
 	@Test
-	public void CRUD_maquina() throws SinBaseDatosException, CodigoRepetidoException {
+	public void CRUD_maquina() 
+			throws SinBaseDatosException, 
+			CodigoRepetidoException, 
+			RestriccionException {
 		Lugar l = new Lugar("lugar test");
 		l.save();
 		//Create
@@ -73,7 +77,10 @@ public class MaquinaTest {
 	}
 
 	@Test
-	public void buscar_lugar_de_la_maquina() throws SinBaseDatosException, CodigoRepetidoException {
+	public void buscar_lugar_de_la_maquina() 
+			throws SinBaseDatosException, 
+			CodigoRepetidoException, 
+			RestriccionException {
 		Lugar l = new Lugar("lugar test");
 		l.save();
 		//Create

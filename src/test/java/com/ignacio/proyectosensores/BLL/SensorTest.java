@@ -7,6 +7,7 @@ package com.ignacio.proyectosensores.BLL;
 
 import com.ignacio.proyectosensores.DAL.BD;
 import com.ignacio.proyectosensores.DAL.CodigoRepetidoException;
+import com.ignacio.proyectosensores.DAL.RestriccionException;
 import com.ignacio.proyectosensores.DAL.SinBaseDatosException;
 import java.sql.SQLException;
 import org.junit.After;
@@ -46,7 +47,10 @@ public class SensorTest {
 	 * Test of find method, of class Sensor.
 	 */
 	@Test
-	public void CRUD_sensor() throws SinBaseDatosException, CodigoRepetidoException {
+	public void CRUD_sensor() 
+			throws SinBaseDatosException, 
+			CodigoRepetidoException, 
+			RestriccionException {
 		//creaciones
 		Lugar l = new Lugar("lugar presion test sensor");
 		Maquina m = new Maquina("Maquina test sensor");
@@ -87,8 +91,11 @@ public class SensorTest {
 	}
 
 	@Test
-	public void obtener_dependencias() throws SinBaseDatosException, CodigoRepetidoException {
-		boolean resultado;
+	public void obtener_dependencias() 
+			throws SinBaseDatosException, 
+			CodigoRepetidoException, 
+			RestriccionException {
+		boolean resultado, b;
 		//creaciones
 		Lugar l = new Lugar("lugar presion test sensor");
 		Maquina m = new Maquina("Maquina test sensor");
@@ -102,10 +109,10 @@ public class SensorTest {
 		s.setTipoSensor(ts);
 		s.setTipoUnidad(tu);
 		//guardado
-		l.save();
-		m.save();
-		tu.save();
-		ts.save();
+		b = l.save();
+		b = m.save();
+		b = tu.save();
+		b = ts.save();
 		resultado = s.save();
 		//obtencion
 		Sensor s2 = Sensor.find(s.getId());
