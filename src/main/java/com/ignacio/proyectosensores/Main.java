@@ -11,7 +11,6 @@ import com.ignacio.proyectosensores.GUI.creaciones.JPCrearSensor;
 import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTag;
 import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTipoSensor;
 import com.ignacio.proyectosensores.GUI.creaciones.JPCrearTipoUnidad;
-import com.ignacio.proyectosensores.modbus.manejo.BusquedaTag;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +27,8 @@ public class Main extends javax.swing.JFrame {
 	 */
 	public Main() {
 		initComponents();
-		//p_principal.add(new JPCrearTag(this));
-		//p_principal.repaint();
+		p_principal.add(new JPVerTodo());
+		p_principal.repaint();
 		instancia = this;
 	}
 
@@ -59,7 +58,6 @@ public class Main extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,9 +148,6 @@ public class Main extends javax.swing.JFrame {
         jMenu3.add(jMenuItem8);
 
         jMenuBar1.add(jMenu3);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -282,7 +277,6 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;

@@ -49,7 +49,6 @@ public class BD {
 			int sa = ps.executeUpdate();
 			return sa == 1;
 		} catch (SQLException ex) {
-			System.out.println("Error: " + ex.getSQLState());
 			switch (ex.getSQLState()) {
 				case "23505":
 					throw new CodigoRepetidoException(ex);
@@ -92,7 +91,6 @@ public class BD {
 					append(" from ").
 					append(tabla).append(" where ").
 					append(condicion);
-			//System.out.println(sb.toString());
 			ResultSet r = c.createStatement().executeQuery(sb.toString());
 			List<Object[]> array = new ArrayList<>();
 			while (r.next()) {
@@ -131,4 +129,12 @@ public class BD {
 		r.close();
 		return id;
 	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		System.out.println("Finalizando a bd");
+		close();
+		super.finalize(); //To change body of generated methods, choose Tools | Templates.
+	}
+
 }

@@ -144,7 +144,7 @@ public class JPCrearTipoSensor extends javax.swing.JPanel {
 			if (op == JOptionPane.OK_OPTION) {
 				int r = t_vista.getSelectedRow();
 				TipoSensor l
-						= (TipoSensor) t_vista.getModel().getValueAt(r, 0);
+						= ((TipoSensorTableModel)t_vista.getModel()).getAt(r);
 				try {
 					l.delete();
 					List<TipoSensor> findAll = TipoSensor.findAll();

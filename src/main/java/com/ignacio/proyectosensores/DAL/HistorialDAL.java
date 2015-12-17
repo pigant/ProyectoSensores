@@ -6,7 +6,6 @@
 package com.ignacio.proyectosensores.DAL;
 
 import com.ignacio.proyectosensores.BLL.Historial;
-import com.ignacio.proyectosensores.BLL.Tag;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;

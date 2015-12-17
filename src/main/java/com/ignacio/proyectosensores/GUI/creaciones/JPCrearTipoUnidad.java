@@ -151,7 +151,7 @@ public class JPCrearTipoUnidad extends javax.swing.JPanel {
 			if (op == JOptionPane.OK_OPTION) {
 				int r = t_vista.getSelectedRow();
 				TipoUnidad l
-						= (TipoUnidad) t_vista.getModel().getValueAt(r, 0);
+						= ((TipoUnidadTableModel) t_vista.getModel()).getAt(r);
 				try {
 					l.delete();
 					TipoUnidadTableModel t
